@@ -1,0 +1,17 @@
+.heading {
+    border-top: 2px solid #8080804d;
+    border-bottom: 2px solid #8080804d;
+    border-right: 2px solid white;
+    border-left: 2px solid white;
+    width: 150px;
+    text-align: center;
+    font-weight: 300;
+    padding: 0px 12px 0px 12px;
+  }
+  .theading {
+    border-bottom: 2px solid #8080804d;
+    border-right: 2px solid white;
+    border-left: 2px solid white;
+    text-align: center;
+  }
+  

@@ -1,12 +1,11 @@
-import Link from "next/link";
-import styles from "./page.module.css";
-import Headers from "./components/Headers";
+import MainFile from "./components/responsive ui/MainFile";
 
-// import Header from './headers/header'
-export default function Home() {
+const page = () => {
   return (
-    <main className={styles.main}>
-      {/* <Headers /> */}
-    </main>
-  );
+    <div>
+      <MainFile />
+    </div>
+  )
 }
+
+export default page
