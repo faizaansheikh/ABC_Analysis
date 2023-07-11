@@ -5,18 +5,26 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-// import { makeStyles } from "@mui/styles";
-// import { Box } from "@mui/material";
+import { TextField } from "@mui/material";
+import styled from "@emotion/styled";
+import { useState } from "react";
 
-function createData(name, text) {
-  return { name, text };
-}
+const CssTextField = styled(TextField)({
+  "& .MuiOutlinedInput-input": {
+    textAlign: 'center',
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      border: 'none',
+    },
+    "&.Mui-focused fieldset": {
+      backgroundColor: '#3985850f',
+      textAlign: 'right !important',
+      borderColor: "#398585",
+    },
+  },
+});
 
-const rows = [
-  createData("A", "a text"),
-  createData("B", "b text"),
-  createData("C", "c text"),
-];
 // const useStyles = makeStyles({
 //   table: {
 //     //   minWidth: 350,
@@ -27,6 +35,7 @@ const rows = [
 // });
 
 function BasicTable() {
+
   // const classes = useStyles();
   return (
     <TableContainer component={Paper} sx={{ mt: "50px", width: "100%" }} >
@@ -37,7 +46,7 @@ function BasicTable() {
       >
         <TableHead sx={{ bgcolor: "#398585" }}>
           <TableRow>
-            <TableCell sx={{ color: "white", fontSize: "16px" }} align="center">
+            <TableCell sx={{ color: "white", fontSize: "16px", borderRight: '1px solid #0000001f !important' }} align="center">
               Group
             </TableCell>
             <TableCell sx={{ color: "white", fontSize: "16px" }} align="center">
@@ -51,10 +60,10 @@ function BasicTable() {
               key={index}
             //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center" component="th" scope="row">
+              <TableCell align="center" component="th" scope="row" sx={{ padding: '0px', borderRight: '1px solid #00000042' }}>
                 {row.name}
               </TableCell>
-              <TableCell align="center" key={index}>{row.text}</TableCell>
+              <TableCell align="center" key={index} sx={{ padding: '0px' }}>{row.text}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -63,3 +72,13 @@ function BasicTable() {
   );
 }
 export default BasicTable;
+
+function createData(name, text) {
+  return { name, text };
+}
+
+const rows = [
+  createData("A", <CssTextField size="small" fullWidth type="number" />),
+  createData("B", <CssTextField size="small" fullWidth type="number" />),
+  createData("C", <CssTextField size="small" fullWidth type="number" />),
+];

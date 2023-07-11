@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import BasicTable from '../components/BasicTable';
+import BasicTable from "../components/BasicTable";
 import {
   Autocomplete,
   Button,
@@ -46,22 +46,74 @@ const CssTextField = styled(TextField)({
     },
   },
 });
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === "none",
-//   // ...theme.typography.body2,
-//   // padding: theme.spacing(1),
-//   // textAlign: 'center',
-//   // color: theme.palette.text.secondary,
-// }));
 
 function Setup() {
-  const [age,setAge] = useState('')
-  const top100Films = [
-    { label: "The Shawshank Redemption", year: 1994 },
-    { label: "The Godfather", year: 1972 },
-    { label: "The Godfather: Part II", year: 1974 },
+  const segMeasure = [
+    "Segmentation measure ABC 1",
+    "Segmentation measure ABC 2",
+    "Segmentation measure ABC 3",
+    "Segmentation measure ABC 4",
+    "Segmentation measure ABC 5",
   ];
-
+  const segMethod = [
+    "Segmentation method 1",
+    "Segmentation method 2",
+    "Segmentation method 3",
+    "Segmentation method 4",
+    "Segmentation method 5",
+  ];
+  const xyzMethod = [
+    "XYZ Segmentation Method 1",
+    "XYZ Segmentation Method 2",
+    "XYZ Segmentation Method 3",
+    "XYZ Segmentation Method 4",
+    "XYZ Segmentation Method 5",
+  ];
+  const primaryCalculation = [
+    "Primary Calculation 1",
+    "Primary Calculation 2",
+    "Primary Calculation 3",
+    "Primary Calculation 4",
+    "Primary Calculation 5",
+  ];
+  const secondaryCalculation = [
+    "Secondary Calculation 1",
+    "Secondary Calculation 2",
+    "Secondary Calculation 3",
+    "Secondary Calculation 4",
+    "Secondary Calculation 5",
+  ];
+  const period = [
+    "Periodicity 1",
+    "Periodicity 2",
+    "Periodicity 3",
+    "Periodicity 4",
+    "Periodicity 5",
+  ];
+  const [age, setAge] = useState("");
+  const [inputVals, setInputVals] = useState({
+    profileName: "",
+    segmentationMeasure: "",
+    primaryCal: "",
+    periodcity: "",
+    horizon: null,
+    grouping: false,
+    secondaryCal: "",
+    abcSegmentation: false,
+    xyzSegMethod: "",
+    cvThreshold: null,
+    giniThreshold: null,
+    slopeThreshold: null,
+  });
+  const handleChange = (e) => {
+    setInputVals({
+      ...inputVals,
+      [e.target.name]: e.target.value
+    })
+  }
+  const handleSave = () => {
+    console.log(inputVals);
+  }
   return (
     <>
       <Box
@@ -121,44 +173,46 @@ function Setup() {
               Profile Name
             </Typography>
             <CssTextField
+              name="profileName"
               fullWidth
               size="small"
               label="a name to identify your settings profile"
+              value={inputVals.profileName}
+              onChange={handleChange}
             ></CssTextField>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Measure (ABC)
             </Typography>
             <CssTextField
+              name="segmentationMeasure"
               fullWidth
               size="small"
               label="Select a segmentation measure"
               select
-              value={age}
-              onChange={(e)=>setAge(e.target.value)}
+              value={inputVals.segmentationMeasure}
+
+              onChange={handleChange}
             >
-              {top100Films.map((elem)=>{
-                return <MenuItem value={elem.year}>{elem.year}</MenuItem>
+              {segMeasure.map((elem) => {
+                return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
-              {/* <MenuItem >1</MenuItem>
-              <MenuItem>2</MenuItem>
-              <MenuItem>3</MenuItem> */}
             </CssTextField>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Primary Calculation Level
             </Typography>
             <CssTextField
+              name="primaryCal"
               fullWidth
               size="small"
               label="Select your base level for calculations"
               select
-              value={age}
-              onChange={(e)=>setAge(e.target.value)}
-
+              value={inputVals.primaryCal}
+              onChange={handleChange}
             >
-             {top100Films.map((elem)=>{
-                return <MenuItem value={elem.year}>{elem.year}</MenuItem>
+              {primaryCalculation.map((elem) => {
+                return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
 
@@ -166,15 +220,16 @@ function Setup() {
               Periodcity
             </Typography>
             <CssTextField
+              name="periodcity"
               fullWidth
               size="small"
               label="Period to base your calculations on"
               select
-              value={age}
-              onChange={(e)=>setAge(e.target.value)}
+              value={inputVals.periodcity}
+              onChange={handleChange}
             >
-               {top100Films.map((elem)=>{
-                return <MenuItem value={elem.year}>{elem.year}</MenuItem>
+              {period.map((elem) => {
+                return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
 
@@ -182,9 +237,13 @@ function Setup() {
               Calculation Horizon
             </Typography>
             <CssTextField
+              name="horizon"
+              type="number"
               fullWidth
               size="small"
               label="Input your previous Weeks/Months/Year as a number"
+              value={inputVals.horizon}
+              onChange={handleChange}
             ></CssTextField>
             <Box
               sx={{
@@ -205,25 +264,31 @@ function Setup() {
               Secondary Calculation Levels
             </Typography>
             <CssTextField
+              name="secondaryCal"
               fullWidth
               size="small"
               label="Select Further levels for grouping"
               select
+              value={inputVals.secondaryCal}
+              onChange={handleChange}
             >
-              <MenuItem>n</MenuItem>
-              <MenuItem>n</MenuItem>
-              <MenuItem>n</MenuItem>
+              {secondaryCalculation.map((elem) => {
+                return <MenuItem value={elem}>{elem}</MenuItem>;
+              })}
             </CssTextField>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Method
             </Typography>
             <Autocomplete
+              name="Segmentation Method"
               fullWidth
               size="small"
               id="combo-box-demo"
-              options={top100Films}
+              options={segMethod}
               // sx={{ width: 300 }}
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
               renderInput={(params) => (
                 <CssTextField {...params} label="pareto by percentage" />
               )}
@@ -260,15 +325,18 @@ function Setup() {
             XYZ Segmentation Method
           </Typography>
           <CssTextField
+            name="xyzSegMethod"
             fullWidth
             // sx={{width:{xs:'280px',md:'fullwidth'}}}
             size="small"
             label="Select a measure for XYZ"
             select
+            value={inputVals.xyzSegMethod}
+            onChange={handleChange}
           >
-            <MenuItem>n</MenuItem>
-            <MenuItem>n</MenuItem>
-            <MenuItem>n</MenuItem>
+            {xyzMethod.map((elem) => {
+              return <MenuItem value={elem}>{elem}</MenuItem>;
+            })}
           </CssTextField>
         </Box>
 
@@ -276,9 +344,9 @@ function Setup() {
           container
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 1, md: 3 }}
-          justify='center'
-          width='auto'
-          sx={{ mt: '33px' }}
+          justify="center"
+          width="auto"
+          sx={{ mt: "33px" }}
         >
           <Grid item xs={12} md={4}>
             <Box
@@ -290,9 +358,12 @@ function Setup() {
                 Cv Threshold
               </Typography>
               <CssTextField
+                name="cvThreshold"
                 fullWidth
                 size="small"
                 type="number"
+                value={inputVals.cvThreshold}
+                onChange={handleChange}
               // label=""
               />
             </Box>
@@ -307,9 +378,12 @@ function Setup() {
                 Gini Threshold
               </Typography>
               <CssTextField
+                name="giniThreshold"
                 fullWidth
                 size="small"
                 type="number"
+                value={inputVals.giniThreshold}
+                onChange={handleChange}
               // label=""
               />
             </Box>
@@ -325,9 +399,12 @@ function Setup() {
                 Slope Threshold
               </Typography>
               <CssTextField
+                name="slopeThreshold"
                 fullWidth
                 size="small"
                 type="number"
+                value={inputVals.slopeThreshold}
+                onChange={handleChange}
               // label=""
               />
             </Box>
@@ -345,9 +422,7 @@ function Setup() {
             },
           }}
         >
-          <ColorButton
-            sx={{ bgcolor: "#398585", color: "white", mt: "30px" }}
-          >
+          <ColorButton sx={{ bgcolor: "#398585", color: "white", mt: "30px" }} onClick={handleSave}>
             Save
           </ColorButton>
         </Box>
