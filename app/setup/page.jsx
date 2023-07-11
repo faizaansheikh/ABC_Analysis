@@ -90,30 +90,75 @@ function Setup() {
     "Periodicity 4",
     "Periodicity 5",
   ];
-  const [age, setAge] = useState("");
   const [inputVals, setInputVals] = useState({
-    profileName: "",
-    segmentationMeasure: "",
-    primaryCal: "",
-    periodcity: "",
-    horizon: null,
-    grouping: false,
-    secondaryCal: "",
-    abcSegmentation: false,
-    xyzSegMethod: "",
-    cvThreshold: null,
-    giniThreshold: null,
-    slopeThreshold: null,
+    profile_name: "",
+    Segmentation_Measure: "",
+    Caluclation_level: "",
+    Periodicity: "",
+    Calculation_Horizon: null,
+    Use_grouping: 0,
+    grouping_Attributes: "",
+    type: 'BOTH',
+    Segmentation_method: "",
+    SegmentationMeasureXYZ: "",
+    x: 0,
+    Gini: 0,
+    slope: 0,
   });
+  const [grouping,setGrouping] = useState(false)
+  const [groupTrue,setGroupTrue] = useState(false)
+  const [abcGroup,setAbcGroup] = useState(false)
+  const [abcGroupTrue,setAbcGroupTrue] = useState(true)
+  
+  const handleGroups = (e)=>{
+    setGrouping(e.target.checked)
+    if(e.target.checked){
+      setGroupTrue(true)
+      setInputVals({
+        ...inputVals,
+        Use_grouping : 1
+      });
+   
+    }else{
+      setGroupTrue(false)
+      setInputVals({
+        ...inputVals,
+        Use_grouping : 0
+      });
+    }
+  }
+  const handleAbcGroup = (e)=>{
+    
+    setAbcGroup(e.target.checked)
+    if(e.target.checked){
+      setAbcGroupTrue(false)
+      setInputVals({
+        ...inputVals,
+        type : 'ABC'
+        
+      });
+   
+    }else{
+      setAbcGroupTrue(true)
+      setInputVals({
+        ...inputVals,
+        type : 'BOTH'
+      });
+    }
+  }
   const handleChange = (e) => {
     setInputVals({
       ...inputVals,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+    
+  };
+  
+ 
   const handleSave = () => {
+    
     console.log(inputVals);
-  }
+  };
   return (
     <>
       <Box
@@ -173,25 +218,22 @@ function Setup() {
               Profile Name
             </Typography>
             <CssTextField
-              name="profileName"
+              name="profile_name"
               fullWidth
               size="small"
               label="a name to identify your settings profile"
-              value={inputVals.profileName}
-              onChange={handleChange}
             ></CssTextField>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Measure (ABC)
             </Typography>
             <CssTextField
-              name="segmentationMeasure"
+              name="Segmentation_Measure"
               fullWidth
               size="small"
               label="Select a segmentation measure"
               select
-              value={inputVals.segmentationMeasure}
-
+              value={inputVals.Segmentation_Measure}
               onChange={handleChange}
             >
               {segMeasure.map((elem) => {
@@ -203,12 +245,12 @@ function Setup() {
               Primary Calculation Level
             </Typography>
             <CssTextField
-              name="primaryCal"
+              name="Caluclation_level"
               fullWidth
               size="small"
               label="Select your base level for calculations"
               select
-              value={inputVals.primaryCal}
+              value={inputVals.Caluclation_level}
               onChange={handleChange}
             >
               {primaryCalculation.map((elem) => {
@@ -220,12 +262,12 @@ function Setup() {
               Periodcity
             </Typography>
             <CssTextField
-              name="periodcity"
+              name="Periodicity"
               fullWidth
               size="small"
               label="Period to base your calculations on"
               select
-              value={inputVals.periodcity}
+              value={inputVals.Periodicity}
               onChange={handleChange}
             >
               {period.map((elem) => {
@@ -237,13 +279,9 @@ function Setup() {
               Calculation Horizon
             </Typography>
             <CssTextField
-              name="horizon"
-              type="number"
               fullWidth
               size="small"
               label="Input your previous Weeks/Months/Year as a number"
-              value={inputVals.horizon}
-              onChange={handleChange}
             ></CssTextField>
             <Box
               sx={{
@@ -257,20 +295,17 @@ function Setup() {
               <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
                 Use Grouping
               </Typography>
-              <Switch defaultChecked />
+              <Switch  checked={grouping} onChange={handleGroups}/>
             </Box>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Secondary Calculation Levels
             </Typography>
             <CssTextField
-              name="secondaryCal"
               fullWidth
               size="small"
               label="Select Further levels for grouping"
               select
-              value={inputVals.secondaryCal}
-              onChange={handleChange}
             >
               {secondaryCalculation.map((elem) => {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
@@ -281,16 +316,21 @@ function Setup() {
               Segmentation Method
             </Typography>
             <Autocomplete
-              name="Segmentation Method"
+              name="Segmentation_method"
               fullWidth
               size="small"
               id="combo-box-demo"
               options={segMethod}
               // sx={{ width: 300 }}
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
+
               renderInput={(params) => (
-                <CssTextField {...params} label="pareto by percentage" />
+                <CssTextField
+                  name="Segmentation_method"
+                  value={inputVals.Segmentation_method}
+                  {...params}
+                  label="pareto by percentage"
+                  onSelect={handleChange}
+                />
               )}
             />
           </FormControl>
@@ -307,7 +347,7 @@ function Setup() {
         >
           <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
             Run Only ABC Segmentation
-            <Switch defaultChecked />
+            <Switch checked={abcGroup} onChange={handleAbcGroup} />
           </Typography>
         </Box>
 
@@ -325,14 +365,11 @@ function Setup() {
             XYZ Segmentation Method
           </Typography>
           <CssTextField
-            name="xyzSegMethod"
             fullWidth
             // sx={{width:{xs:'280px',md:'fullwidth'}}}
             size="small"
             label="Select a measure for XYZ"
             select
-            value={inputVals.xyzSegMethod}
-            onChange={handleChange}
           >
             {xyzMethod.map((elem) => {
               return <MenuItem value={elem}>{elem}</MenuItem>;
@@ -358,12 +395,10 @@ function Setup() {
                 Cv Threshold
               </Typography>
               <CssTextField
-                name="cvThreshold"
+                name="x"
                 fullWidth
                 size="small"
                 type="number"
-                value={inputVals.cvThreshold}
-                onChange={handleChange}
               // label=""
               />
             </Box>
@@ -378,12 +413,10 @@ function Setup() {
                 Gini Threshold
               </Typography>
               <CssTextField
-                name="giniThreshold"
+                name="Gini"
                 fullWidth
                 size="small"
                 type="number"
-                value={inputVals.giniThreshold}
-                onChange={handleChange}
               // label=""
               />
             </Box>
@@ -399,12 +432,10 @@ function Setup() {
                 Slope Threshold
               </Typography>
               <CssTextField
-                name="slopeThreshold"
+                name="slope"
                 fullWidth
                 size="small"
                 type="number"
-                value={inputVals.slopeThreshold}
-                onChange={handleChange}
               // label=""
               />
             </Box>
@@ -422,7 +453,10 @@ function Setup() {
             },
           }}
         >
-          <ColorButton sx={{ bgcolor: "#398585", color: "white", mt: "30px" }} onClick={handleSave}>
+          <ColorButton
+            sx={{ bgcolor: "#398585", color: "white", mt: "30px" }}
+            onClick={handleSave}
+          >
             Save
           </ColorButton>
         </Box>
