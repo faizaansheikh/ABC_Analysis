@@ -18,8 +18,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import {
+  getPeriodicity,
+  getPrimaryCalApi,
+  getSecondaryCalculationLevel,
+  getSegMeasureApi,
+  getSegMeasureXYZ,
+  getSegMethod,
+} from "./Services/SegmentationServices";
 const ColorButton = styled(Button)(() => ({
   color: "white",
   backgroundColor: "#398585",
@@ -48,48 +55,48 @@ const CssTextField = styled(TextField)({
 });
 
 function Setup() {
-  const segMeasure = [
-    "Segmentation measure ABC 1",
-    "Segmentation measure ABC 2",
-    "Segmentation measure ABC 3",
-    "Segmentation measure ABC 4",
-    "Segmentation measure ABC 5",
-  ];
-  const segMethod = [
-    "Segmentation method 1",
-    "Segmentation method 2",
-    "Segmentation method 3",
-    "Segmentation method 4",
-    "Segmentation method 5",
-  ];
-  const xyzMethod = [
-    "XYZ Segmentation Method 1",
-    "XYZ Segmentation Method 2",
-    "XYZ Segmentation Method 3",
-    "XYZ Segmentation Method 4",
-    "XYZ Segmentation Method 5",
-  ];
-  const primaryCalculation = [
-    "Primary Calculation 1",
-    "Primary Calculation 2",
-    "Primary Calculation 3",
-    "Primary Calculation 4",
-    "Primary Calculation 5",
-  ];
-  const secondaryCalculation = [
-    "Secondary Calculation 1",
-    "Secondary Calculation 2",
-    "Secondary Calculation 3",
-    "Secondary Calculation 4",
-    "Secondary Calculation 5",
-  ];
-  const period = [
-    "Periodicity 1",
-    "Periodicity 2",
-    "Periodicity 3",
-    "Periodicity 4",
-    "Periodicity 5",
-  ];
+  // const segMeasure = [
+  //   "Segmentation measure ABC 1",
+  //   "Segmentation measure ABC 2",
+  //   "Segmentation measure ABC 3",
+  //   "Segmentation measure ABC 4",
+  //   "Segmentation measure ABC 5",
+  // ];
+  // const segMethod = [
+  //   "Segmentation method 1",
+  //   "Segmentation method 2",
+  //   "Segmentation method 3",
+  //   "Segmentation method 4",
+  //   "Segmentation method 5",
+  // ];
+  // const xyzMethod = [
+  //   "XYZ Segmentation Method 1",
+  //   "XYZ Segmentation Method 2",
+  //   "XYZ Segmentation Method 3",
+  //   "XYZ Segmentation Method 4",
+  //   "XYZ Segmentation Method 5",
+  // ];
+  // const primaryCalculation = [
+  //   "Primary Calculation 1",
+  //   "Primary Calculation 2",
+  //   "Primary Calculation 3",
+  //   "Primary Calculation 4",
+  //   "Primary Calculation 5",
+  // ];
+  // const secondaryCalculation = [
+  //   "Secondary Calculation 1",
+  //   "Secondary Calculation 2",
+  //   "Secondary Calculation 3",
+  //   "Secondary Calculation 4",
+  //   "Secondary Calculation 5",
+  // ];
+  // const periodicity = [
+  //   "Periodicity 1",
+  //   "Periodicity 2",
+  //   "Periodicity 3",
+  //   "Periodicity 4",
+  //   "Periodicity 5",
+  // ];
   const [inputVals, setInputVals] = useState({
     profile_name: "",
     Segmentation_Measure: "",
@@ -98,67 +105,103 @@ function Setup() {
     Calculation_Horizon: null,
     Use_grouping: 0,
     grouping_Attributes: "",
-    type: 'BOTH',
+    type: "BOTH",
     Segmentation_method: "",
     SegmentationMeasureXYZ: "",
     x: 0,
     Gini: 0,
     slope: 0,
   });
-  const [grouping,setGrouping] = useState(false)
-  const [groupTrue,setGroupTrue] = useState(false)
-  const [abcGroup,setAbcGroup] = useState(false)
-  const [abcGroupTrue,setAbcGroupTrue] = useState(true)
-  
-  const handleGroups = (e)=>{
-    setGrouping(e.target.checked)
-    if(e.target.checked){
-      setGroupTrue(true)
+  const [validation, setValidation] = useState({});
+  const [grouping, setGrouping] = useState(false);
+  const [groupTrue, setGroupTrue] = useState(false);
+  const [abcGroup, setAbcGroup] = useState(false);
+  const [abcGroupTrue, setAbcGroupTrue] = useState(true);
+  const [segMeasure, setSegMeasure] = useState([]);
+  const [primaryCalculation, setPrimaryCalculation] = useState([]);
+  const [periodicity, setPeriodicity] = useState([]);
+  const [secondaryCalculation, setSecondaryCalculation] = useState([]);
+  const [segMethod, setSegMethod] = useState([]);
+  const [xyzMethod, setXyzMethod] = useState([]);
+  const handleGroups = (e) => {
+    setGrouping(e.target.checked);
+    if (e.target.checked) {
+      setGroupTrue(true);
       setInputVals({
         ...inputVals,
-        Use_grouping : 1
+        Use_grouping: 1,
       });
-   
-    }else{
-      setGroupTrue(false)
+    } else {
+      setGroupTrue(false);
       setInputVals({
         ...inputVals,
-        Use_grouping : 0
-      });
-    }
-  }
-  const handleAbcGroup = (e)=>{
-    
-    setAbcGroup(e.target.checked)
-    if(e.target.checked){
-      setAbcGroupTrue(false)
-      setInputVals({
-        ...inputVals,
-        type : 'ABC'
-        
-      });
-   
-    }else{
-      setAbcGroupTrue(true)
-      setInputVals({
-        ...inputVals,
-        type : 'BOTH'
+        Use_grouping: 0,
       });
     }
-  }
+  };
+  const handleAbcGroup = (e) => {
+    setAbcGroup(e.target.checked);
+    if (e.target.checked) {
+      setAbcGroupTrue(false);
+      setInputVals({
+        ...inputVals,
+        type: "ABC",
+      });
+    } else {
+      setAbcGroupTrue(true);
+      setInputVals({
+        ...inputVals,
+        type: "BOTH",
+      });
+    }
+  };
   const handleChange = (e) => {
     setInputVals({
       ...inputVals,
       [e.target.name]: e.target.value,
     });
-    
   };
-  
- 
+
   const handleSave = () => {
-    
     console.log(inputVals);
   };
+
+  const getSegMeasure = async () => {
+    const res = await getSegMeasureApi();
+    setSegMeasure(res.data.values);
+  };
+  const getPrimaryCalculationLevel = async () => {
+    const res = await getPrimaryCalApi();
+    setPrimaryCalculation(res.data.values);
+  };
+  const fetchPeriodicity = async () => {
+    const res = await getPeriodicity();
+    setPeriodicity(res.data.values);
+  };
+  const fetchSecondaryCalculationLevel = async () => {
+    const res = await getSecondaryCalculationLevel(inputVals.Caluclation_level);
+    setSecondaryCalculation(res.data.values);
+  };
+  const fetchSegMethod = async () => {
+    const res = await getSegMethod();
+    setSegMethod(res.data.values);
+  };
+  const fetchSegMeasureXYZ = async () => {
+    const res = await getSegMeasureXYZ();
+    setXyzMethod(res.data.values);
+  };
+
+  useEffect(() => {
+    getSegMeasure();
+    getPrimaryCalculationLevel();
+    fetchPeriodicity();
+    fetchSecondaryCalculationLevel();
+    fetchSegMethod();
+    fetchSegMeasureXYZ();
+  }, []);
+  useEffect(() => {
+    fetchSecondaryCalculationLevel();
+  }, [inputVals.Caluclation_level]);
   return (
     <>
       <Box
@@ -225,7 +268,9 @@ function Setup() {
               value={inputVals.profile_name}
               onChange={handleChange}
             ></CssTextField>
-
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please fill this field**
+            </Typography>
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Measure (ABC)
             </Typography>
@@ -242,7 +287,9 @@ function Setup() {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please select segmentation measure**
+            </Typography>
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Primary Calculation Level
             </Typography>
@@ -259,7 +306,9 @@ function Setup() {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please select primary calculation level**
+            </Typography>
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Periodcity
             </Typography>
@@ -272,11 +321,13 @@ function Setup() {
               value={inputVals.Periodicity}
               onChange={handleChange}
             >
-              {period.map((elem) => {
+              {periodicity.map((elem) => {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please select periodcity**
+            </Typography>
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Calculation Horizon
             </Typography>
@@ -289,6 +340,9 @@ function Setup() {
               value={inputVals.Calculation_Horizon}
               onChange={handleChange}
             ></CssTextField>
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please select calculation horizon**
+            </Typography>
             <Box
               sx={{
                 mt: "30px",
@@ -301,7 +355,7 @@ function Setup() {
               <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
                 Use Grouping
               </Typography>
-              <Switch  checked={grouping} onChange={handleGroups}/>
+              <Switch checked={grouping} onChange={handleGroups} />
             </Box>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
@@ -321,7 +375,9 @@ function Setup() {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please select secondary calculation level**
+            </Typography>
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Method
             </Typography>
@@ -343,6 +399,9 @@ function Setup() {
                 />
               )}
             />
+            <Typography sx={{ mt: "10px", color: "red" }}>
+              **Please select segmentation method**
+            </Typography>
           </FormControl>
         </Box>
 
@@ -389,6 +448,9 @@ function Setup() {
               return <MenuItem value={elem}>{elem}</MenuItem>;
             })}
           </CssTextField>
+          <Typography sx={{ mt: "10px", color: "red" }}>
+            **Please select xyz segmentation method**
+          </Typography>
         </Box>
 
         <Grid
@@ -417,6 +479,9 @@ function Setup() {
                 onChange={handleChange}
                 // label=""
               />
+              <Typography sx={{ mt: "10px", color: "red" }}>
+                **Please fill this field**
+              </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -437,6 +502,9 @@ function Setup() {
                 onChange={handleChange}
                 // label=""
               />
+              <Typography sx={{ mt: "10px", color: "red" }}>
+                **Please fill this field**
+              </Typography>
             </Box>
           </Grid>
 
@@ -458,6 +526,9 @@ function Setup() {
                 onChange={handleChange}
                 // label=""
               />
+              <Typography sx={{ mt: "10px", color: "red" }}>
+                **Please fill this field**
+              </Typography>
             </Box>
           </Grid>
         </Grid>
