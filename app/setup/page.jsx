@@ -104,45 +104,48 @@ function Setup() {
     x: 0,
     Gini: 0,
     slope: 0,
+    A: 0,
+    B: 0,
+    C: 0
   });
-  const [grouping,setGrouping] = useState(false)
-  const [groupTrue,setGroupTrue] = useState(false)
-  const [abcGroup,setAbcGroup] = useState(false)
-  const [abcGroupTrue,setAbcGroupTrue] = useState(true)
-  
-  const handleGroups = (e)=>{
+  const [grouping, setGrouping] = useState(false)
+  const [groupTrue, setGroupTrue] = useState(false)
+  const [abcGroup, setAbcGroup] = useState(false)
+  const [abcGroupTrue, setAbcGroupTrue] = useState(true)
+
+  const handleGroups = (e) => {
     setGrouping(e.target.checked)
-    if(e.target.checked){
+    if (e.target.checked) {
       setGroupTrue(true)
       setInputVals({
         ...inputVals,
-        Use_grouping : 1
+        Use_grouping: 1
       });
-   
-    }else{
+
+    } else {
       setGroupTrue(false)
       setInputVals({
         ...inputVals,
-        Use_grouping : 0
+        Use_grouping: 0
       });
     }
   }
-  const handleAbcGroup = (e)=>{
-    
+  const handleAbcGroup = (e) => {
+
     setAbcGroup(e.target.checked)
-    if(e.target.checked){
+    if (e.target.checked) {
       setAbcGroupTrue(false)
       setInputVals({
         ...inputVals,
-        type : 'ABC'
-        
+        type: 'ABC'
+
       });
-   
-    }else{
+
+    } else {
       setAbcGroupTrue(true)
       setInputVals({
         ...inputVals,
-        type : 'BOTH'
+        type: 'BOTH'
       });
     }
   }
@@ -151,13 +154,19 @@ function Setup() {
       ...inputVals,
       [e.target.name]: e.target.value,
     });
-    
+
   };
-  
- 
+
+
   const handleSave = () => {
-    
-    console.log(inputVals);
+
+    if (inputVals.A <= 100) {
+      return console.log('there is an error')
+    } else {
+      return console.log(inputVals);
+    }
+
+
   };
   return (
     <>
@@ -295,10 +304,25 @@ function Setup() {
               <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
                 Use Grouping
               </Typography>
-              <Switch  checked={grouping} onChange={handleGroups}/>
+              <Switch checked={grouping} onChange={handleGroups} />
             </Box>
 
-            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+            {/* <Autocomplete
+        multiple
+        id="tags-standard"
+        options={top100Films}
+        getOptionLabel={(option) => option.title}
+        defaultValue={[top100Films[13]]}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            label="Multiple values"
+            placeholder="Favorites"
+          />
+        )}
+      /> */}
+            {/* <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Secondary Calculation Levels
             </Typography>
             <CssTextField
@@ -310,7 +334,7 @@ function Setup() {
               {secondaryCalculation.map((elem) => {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
-            </CssTextField>
+            </CssTextField> */}
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Method
@@ -337,7 +361,7 @@ function Setup() {
         </Box>
 
         <Box sx={{ width: "100%" }}>
-          <BasicTable />
+          <BasicTable inputVals={inputVals} setInputVals={setInputVals} />
         </Box>
 
         <Box

@@ -34,8 +34,23 @@ const CssTextField = styled(TextField)({
 //   },
 // });
 
-function BasicTable() {
+function BasicTable({ inputVals, setInputVals }) {
 
+  const handleTableValue = (e) => {
+    setInputVals({
+      ...inputVals,
+      [e.target.name]: e.target.value
+    })
+  }
+  function createData(name, text) {
+    return { name, text };
+  }
+
+  const rows = [
+    createData("A", <CssTextField size="small" fullWidth type="number" name="A" onChange={handleTableValue} value={inputVals.A} />),
+    createData("B", <CssTextField size="small" fullWidth type="number" name="B" onChange={handleTableValue} value={inputVals.B} />),
+    createData("C", <CssTextField size="small" fullWidth type="number" name="C" onChange={handleTableValue} value={inputVals.C} />),
+  ];
   // const classes = useStyles();
   return (
     <TableContainer component={Paper} sx={{ mt: "50px", width: "100%" }} >
@@ -72,13 +87,3 @@ function BasicTable() {
   );
 }
 export default BasicTable;
-
-function createData(name, text) {
-  return { name, text };
-}
-
-const rows = [
-  createData("A", <CssTextField size="small" fullWidth type="number" />),
-  createData("B", <CssTextField size="small" fullWidth type="number" />),
-  createData("C", <CssTextField size="small" fullWidth type="number" />),
-];
