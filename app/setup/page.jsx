@@ -26,7 +26,10 @@ import {
   getSegMeasureApi,
   getSegMeasureXYZ,
   getSegMethod,
+  postSegmentaion
 } from "./Services/SegmentationServices";
+import { toast } from 'react-toastify';
+
 const ColorButton = styled(Button)(() => ({
   color: "white",
   backgroundColor: "#398585",
@@ -54,49 +57,9 @@ const CssTextField = styled(TextField)({
   },
 });
 
+
+
 function Setup() {
-  // const segMeasure = [
-  //   "Segmentation measure ABC 1",
-  //   "Segmentation measure ABC 2",
-  //   "Segmentation measure ABC 3",
-  //   "Segmentation measure ABC 4",
-  //   "Segmentation measure ABC 5",
-  // ];
-  // const segMethod = [
-  //   "Segmentation method 1",
-  //   "Segmentation method 2",
-  //   "Segmentation method 3",
-  //   "Segmentation method 4",
-  //   "Segmentation method 5",
-  // ];
-  // const xyzMethod = [
-  //   "XYZ Segmentation Method 1",
-  //   "XYZ Segmentation Method 2",
-  //   "XYZ Segmentation Method 3",
-  //   "XYZ Segmentation Method 4",
-  //   "XYZ Segmentation Method 5",
-  // ];
-  // const primaryCalculation = [
-  //   "Primary Calculation 1",
-  //   "Primary Calculation 2",
-  //   "Primary Calculation 3",
-  //   "Primary Calculation 4",
-  //   "Primary Calculation 5",
-  // ];
-  // const secondaryCalculation = [
-  //   "Secondary Calculation 1",
-  //   "Secondary Calculation 2",
-  //   "Secondary Calculation 3",
-  //   "Secondary Calculation 4",
-  //   "Secondary Calculation 5",
-  // ];
-  // const periodicity = [
-  //   "Periodicity 1",
-  //   "Periodicity 2",
-  //   "Periodicity 3",
-  //   "Periodicity 4",
-  //   "Periodicity 5",
-  // ];
   const [inputVals, setInputVals] = useState({
     profile_name: "",
     Segmentation_Measure: "",
@@ -126,6 +89,8 @@ function Setup() {
   const [secondaryCalculation, setSecondaryCalculation] = useState([]);
   const [segMethod, setSegMethod] = useState([]);
   const [xyzMethod, setXyzMethod] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
+
   const handleGroups = (e) => {
     setGrouping(e.target.checked);
     if (e.target.checked) {
@@ -165,15 +130,25 @@ function Setup() {
     });
   };
 
-  const handleSave = () => {
 
-    if (inputVals.A <= 100) {
-      return console.log('there is an error')
+  const handleSave = async () => {
+    if (totalValue > 100) {
+      toast('Input must be less than 100', {
+        type: 'error',
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
     } else {
-      return console.log(inputVals);
+      console.log(inputVals)
+     const res = await postSegmentaion(inputVals)
+     console.log(res)
     }
-
-
   };
 
   const getSegMeasure = async () => {
@@ -209,9 +184,11 @@ function Setup() {
     fetchSegMethod();
     fetchSegMeasureXYZ();
   }, []);
+
   useEffect(() => {
     fetchSecondaryCalculationLevel();
   }, [inputVals.Caluclation_level]);
+  
   return (
     <>
       <Box
@@ -275,6 +252,9 @@ function Setup() {
               fullWidth
               size="small"
               label="a name to identify your settings profile"
+              value={inputVals.profile_name}
+              onChange={handleChange}
+              required
             ></CssTextField>
             <Typography sx={{ mt: "10px", color: "red" }}>
               **Please fill this field**
@@ -340,9 +320,13 @@ function Setup() {
               Calculation Horizon
             </Typography>
             <CssTextField
+              name="Calculation_Horizon"
+              type="number"
               fullWidth
               size="small"
               label="Input your previous Weeks/Months/Year as a number"
+              value={inputVals.Calculation_Horizon}
+              onChange={handleChange}
             ></CssTextField>
             <Typography sx={{ mt: "10px", color: "red" }}>
               **Please select calculation horizon**
@@ -362,34 +346,30 @@ function Setup() {
               <Switch checked={grouping} onChange={handleGroups} />
             </Box>
 
-            {/* <Autocomplete
-        multiple
-        id="tags-standard"
-        options={top100Films}
-        getOptionLabel={(option) => option.title}
-        defaultValue={[top100Films[13]]}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label="Multiple values"
-            placeholder="Favorites"
-          />
-        )}
-      /> */}
-            {/* <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Secondary Calculation Levels
             </Typography>
-            <CssTextField
+            <Autocomplete
+              multiple
+              disabled={!groupTrue}
+              name="Segmentation_method"
               fullWidth
               size="small"
-              label="Select Further levels for grouping"
-              select
-            >
-              {secondaryCalculation.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
-              })}
-            </CssTextField>
+              id="combo-box-demo"
+              options={secondaryCalculation}
+              // sx={{ width: 300 }}
+
+              renderInput={(params) => (
+                <CssTextField
+                  name="Segmentation_method"
+                  value={inputVals.grouping_Attributes}
+                  {...params}
+                  label="pareto by percentage"
+                  onSelect={handleChange}
+                />
+              )}
+            />
+
             <Typography sx={{ mt: "10px", color: "red" }}>
               **Please select secondary calculation level**
             </Typography>
@@ -421,7 +401,7 @@ function Setup() {
         </Box>
 
         <Box sx={{ width: "100%" }}>
-          <BasicTable inputVals={inputVals} setInputVals={setInputVals} />
+          <BasicTable inputVals={inputVals} setInputVals={setInputVals} setTotalValue={setTotalValue} />
         </Box>
 
         <Box
@@ -449,11 +429,15 @@ function Setup() {
             XYZ Segmentation Method
           </Typography>
           <CssTextField
+            disabled={!abcGroupTrue}
+            name="SegmentationMeasureXYZ"
             fullWidth
             // sx={{width:{xs:'280px',md:'fullwidth'}}}
             size="small"
             label="Select a measure for XYZ"
             select
+            value={inputVals.SegmentationMeasureXYZ}
+            onChange={handleChange}
           >
             {xyzMethod.map((elem) => {
               return <MenuItem value={elem}>{elem}</MenuItem>;
@@ -486,6 +470,8 @@ function Setup() {
                 fullWidth
                 size="small"
                 type="number"
+                value={inputVals.x}
+                onChange={handleChange}
               // label=""
               />
               <Typography sx={{ mt: "10px", color: "red" }}>
@@ -507,6 +493,8 @@ function Setup() {
                 fullWidth
                 size="small"
                 type="number"
+                value={inputVals.Gini}
+                onChange={handleChange}
               // label=""
               />
               <Typography sx={{ mt: "10px", color: "red" }}>
@@ -529,6 +517,8 @@ function Setup() {
                 fullWidth
                 size="small"
                 type="number"
+                value={inputVals.slope}
+                onChange={handleChange}
               // label=""
               />
               <Typography sx={{ mt: "10px", color: "red" }}>

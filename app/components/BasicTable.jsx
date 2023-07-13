@@ -34,14 +34,26 @@ const CssTextField = styled(TextField)({
 //   },
 // });
 
-function BasicTable({ inputVals, setInputVals }) {
 
+function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   const handleTableValue = (e) => {
-    setInputVals({
+    let name = e.target.name;
+    let value = e.target.value
+    const newValue = {
       ...inputVals,
-      [e.target.name]: e.target.value
-    })
+      [name]: value
+    }
+    setInputVals(newValue)
+
+    calTotal(newValue)
   }
+
+  const calTotal = (newValue) => {
+    const { A, B, C } = newValue;
+    const newTotal = parseInt(A) + parseInt(B) + parseInt(C)
+    setTotalValue(newTotal)
+  }
+
   function createData(name, text) {
     return { name, text };
   }
@@ -85,5 +97,6 @@ function BasicTable({ inputVals, setInputVals }) {
       </Table>
     </TableContainer>
   );
+
 }
 export default BasicTable;
