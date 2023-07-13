@@ -213,7 +213,7 @@ function Setup() {
       });
     } else {
       console.log(inputVals);
-      toast.success('values save successfully',{
+      toast.success('Values save successfully',{
         autoClose: 3000,
         theme: "dark",
       })
