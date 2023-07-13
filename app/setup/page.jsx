@@ -218,21 +218,21 @@ function Setup() {
         theme: "dark",
       })
       
-      // setInputVals({
-      //   profile_name: "",
-      //   Segmentation_Measure: "",
-      //   Caluclation_level: "",
-      //   Periodicity: "",
-      //   Calculation_Horizon: '',
-      //   Use_grouping: 0,
-      //   grouping_Attributes: [],
-      //   type: "BOTH",
-      //   Segmentation_method: "Pareto by percentage",
-      //   SegmentationMeasureXYZ: "",
-      //   x: 0,
-      //   Gini: 0,
-      //   slope: 0,
-      // })
+      setInputVals({
+        profile_name: "",
+        Segmentation_Measure: "",
+        Caluclation_level: "",
+        Periodicity: "",
+        Calculation_Horizon: '',
+        Use_grouping: 0,
+        grouping_Attributes: [],
+        type: "BOTH",
+        Segmentation_method: "Pareto by percentage",
+        SegmentationMeasureXYZ: "",
+        x: 0,
+        Gini: 0,
+        slope: 0,
+      })
     }
   };
   useEffect(() => {
