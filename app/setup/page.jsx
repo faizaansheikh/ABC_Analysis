@@ -27,6 +27,8 @@ import {
   getSegMeasureXYZ,
   getSegMethod,
 } from "./Services/SegmentationServices";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 const ColorButton = styled(Button)(() => ({
   color: "white",
   backgroundColor: "#398585",
@@ -55,64 +57,35 @@ const CssTextField = styled(TextField)({
 });
 
 function Setup() {
-  // const segMeasure = [
-  //   "Segmentation measure ABC 1",
-  //   "Segmentation measure ABC 2",
-  //   "Segmentation measure ABC 3",
-  //   "Segmentation measure ABC 4",
-  //   "Segmentation measure ABC 5",
-  // ];
-  // const segMethod = [
-  //   "Segmentation method 1",
-  //   "Segmentation method 2",
-  //   "Segmentation method 3",
-  //   "Segmentation method 4",
-  //   "Segmentation method 5",
-  // ];
-  // const xyzMethod = [
-  //   "XYZ Segmentation Method 1",
-  //   "XYZ Segmentation Method 2",
-  //   "XYZ Segmentation Method 3",
-  //   "XYZ Segmentation Method 4",
-  //   "XYZ Segmentation Method 5",
-  // ];
-  // const primaryCalculation = [
-  //   "Primary Calculation 1",
-  //   "Primary Calculation 2",
-  //   "Primary Calculation 3",
-  //   "Primary Calculation 4",
-  //   "Primary Calculation 5",
-  // ];
-  // const secondaryCalculation = [
-  //   "Secondary Calculation 1",
-  //   "Secondary Calculation 2",
-  //   "Secondary Calculation 3",
-  //   "Secondary Calculation 4",
-  //   "Secondary Calculation 5",
-  // ];
-  // const periodicity = [
-  //   "Periodicity 1",
-  //   "Periodicity 2",
-  //   "Periodicity 3",
-  //   "Periodicity 4",
-  //   "Periodicity 5",
-  // ];
   const [inputVals, setInputVals] = useState({
     profile_name: "",
     Segmentation_Measure: "",
     Caluclation_level: "",
     Periodicity: "",
-    Calculation_Horizon: null,
+    Calculation_Horizon: '',
     Use_grouping: 0,
-    grouping_Attributes: "",
+    grouping_Attributes: [],
     type: "BOTH",
-    Segmentation_method: "",
+    Segmentation_method: "Pareto by percentage",
     SegmentationMeasureXYZ: "",
     x: 0,
     Gini: 0,
     slope: 0,
   });
-  const [validation, setValidation] = useState({});
+  const [validation, setValidation] = useState({
+    pname: false,
+    pNameLength: false,
+    segMeas: false,
+    calLevel: false,
+    period: false,
+    calHoriz: false,
+    groupAtt: false,
+    segMethd: false,
+    segMesureXyz: false,
+    valX: false,
+    valGini: false,
+    valSlope: false,
+  });
   const [grouping, setGrouping] = useState(false);
   const [groupTrue, setGroupTrue] = useState(false);
   const [abcGroup, setAbcGroup] = useState(false);
@@ -137,6 +110,10 @@ function Setup() {
         ...inputVals,
         Use_grouping: 0,
       });
+      setInputVals({
+        ...inputVals,
+        grouping_Attributes: []
+      })
     }
   };
   const handleAbcGroup = (e) => {
@@ -147,12 +124,18 @@ function Setup() {
         ...inputVals,
         type: "ABC",
       });
+      setInputVals({
+        ...inputVals,
+        SegmentationMeasureXYZ: ''
+      })
     } else {
+      
       setAbcGroupTrue(true);
       setInputVals({
         ...inputVals,
         type: "BOTH",
       });
+     
     }
   };
   const handleChange = (e) => {
@@ -160,12 +143,188 @@ function Setup() {
       ...inputVals,
       [e.target.name]: e.target.value,
     });
-  };
 
+    
+  };
+  const handleGrouping = (e, values) => {
+    setInputVals({
+      ...inputVals,
+      grouping_Attributes: values,
+    });
+  };
   const handleSave = () => {
-    console.log(inputVals);
+    if (inputVals.profile_name === "") {
+      setValidation({
+        ...validation,
+        pname: true,
+      });
+    } else if (!inputVals.Segmentation_Measure) {
+      setValidation({
+        ...validation,
+        segMeas: true,
+      });
+    } else if (!inputVals.Caluclation_level) {
+      setValidation({
+        ...validation,
+        calLevel: true,
+      });
+    } else if (!inputVals.Periodicity) {
+      setValidation({
+        ...validation,
+        period: true,
+      });
+    } else if (!inputVals.Calculation_Horizon) {
+      setValidation({
+        ...validation,
+        calHoriz: true,
+      });
+    } else if (
+      inputVals.grouping_Attributes.length === 0 &&
+      grouping
+    ) {
+      setValidation({
+        ...validation,
+        groupAtt: true,
+      });
+    } else if (!inputVals.Segmentation_method) {
+      setValidation({
+        ...validation,
+        segMethd: true,
+      });
+    } else if (!inputVals.SegmentationMeasureXYZ && !abcGroup) {
+      setValidation({
+        ...validation,
+        segMesureXyz: true,
+      });
+    } else if (inputVals.x == 0) {
+      setValidation({
+        ...validation,
+        valX: true,
+      });
+    } else if (inputVals.Gini == 0) {
+      setValidation({
+        ...validation,
+        valGini: true,
+      });
+    } else if (inputVals.slope == 0) {
+      setValidation({
+        ...validation,
+        valSlope: true,
+      });
+    } else {
+      console.log(inputVals);
+      toast.success('values save successfully',{
+        autoClose: 3000,
+        theme: "dark",
+      })
+      
+      // setInputVals({
+      //   profile_name: "",
+      //   Segmentation_Measure: "",
+      //   Caluclation_level: "",
+      //   Periodicity: "",
+      //   Calculation_Horizon: '',
+      //   Use_grouping: 0,
+      //   grouping_Attributes: [],
+      //   type: "BOTH",
+      //   Segmentation_method: "Pareto by percentage",
+      //   SegmentationMeasureXYZ: "",
+      //   x: 0,
+      //   Gini: 0,
+      //   slope: 0,
+      // })
+    }
   };
+  useEffect(() => {
+    if (inputVals.profile_name !== "") {
+      setValidation({
+        ...validation,
+        pname: false,
+      });
+    }
+  
+  }, [inputVals.profile_name])
+  
+useEffect(() => {
+  
+   if (
+    inputVals.grouping_Attributes.length > 0
+  ) {
+    setValidation({
+      ...validation,
+      groupAtt: false,
+    });
+  }
+  //   if (inputVals.Segmentation_method !== '') {
+  //   setValidation({
+  //     ...validation,
+  //     segMethd: false,
+  //   });
+  // }
+}, [inputVals.grouping_Attributes])
 
+ useEffect(() => {
+  
+    if (inputVals.Segmentation_Measure) {
+    setValidation({
+      ...validation,
+      segMeas: false,
+    });
+  }
+   if (inputVals.Caluclation_level) {
+    setValidation({
+      ...validation,
+      calLevel: false,
+    });
+  }
+   if (inputVals.Periodicity) {
+    setValidation({
+      ...validation,
+      period: false,
+    });
+  }
+   if (inputVals.Calculation_Horizon) {
+    setValidation({
+      ...validation,
+      calHoriz: false,
+    });
+  }
+   
+   if (inputVals.SegmentationMeasureXYZ) {
+    setValidation({
+      ...validation,
+      segMesureXyz: false,
+    });
+  }
+   if (inputVals.x.length > 0) {
+    setValidation({
+      ...validation,
+      valX: false,
+    });
+  }
+   if (inputVals.Gini > 0) {
+    setValidation({
+      ...validation,
+      valGini: false,
+    });
+  }
+   if (inputVals.slope > 0) {
+    setValidation({
+      ...validation,
+      valSlope: false,
+    });
+  }
+ },[
+  inputVals.Segmentation_Measure,
+  inputVals.Caluclation_level,
+  inputVals.Periodicity,
+  inputVals.Calculation_Horizon,
+  inputVals.SegmentationMeasureXYZ,
+  inputVals.x,
+  inputVals.Gini,
+  inputVals.slope
+])
+ 
   const getSegMeasure = async () => {
     const res = await getSegMeasureApi();
     setSegMeasure(res.data.values);
@@ -202,6 +361,7 @@ function Setup() {
   useEffect(() => {
     fetchSecondaryCalculationLevel();
   }, [inputVals.Caluclation_level]);
+
   return (
     <>
       <Box
@@ -267,10 +427,10 @@ function Setup() {
               label="a name to identify your settings profile"
               value={inputVals.profile_name}
               onChange={handleChange}
+              error={validation.pname}
+              helperText={validation.pname && "Profile name is required"}
             ></CssTextField>
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please fill this field**
-            </Typography>
+
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Measure (ABC)
             </Typography>
@@ -282,14 +442,14 @@ function Setup() {
               select
               value={inputVals.Segmentation_Measure}
               onChange={handleChange}
+              error={validation.segMeas}
+              helperText={validation.segMeas && "Please select a value"}
             >
               {segMeasure.map((elem) => {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please select segmentation measure**
-            </Typography>
+
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Primary Calculation Level
             </Typography>
@@ -301,14 +461,16 @@ function Setup() {
               select
               value={inputVals.Caluclation_level}
               onChange={handleChange}
+              error={validation.calLevel}
+              helperText={
+                validation.calLevel && "Please select caluclation level"
+              }
             >
               {primaryCalculation.map((elem) => {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please select primary calculation level**
-            </Typography>
+
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Periodcity
             </Typography>
@@ -320,14 +482,14 @@ function Setup() {
               select
               value={inputVals.Periodicity}
               onChange={handleChange}
+              error={validation.period}
+              helperText={validation.period && "Please select Periodicity"}
             >
               {periodicity.map((elem) => {
                 return <MenuItem value={elem}>{elem}</MenuItem>;
               })}
             </CssTextField>
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please select periodcity**
-            </Typography>
+
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Calculation Horizon
             </Typography>
@@ -339,10 +501,12 @@ function Setup() {
               label="Input your previous Weeks/Months/Year as a number"
               value={inputVals.Calculation_Horizon}
               onChange={handleChange}
+              error={validation.calHoriz}
+              helperText={
+                validation.calHoriz && "Please select calculation horizon"
+              }
             ></CssTextField>
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please select calculation horizon**
-            </Typography>
+
             <Box
               sx={{
                 mt: "30px",
@@ -361,23 +525,30 @@ function Setup() {
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Secondary Calculation Levels
             </Typography>
-            <CssTextField
+            <Autocomplete
+              multiple
               disabled={!groupTrue}
-              name="grouping_Attributes"
+              name="Segmentation_method"
               fullWidth
               size="small"
-              label="Select Further levels for grouping"
-              select
+              id="combo-box-demo"
+              options={secondaryCalculation}
               value={inputVals.grouping_Attributes}
-              onChange={handleChange}
-            >
-              {secondaryCalculation.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
-              })}
-            </CssTextField>
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please select secondary calculation level**
-            </Typography>
+              // sx={{ width: 300 }}
+              onChange={handleGrouping}
+              renderInput={(params) => (
+                <CssTextField
+                  {...params}
+                  label="Select secondary calculation levels"
+                  error={validation.groupAtt}
+                  helperText={
+                    validation.groupAtt &&
+                    "Please select secondary calculation level"
+                  }
+                />
+              )}
+            />
+
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Segmentation Method
             </Typography>
@@ -388,7 +559,8 @@ function Setup() {
               id="combo-box-demo"
               options={segMethod}
               // sx={{ width: 300 }}
-
+              onSelect={handleChange}
+              value={inputVals.Segmentation_method}
               renderInput={(params) => (
                 <CssTextField
                   name="Segmentation_method"
@@ -396,12 +568,13 @@ function Setup() {
                   {...params}
                   label="pareto by percentage"
                   onSelect={handleChange}
+                  error={validation.segMethd}
+                  helperText={
+                    validation.segMethd && "Please select segmentation method"
+                  }
                 />
               )}
             />
-            <Typography sx={{ mt: "10px", color: "red" }}>
-              **Please select segmentation method**
-            </Typography>
           </FormControl>
         </Box>
 
@@ -443,14 +616,15 @@ function Setup() {
             select
             value={inputVals.SegmentationMeasureXYZ}
             onChange={handleChange}
+            error={validation.segMesureXyz}
+            helperText={
+              validation.segMesureXyz && "Please select xyz segmentation method"
+            }
           >
             {xyzMethod.map((elem) => {
               return <MenuItem value={elem}>{elem}</MenuItem>;
             })}
           </CssTextField>
-          <Typography sx={{ mt: "10px", color: "red" }}>
-            **Please select xyz segmentation method**
-          </Typography>
         </Box>
 
         <Grid
@@ -477,11 +651,10 @@ function Setup() {
                 type="number"
                 value={inputVals.x}
                 onChange={handleChange}
+                error={validation.valX}
+                helperText={validation.valX && "Please fill this field"}
                 // label=""
               />
-              <Typography sx={{ mt: "10px", color: "red" }}>
-                **Please fill this field**
-              </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -500,11 +673,10 @@ function Setup() {
                 type="number"
                 value={inputVals.Gini}
                 onChange={handleChange}
+                error={validation.valGini}
+                helperText={validation.valGini && "Please fill this field"}
                 // label=""
               />
-              <Typography sx={{ mt: "10px", color: "red" }}>
-                **Please fill this field**
-              </Typography>
             </Box>
           </Grid>
 
@@ -524,11 +696,10 @@ function Setup() {
                 type="number"
                 value={inputVals.slope}
                 onChange={handleChange}
+                error={validation.valSlope}
+                helperText={validation.valSlope && "Please fill this field"}
                 // label=""
               />
-              <Typography sx={{ mt: "10px", color: "red" }}>
-                **Please fill this field**
-              </Typography>
             </Box>
           </Grid>
         </Grid>
