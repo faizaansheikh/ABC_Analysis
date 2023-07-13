@@ -222,39 +222,55 @@ function Setup() {
       });
     } else {
       console.log(inputVals);
-      toast.success('values save successfully', {
+      toast.success('Values save successfully',{
         autoClose: 3000,
         theme: "dark",
       })
-      // console.log(inputVals);
-    };
-    useEffect(() => {
-      if (inputVals.profile_name !== "") {
-        setValidation({
-          ...validation,
-          pname: false,
-        });
-      }
-
-    }, [inputVals.profile_name])
-
-    useEffect(() => {
-
-      if (
-        inputVals.grouping_Attributes.length > 0
-      ) {
-        setValidation({
-          ...validation,
-          groupAtt: false,
-        });
-      }
-      //   if (inputVals.Segmentation_method !== '') {
-      //   setValidation({
-      //     ...validation,
-      //     segMethd: false,
-      //   });
-      // }
-    }, [inputVals.grouping_Attributes])
+      
+      setInputVals({
+        profile_name: "",
+        Segmentation_Measure: "",
+        Caluclation_level: "",
+        Periodicity: "",
+        Calculation_Horizon: '',
+        Use_grouping: 0,
+        grouping_Attributes: [],
+        type: "BOTH",
+        Segmentation_method: "Pareto by percentage",
+        SegmentationMeasureXYZ: "",
+        x: 0,
+        Gini: 0,
+        slope: 0,
+      })
+    }
+  };
+  useEffect(() => {
+    if (inputVals.profile_name !== "") {
+      setValidation({
+        ...validation,
+        pname: false,
+      });
+    }
+  
+  }, [inputVals.profile_name])
+  
+useEffect(() => {
+  
+   if (
+    inputVals.grouping_Attributes.length > 0
+  ) {
+    setValidation({
+      ...validation,
+      groupAtt: false,
+    });
+  }
+  //   if (inputVals.Segmentation_method !== '') {
+  //   setValidation({
+  //     ...validation,
+  //     segMethd: false,
+  //   });
+  // }
+}, [inputVals.grouping_Attributes])
 
     useEffect(() => {
 
@@ -711,6 +727,6 @@ function Setup() {
       </>
     );
   }
-}
+
 
 export default Setup;
