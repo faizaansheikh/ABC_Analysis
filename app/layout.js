@@ -1,7 +1,9 @@
 // import MainFile from './components/responsive ui/MainFile'
+'use-client'
 import './globals.css'
 import { Inter } from 'next/font/google'
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 const inter = Inter({
   weight: ['400', '700'],
   subsets: ['latin']
@@ -17,6 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className='container'>
         {children}
+        <ToastContainer/>
       </body>
     </html>
   )
