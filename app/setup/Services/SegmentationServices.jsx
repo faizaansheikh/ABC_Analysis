@@ -48,9 +48,9 @@ export const getSegMeasureXYZ = async () => {
   }
 };
 
-export const postSegmentaion = async () => {
+export const postSegmentaion = async (payload) => {
   try {
-    return await axios.post(`${BASE_URL}/segmentation_setup`)
+    return await axios.post(`${BASE_URL}/segmentation_setup`, {...payload})
   } catch (error) {
     return error.message
   }

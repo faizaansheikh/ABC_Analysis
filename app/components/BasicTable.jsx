@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TextField } from "@mui/material";
 import styled from "@emotion/styled";
-import { useState } from "react";
+// import { useState } from "react";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-input": {
@@ -51,6 +51,7 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   const calTotal = (newValue) => {
     const { A, B, C } = newValue;
     const newTotal = parseInt(A) + parseInt(B) + parseInt(C)
+    // const newTotal = A + B + C
     setTotalValue(newTotal)
   }
 

@@ -200,8 +200,8 @@ function Setup() {
         ...validation,
         segMethd: true,
       });
-    }else if (totalValue > 100) {
-      toast('Input must be less than 100', {
+    }else if (totalValue > 100 && totalValue < 100) {
+      toast('All inputs add upto 100', {
         type: 'error',
         position: "top-right",
         autoClose: 5000,
