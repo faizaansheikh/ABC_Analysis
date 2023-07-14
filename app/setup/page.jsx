@@ -28,8 +28,7 @@ import {
   getSegMethod,
   postSegmentaion
 } from "./Services/SegmentationServices";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 const ColorButton = styled(Button)(() => ({
   color: "white",
   backgroundColor: "#398585",
@@ -153,6 +152,7 @@ function Setup() {
     });
 
 
+    
   };
   const handleGrouping = (e, values) => {
     setInputVals({
@@ -200,6 +200,18 @@ function Setup() {
         ...validation,
         segMethd: true,
       });
+    }else if (totalValue > 100) {
+      toast('Input must be less than 100', {
+        type: 'error',
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
     } else if (!inputVals.SegmentationMeasureXYZ && !abcGroup) {
       setValidation({
         ...validation,
@@ -227,21 +239,22 @@ function Setup() {
         theme: "dark",
       })
       
-      setInputVals({
-        profile_name: "",
-        Segmentation_Measure: "",
-        Caluclation_level: "",
-        Periodicity: "",
-        Calculation_Horizon: '',
-        Use_grouping: 0,
-        grouping_Attributes: [],
-        type: "BOTH",
-        Segmentation_method: "Pareto by percentage",
-        SegmentationMeasureXYZ: "",
-        x: 0,
-        Gini: 0,
-        slope: 0,
-      })
+      // setInputVals({
+      //   profile_name: "",
+      //   Segmentation_Measure: "",
+      //   Caluclation_level: "",
+      //   Periodicity: "",
+      //   Calculation_Horizon: '',
+      //   Use_grouping: 0,
+      //   grouping_Attributes: [],
+      //   type: "BOTH",
+      //   Segmentation_method: "Pareto by percentage",
+      //   SegmentationMeasureXYZ: "",
+      //   x: 0,
+      //   Gini: 0,
+      //   slope: 0,
+      // })
+
     }
   };
   useEffect(() => {
@@ -264,12 +277,7 @@ useEffect(() => {
       groupAtt: false,
     });
   }
-  //   if (inputVals.Segmentation_method !== '') {
-  //   setValidation({
-  //     ...validation,
-  //     segMethd: false,
-  //   });
-  // }
+
 }, [inputVals.grouping_Attributes])
 
     useEffect(() => {
@@ -368,77 +376,79 @@ useEffect(() => {
       fetchSegMeasureXYZ();
     }, []);
 
-    useEffect(() => {
-      fetchSecondaryCalculationLevel();
-    }, [inputVals.Caluclation_level]);
-    return (
-      <>
-        <Box
-          sx={
-            {
-              // pl: { xs: "0px", md: "20px", lg: "20px" },
-              // pr: { xs: "0px", md: "20px", lg: "20px" },
-            }
-          }
-        >
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 1, md: 3 }}
-            // sx={{ mr: { xs: "0px", md: "none", lg: "none" } }}
-            align="center"
-            justify="center"
-            width="auto"
-          >
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  bgcolor: "whitesmoke",
-                  textAlign: "center",
-                  p: "15px",
-                  width: { xs: "100%", lg: "auto" },
-                }}
-              >
-                ABC Setup
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  bgcolor: "whitesmoke",
-                  textAlign: "center",
-                  p: "15px",
-                  width: { xs: "100%", lg: "auto" },
-                }}
-              >
-                XYZ Setup
-              </Box>
-            </Grid>
-          </Grid>
+  useEffect(() => {
+    fetchSecondaryCalculationLevel();
+  }, [inputVals.Caluclation_level]);
 
-          <Box
-            sx={{
-              width: { xs: "100%", lg: 460, xl: 600 },
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              // mr: { xs: "0px", md: "none", lg: "none" },
-            }}
-          >
-            <FormControl fullWidth sx={{ m: 1 }}>
-              <Typography sx={{ mt: "20px", mb: "20px" }}>
-                Profile Name
-              </Typography>
-              <CssTextField
-                name="profile_name"
-                fullWidth
-                size="small"
-                label="a name to identify your settings profile"
-                value={inputVals.profile_name}
-                onChange={handleChange}
-                error={validation.pname}
-                helperText={validation.pname && "Profile name is required"}
-              ></CssTextField>
+  return (
+    <>
+      <Box
+        sx={
+          {
+            // pl: { xs: "0px", md: "20px", lg: "20px" },
+            // pr: { xs: "0px", md: "20px", lg: "20px" },
+          }
+        }
+      >
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 1, md: 3 }}
+          // sx={{ mr: { xs: "0px", md: "none", lg: "none" } }}
+          align="center"
+          justify="center"
+          width="auto"
+        >
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                bgcolor: "whitesmoke",
+                textAlign: "center",
+                p: "15px",
+                width: { xs: "100%", lg: "auto" },
+              }}
+            >
+              ABC Setup
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                bgcolor: "whitesmoke",
+                textAlign: "center",
+                p: "15px",
+                width: { xs: "100%", lg: "auto" },
+              }}
+            >
+              XYZ Setup
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Box
+          sx={{
+            width: { xs: "100%", lg: 460, xl: 600 },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            // mr: { xs: "0px", md: "none", lg: "none" },
+          }}
+        >
+          <FormControl fullWidth sx={{ m: 1 }}>
+            <Typography sx={{ mt: "20px", mb: "20px" }}>
+              Profile Name
+            </Typography>
+            <CssTextField
+              name="profile_name"
+              fullWidth
+              size="small"
+              label="a name to identify your settings profile"
+              value={inputVals.profile_name}
+              onChange={handleChange}
+              error={validation.pname}
+              helperText={validation.pname && "Profile name is required"}
+
+            ></CssTextField>
 
               <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
                 Segmentation Measure (ABC)
@@ -531,56 +541,61 @@ useEffect(() => {
                 <Switch checked={grouping} onChange={handleGroups} />
               </Box>
 
-              <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-                Secondary Calculation Levels
-              </Typography>
-              <Autocomplete
-                multiple
-                disabled={!groupTrue}
-                name="Segmentation_method"
-                fullWidth
-                size="small"
-                label="Select Further levels for grouping"
-                select
-                value={inputVals.grouping_Attributes}
-                onChange={handleChange}
-              />
-              <CssTextField>
-                {secondaryCalculation.map((elem) => {
-                  return <MenuItem value={elem}>{elem}</MenuItem>;
-                })}
-              </CssTextField>
-              <Typography sx={{ mt: "10px", color: "red" }}>
-                **Please select secondary calculation level**
-              </Typography>
-              <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-                Segmentation Method
-              </Typography>
-              <Autocomplete
-                name="Segmentation_method"
-                fullWidth
-                size="small"
-                id="combo-box-demo"
-                options={segMethod}
-                // sx={{ width: 300 }}
-                onSelect={handleChange}
-                value={inputVals.Segmentation_method}
-                renderInput={(params) => (
-                  <CssTextField
-                    name="Segmentation_method"
-                    value={inputVals.Segmentation_method}
-                    {...params}
-                    label="pareto by percentage"
-                    onSelect={handleChange}
-                    error={validation.segMethd}
-                    helperText={
-                      validation.segMethd && "Please select segmentation method"
-                    }
-                  />
-                )}
-              />
-            </FormControl>
-          </Box>
+            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+              Secondary Calculation Levels
+            </Typography>
+            <Autocomplete
+              multiple
+              disabled={!groupTrue}
+              name="Segmentation_method"
+              fullWidth
+              size="small"
+              id="combo-box-demo"
+              options={secondaryCalculation}
+              value={inputVals.grouping_Attributes}
+              // sx={{ width: 300 }}
+              onChange={handleGrouping}
+              renderInput={(params) => (
+                <CssTextField
+                  {...params}
+                  label="Select secondary calculation levels"
+                  error={validation.groupAtt}
+                  helperText={
+                    validation.groupAtt &&
+                    "Please select secondary calculation level"
+                  }
+                />
+              )}
+            />
+
+            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+              Segmentation Method
+            </Typography>
+            <Autocomplete
+              name="Segmentation_method"
+              fullWidth
+              size="small"
+              id="combo-box-demo"
+              options={segMethod}
+              // sx={{ width: 300 }}
+              onSelect={handleChange}
+              value={inputVals.Segmentation_method}
+              renderInput={(params) => (
+                <CssTextField
+                  name="Segmentation_method"
+                  value={inputVals.Segmentation_method}
+                  {...params}
+                  label="pareto by percentage"
+                  onSelect={handleChange}
+                  error={validation.segMethd}
+                  helperText={
+                    validation.segMethd && "Please select segmentation method"
+                  }
+                />
+              )}
+            />
+          </FormControl>
+        </Box>
 
           <Box sx={{ width: "100%" }}>
             <BasicTable inputVals={inputVals} setInputVals={setInputVals} setTotalValue={setTotalValue} />
@@ -631,79 +646,82 @@ useEffect(() => {
             </CssTextField>
           </Box>
 
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 1, md: 3 }}
-            justify="center"
-            width="auto"
-            sx={{ mt: "33px" }}
-          >
-            <Grid item xs={12} md={4}>
-              <Box
-                sx={{
-                  width: { xs: "100%", lg: "auto" },
-                }}
-              >
-                <Typography sx={{ mt: "10px", mb: "10px" }}>
-                  Cv Threshold
-                </Typography>
-                <CssTextField
-                  name="x"
-                  fullWidth
-                  size="small"
-                  type="number"
-                  value={inputVals.x}
-                  onChange={handleChange}
-
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 1, md: 3 }}
+          justify="center"
+          width="auto"
+          sx={{ mt: "33px" }}
+        >
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{
+                width: { xs: "100%", lg: "auto" },
+              }}
+            >
+              <Typography sx={{ mt: "10px", mb: "10px" }}>
+                Cv Threshold
+              </Typography>
+              <CssTextField
+                name="x"
+                fullWidth
+                size="small"
+                type="number"
+                value={inputVals.x}
+                onChange={handleChange}
+                error={validation.valX}
+                helperText={validation.valX && "Please fill this field"}
                 // label=""
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Box
-                sx={{
-                  width: { xs: "100%", lg: "auto" },
-                }}
-              >
-                <Typography sx={{ mt: "10px", mb: "10px" }}>
-                  Gini Threshold
-                </Typography>
-                <CssTextField
-                  name="Gini"
-                  fullWidth
-                  size="small"
-                  type="number"
-                  value={inputVals.Gini}
-                  onChange={handleChange}
-
-                // label=""
-                />
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} md={4}>
-              <Box
-                sx={{
-                  width: { xs: "100%", lg: "auto" },
-                }}
-              >
-                <Typography sx={{ mt: "10px", mb: "10px" }}>
-                  Slope Threshold
-                </Typography>
-                <CssTextField
-                  name="slope"
-                  fullWidth
-                  size="small"
-                  type="number"
-                  value={inputVals.slope}
-                  onChange={handleChange}
-
-                // label=""
-                />
-              </Box>
-            </Grid>
+              />
+            </Box>
           </Grid>
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{
+                width: { xs: "100%", lg: "auto" },
+              }}
+            >
+              <Typography sx={{ mt: "10px", mb: "10px" }}>
+                Gini Threshold
+              </Typography>
+              <CssTextField
+                name="Gini"
+                fullWidth
+                size="small"
+                type="number"
+                value={inputVals.Gini}
+                onChange={handleChange}
+                error={validation.valGini}
+                helperText={validation.valGini && "Please fill this field"}
+                // label=""
+              />
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{
+                width: { xs: "100%", lg: "auto" },
+              }}
+            >
+              <Typography sx={{ mt: "10px", mb: "10px" }}>
+                Slope Threshold
+              </Typography>
+              <CssTextField
+                name="slope"
+                fullWidth
+                size="small"
+                type="number"
+                value={inputVals.slope}
+                onChange={handleChange}
+                error={validation.valSlope}
+                helperText={validation.valSlope && "Please fill this field"}
+                // label=""
+              />
+            </Box>
+          </Grid>
+        </Grid>
 
           <Box
             sx={{
