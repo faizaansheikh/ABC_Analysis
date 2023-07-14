@@ -1,6 +1,7 @@
 // const { default: axios } = require("axios");
 import axios from "axios";
 const BASE_URL = `http://192.168.1.10:2654`;
+
 export const getSegMeasureApi = async () => {
   try {
     return await axios.get(`${BASE_URL}/dropdown/segmentation_measure`);
@@ -40,9 +41,17 @@ export const getSegMethod = async () => {
   }
 };
 export const getSegMeasureXYZ = async () => {
-    try {
-      return await axios.get(`${BASE_URL}/dropdown/segmentation_measure_xyz`);
-    } catch (error) {
-      return error.message;
-    }
-  };
+  try {
+    return await axios.get(`${BASE_URL}/dropdown/segmentation_measure_xyz`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const postSegmentaion = async () => {
+  try {
+    return await axios.post(`${BASE_URL}/segmentation_setup`)
+  } catch (error) {
+    return error.message
+  }
+}

@@ -26,9 +26,9 @@ import {
   getSegMeasureApi,
   getSegMeasureXYZ,
   getSegMethod,
+  postSegmentaion
 } from "./Services/SegmentationServices";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css'
 const ColorButton = styled(Button)(() => ({
   color: "white",
   backgroundColor: "#398585",
@@ -56,6 +56,8 @@ const CssTextField = styled(TextField)({
   },
 });
 
+
+
 function Setup() {
   const [inputVals, setInputVals] = useState({
     profile_name: "",
@@ -71,6 +73,9 @@ function Setup() {
     x: 0,
     Gini: 0,
     slope: 0,
+    A: 0,
+    B: 0,
+    C: 0
   });
   const [validation, setValidation] = useState({
     pname: false,
@@ -96,6 +101,8 @@ function Setup() {
   const [secondaryCalculation, setSecondaryCalculation] = useState([]);
   const [segMethod, setSegMethod] = useState([]);
   const [xyzMethod, setXyzMethod] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
+
   const handleGroups = (e) => {
     setGrouping(e.target.checked);
     if (e.target.checked) {
@@ -144,6 +151,7 @@ function Setup() {
       [e.target.name]: e.target.value,
     });
 
+
     
   };
   const handleGrouping = (e, values) => {
@@ -191,6 +199,18 @@ function Setup() {
         ...validation,
         segMethd: true,
       });
+    }else if (totalValue > 100) {
+      toast('Input must be less than 100', {
+        type: 'error',
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
     } else if (!inputVals.SegmentationMeasureXYZ && !abcGroup) {
       setValidation({
         ...validation,
@@ -218,21 +238,22 @@ function Setup() {
         theme: "dark",
       })
       
-      setInputVals({
-        profile_name: "",
-        Segmentation_Measure: "",
-        Caluclation_level: "",
-        Periodicity: "",
-        Calculation_Horizon: '',
-        Use_grouping: 0,
-        grouping_Attributes: [],
-        type: "BOTH",
-        Segmentation_method: "Pareto by percentage",
-        SegmentationMeasureXYZ: "",
-        x: 0,
-        Gini: 0,
-        slope: 0,
-      })
+      // setInputVals({
+      //   profile_name: "",
+      //   Segmentation_Measure: "",
+      //   Caluclation_level: "",
+      //   Periodicity: "",
+      //   Calculation_Horizon: '',
+      //   Use_grouping: 0,
+      //   grouping_Attributes: [],
+      //   type: "BOTH",
+      //   Segmentation_method: "Pareto by percentage",
+      //   SegmentationMeasureXYZ: "",
+      //   x: 0,
+      //   Gini: 0,
+      //   slope: 0,
+      // })
+
     }
   };
   useEffect(() => {
@@ -255,12 +276,7 @@ useEffect(() => {
       groupAtt: false,
     });
   }
-  //   if (inputVals.Segmentation_method !== '') {
-  //   setValidation({
-  //     ...validation,
-  //     segMethd: false,
-  //   });
-  // }
+
 }, [inputVals.grouping_Attributes])
 
  useEffect(() => {
@@ -358,6 +374,7 @@ useEffect(() => {
     fetchSegMethod();
     fetchSegMeasureXYZ();
   }, []);
+
   useEffect(() => {
     fetchSecondaryCalculationLevel();
   }, [inputVals.Caluclation_level]);
@@ -429,6 +446,7 @@ useEffect(() => {
               onChange={handleChange}
               error={validation.pname}
               helperText={validation.pname && "Profile name is required"}
+
             ></CssTextField>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
@@ -579,7 +597,7 @@ useEffect(() => {
         </Box>
 
         <Box sx={{ width: "100%" }}>
-          <BasicTable />
+          <BasicTable inputVals={inputVals} setInputVals={setInputVals} setTotalValue={setTotalValue} />
         </Box>
 
         <Box
