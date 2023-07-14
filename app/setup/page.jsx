@@ -137,13 +137,13 @@ function Setup() {
         SegmentationMeasureXYZ: ''
       })
     } else {
-      
+
       setAbcGroupTrue(true);
       setInputVals({
         ...inputVals,
         type: "BOTH",
       });
-     
+
     }
   };
   const handleChange = (e) => {
@@ -392,14 +392,14 @@ useEffect(() => {
     setXyzMethod(res.data.values);
   };
 
-  useEffect(() => {
-    getSegMeasure();
-    getPrimaryCalculationLevel();
-    fetchPeriodicity();
-    fetchSecondaryCalculationLevel();
-    fetchSegMethod();
-    fetchSegMeasureXYZ();
-  }, []);
+    useEffect(() => {
+      getSegMeasure();
+      getPrimaryCalculationLevel();
+      fetchPeriodicity();
+      fetchSecondaryCalculationLevel();
+      fetchSegMethod();
+      fetchSegMeasureXYZ();
+    }, []);
 
   useEffect(() => {
     fetchSecondaryCalculationLevel();
@@ -475,64 +475,64 @@ useEffect(() => {
 
             ></CssTextField>
 
-            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-              Segmentation Measure (ABC)
-            </Typography>
-            <CssTextField
-              name="Segmentation_Measure"
-              fullWidth
-              size="small"
-              label="Select a segmentation measure"
-              select
-              value={inputVals.Segmentation_Measure}
-              onChange={handleChange}
-              error={validation.segMeas}
-              helperText={validation.segMeas && "Please select a value"}
-            >
-              {segMeasure.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
-              })}
-            </CssTextField>
+              <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+                Segmentation Measure (ABC)
+              </Typography>
+              <CssTextField
+                name="Segmentation_Measure"
+                fullWidth
+                size="small"
+                label="Select a segmentation measure"
+                select
+                value={inputVals.Segmentation_Measure}
+                onChange={handleChange}
+                error={validation.segMeas}
+                helperText={validation.segMeas && "Please select a value"}
+              >
+                {segMeasure.map((elem) => {
+                  return <MenuItem value={elem}>{elem}</MenuItem>;
+                })}
+              </CssTextField>
 
-            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-              Primary Calculation Level
-            </Typography>
-            <CssTextField
-              name="Caluclation_level"
-              fullWidth
-              size="small"
-              label="Select your base level for calculations"
-              select
-              value={inputVals.Caluclation_level}
-              onChange={handleChange}
-              error={validation.calLevel}
-              helperText={
-                validation.calLevel && "Please select caluclation level"
-              }
-            >
-              {primaryCalculation.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
-              })}
-            </CssTextField>
+              <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+                Primary Calculation Level
+              </Typography>
+              <CssTextField
+                name="Caluclation_level"
+                fullWidth
+                size="small"
+                label="Select your base level for calculations"
+                select
+                value={inputVals.Caluclation_level}
+                onChange={handleChange}
+                error={validation.calLevel}
+                helperText={
+                  validation.calLevel && "Please select caluclation level"
+                }
+              >
+                {primaryCalculation.map((elem) => {
+                  return <MenuItem value={elem}>{elem}</MenuItem>;
+                })}
+              </CssTextField>
 
-            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-              Periodcity
-            </Typography>
-            <CssTextField
-              name="Periodicity"
-              fullWidth
-              size="small"
-              label="Period to base your calculations on"
-              select
-              value={inputVals.Periodicity}
-              onChange={handleChange}
-              error={validation.period}
-              helperText={validation.period && "Please select Periodicity"}
-            >
-              {periodicity.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
-              })}
-            </CssTextField>
+              <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+                Periodcity
+              </Typography>
+              <CssTextField
+                name="Periodicity"
+                fullWidth
+                size="small"
+                label="Period to base your calculations on"
+                select
+                value={inputVals.Periodicity}
+                onChange={handleChange}
+                error={validation.period}
+                helperText={validation.period && "Please select Periodicity"}
+              >
+                {periodicity.map((elem) => {
+                  return <MenuItem value={elem}>{elem}</MenuItem>;
+                })}
+              </CssTextField>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Calculation Horizon
@@ -551,20 +551,20 @@ useEffect(() => {
               }
             ></CssTextField>
 
-            <Box
-              sx={{
-                mt: "30px",
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-                Use Grouping
-              </Typography>
-              <Switch checked={grouping} onChange={handleGroups} />
-            </Box>
+              <Box
+                sx={{
+                  mt: "30px",
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+                  Use Grouping
+                </Typography>
+                <Switch checked={grouping} onChange={handleGroups} />
+              </Box>
 
             <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
               Secondary Calculation Levels
@@ -622,54 +622,54 @@ useEffect(() => {
           </FormControl>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
-          <BasicTable inputVals={inputVals} setInputVals={setInputVals} setTotalValue={setTotalValue} />
-        </Box>
+          <Box sx={{ width: "100%" }}>
+            <BasicTable inputVals={inputVals} setInputVals={setInputVals} setTotalValue={setTotalValue} />
+          </Box>
 
-        <Box
-          sx={{
-            mt: "30px",
-          }}
-        >
-          <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-            Run Only ABC Segmentation
-            <Switch checked={abcGroup} onChange={handleAbcGroup} />
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            width: { xs: "100%", lg: 460, xl: 600 },
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-            // mr: { xs: "3px", md: "none", lg: "none" },
-          }}
-        >
-          <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
-            XYZ Segmentation Method
-          </Typography>
-          <CssTextField
-            disabled={!abcGroupTrue}
-            name="SegmentationMeasureXYZ"
-            fullWidth
-            // sx={{width:{xs:'280px',md:'fullwidth'}}}
-            size="small"
-            label="Select a measure for XYZ"
-            select
-            value={inputVals.SegmentationMeasureXYZ}
-            onChange={handleChange}
-            error={validation.segMesureXyz}
-            helperText={
-              validation.segMesureXyz && "Please select xyz segmentation method"
-            }
+          <Box
+            sx={{
+              mt: "30px",
+            }}
           >
-            {xyzMethod.map((elem) => {
-              return <MenuItem value={elem}>{elem}</MenuItem>;
-            })}
-          </CssTextField>
-        </Box>
+            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+              Run Only ABC Segmentation
+              <Switch checked={abcGroup} onChange={handleAbcGroup} />
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              width: { xs: "100%", lg: 460, xl: 600 },
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              // mr: { xs: "3px", md: "none", lg: "none" },
+            }}
+          >
+            <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
+              XYZ Segmentation Method
+            </Typography>
+            <CssTextField
+              disabled={!abcGroupTrue}
+              name="SegmentationMeasureXYZ"
+              fullWidth
+              // sx={{width:{xs:'280px',md:'fullwidth'}}}
+              size="small"
+              label="Select a measure for XYZ"
+              select
+              value={inputVals.SegmentationMeasureXYZ}
+              onChange={handleChange}
+              error={validation.segMesureXyz}
+              helperText={
+                validation.segMesureXyz && "Please select xyz segmentation method"
+              }
+            >
+              {xyzMethod.map((elem) => {
+                return <MenuItem value={elem}>{elem}</MenuItem>;
+              })}
+            </CssTextField>
+          </Box>
 
         <Grid
           container
@@ -748,27 +748,28 @@ useEffect(() => {
           </Grid>
         </Grid>
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: {
-              xs: "center",
-              sm: "center",
-              md: "start",
-              lg: "start",
-            },
-          }}
-        >
-          <ColorButton
-            sx={{ bgcolor: "#398585", color: "white", mt: "30px" }}
-            onClick={handleSave}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: {
+                xs: "center",
+                sm: "center",
+                md: "start",
+                lg: "start",
+              },
+            }}
           >
-            Save
-          </ColorButton>
+            <ColorButton
+              sx={{ bgcolor: "#398585", color: "white", mt: "30px" }}
+              onClick={handleSave}
+            >
+              Save
+            </ColorButton>
+          </Box>
         </Box>
-      </Box>
-    </>
-  );
-}
+      </>
+    );
+  }
+
 
 export default Setup;
