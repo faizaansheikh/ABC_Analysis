@@ -37,11 +37,13 @@ const CssTextField = styled(TextField)({
 
 function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   const handleTableValue = (e) => {
-    let name = e.target.name;
-    let value = e.target.value
+    const{name,value} = e.target
+    // let name = e.target.name;
+    // let value = e.target.value
+    
     const newValue = {
       ...inputVals,
-      [name]: value
+      [name]: parseFloat(value)
     }
     setInputVals(newValue)
 
@@ -50,7 +52,7 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
 
   const calTotal = (newValue) => {
     const { A, B, C } = newValue;
-    const newTotal = parseInt(A) + parseInt(B) + parseInt(C)
+    const newTotal = A + B + C
     setTotalValue(newTotal)
   }
 
@@ -59,7 +61,7 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   }
 
   const rows = [
-    createData("A", <CssTextField size="small" fullWidth type="number" name="A" onChange={handleTableValue} value={inputVals.A} />),
+    createData("A", <CssTextField size="small" fullWidth type="number" name="A" onChange={handleTableValue} value={parseInt(inputVals.A)} />),
     createData("B", <CssTextField size="small" fullWidth type="number" name="B" onChange={handleTableValue} value={inputVals.B} />),
     createData("C", <CssTextField size="small" fullWidth type="number" name="C" onChange={handleTableValue} value={inputVals.C} />),
   ];

@@ -65,18 +65,19 @@ function Setup() {
     Caluclation_level: "",
     Periodicity: "",
     Calculation_Horizon: '',
-    Use_grouping: 0,
+    Use_grouping: '0',
     grouping_Attributes: [],
-    type: "BOTH",
+    Type: "BOTH",
     Segmentation_method: "Pareto by percentage",
     SegmentationMeasureXYZ: "",
-    x: 0,
+    X: 0,
     Gini: 0,
     slope: 0,
     A: 0,
     B: 0,
     C: 0
   });
+ 
   const [validation, setValidation] = useState({
     pname: false,
     pNameLength: false,
@@ -109,13 +110,13 @@ function Setup() {
       setGroupTrue(true);
       setInputVals({
         ...inputVals,
-        Use_grouping: 1,
+        Use_grouping: '1',
       });
     } else {
       setGroupTrue(false);
       setInputVals({
         ...inputVals,
-        Use_grouping: 0,
+        Use_grouping: '0',
       });
       setInputVals({
         ...inputVals,
@@ -149,43 +150,65 @@ function Setup() {
     setInputVals({
       ...inputVals,
       [e.target.name]: e.target.value,
-    });
-
-
-    
+    });    
   };
+  const handleNumbersChange = (e)=>{
+    const{name,value} = e.target
+    setInputVals({
+      ...inputVals,
+      [name]: parseFloat(value),
+    }); 
+  }
   const handleGrouping = (e, values) => {
     setInputVals({
       ...inputVals,
       grouping_Attributes: values,
     });
   };
-  const handleSave = () => {
+  const toastError = ()=>{
+    toast('Please fill all fields', {
+      type: 'error',
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    })
+  }
+  const handleSave = async() => {
     if (inputVals.profile_name === "") {
       setValidation({
         ...validation,
         pname: true,
       });
+      toastError()
     } else if (!inputVals.Segmentation_Measure) {
       setValidation({
         ...validation,
         segMeas: true,
       });
+      toastError()
     } else if (!inputVals.Caluclation_level) {
       setValidation({
         ...validation,
         calLevel: true,
       });
+      toastError()
     } else if (!inputVals.Periodicity) {
       setValidation({
         ...validation,
         period: true,
       });
+      toastError()
     } else if (!inputVals.Calculation_Horizon) {
       setValidation({
         ...validation,
         calHoriz: true,
       });
+      toastError()
     } else if (
       inputVals.grouping_Attributes.length === 0 &&
       grouping
@@ -194,11 +217,13 @@ function Setup() {
         ...validation,
         groupAtt: true,
       });
+      toastError()
     } else if (!inputVals.Segmentation_method) {
       setValidation({
         ...validation,
         segMethd: true,
       });
+      toastError()
     }else if (totalValue > 100) {
       toast('Input must be less than 100', {
         type: 'error',
@@ -216,26 +241,33 @@ function Setup() {
         ...validation,
         segMesureXyz: true,
       });
-    } else if (inputVals.x == 0) {
+      toastError()
+    } else if (inputVals.X == 0) {
       setValidation({
         ...validation,
         valX: true,
       });
+      toastError()
     } else if (inputVals.Gini == 0) {
       setValidation({
         ...validation,
         valGini: true,
       });
+      toastError()
     } else if (inputVals.slope == 0) {
       setValidation({
         ...validation,
         valSlope: true,
       });
+      toastError()
     } else {
       console.log(inputVals);
+      // const res = await postSegmentaion(inputVals)
+      // console.log(res)
       toast.success('Values save successfully',{
         autoClose: 3000,
         theme: "dark",
+
       })
       
       // setInputVals({
@@ -256,90 +288,84 @@ function Setup() {
 
     }
   };
-  useEffect(() => {
-    if (inputVals.profile_name !== "") {
-      setValidation({
-        ...validation,
-        pname: false,
-      });
-    }
-  
-  }, [inputVals.profile_name])
-  
+
+
+
 useEffect(() => {
-  
-   if (
+  if (inputVals.profile_name !== "") {
+    setValidation((prevState) => ({
+      ...prevState,
+      pname: false,
+    }));
+  }
+  if (inputVals.Segmentation_Measure) {
+    setValidation((prevState) => ({
+      ...prevState,
+      segMeas: false,
+    }));
+  }
+  if (inputVals.Caluclation_level) {
+    setValidation((prevState) => ({
+      ...prevState,
+      calLevel: false,
+    }));
+  }
+  if (inputVals.Periodicity && inputVals.Periodicity !== "") {
+    setValidation((prevState) => ({
+      ...prevState,
+      period: false,
+    }));
+  }
+  if (inputVals.Calculation_Horizon) {
+    setValidation((prevState) => ({
+      ...prevState,
+      calHoriz: false,
+    }));
+  }
+  if (
     inputVals.grouping_Attributes.length > 0
   ) {
-    setValidation({
-      ...validation,
+    setValidation((prevState) => ({
+      ...prevState,
       groupAtt: false,
-    });
+    }));
   }
-
-}, [inputVals.grouping_Attributes])
-
- useEffect(() => {
-  
-    if (inputVals.Segmentation_Measure) {
-    setValidation({
-      ...validation,
-      segMeas: false,
-    });
-  }
-   if (inputVals.Caluclation_level) {
-    setValidation({
-      ...validation,
-      calLevel: false,
-    });
-  }
-   if (inputVals.Periodicity) {
-    setValidation({
-      ...validation,
-      period: false,
-    });
-  }
-   if (inputVals.Calculation_Horizon) {
-    setValidation({
-      ...validation,
-      calHoriz: false,
-    });
-  }
-   
-   if (inputVals.SegmentationMeasureXYZ) {
-    setValidation({
-      ...validation,
+  if (inputVals.SegmentationMeasureXYZ) {
+    setValidation((prevState) => ({
+      ...prevState,
       segMesureXyz: false,
-    });
+    }));
   }
-   if (inputVals.x.length > 0) {
-    setValidation({
-      ...validation,
+  if (inputVals.X > 0) {
+    setValidation((prevState) => ({
+      ...prevState,
       valX: false,
-    });
+    }));
   }
-   if (inputVals.Gini > 0) {
-    setValidation({
-      ...validation,
+  if (inputVals.Gini > 0) {
+    setValidation((prevState) => ({
+      ...prevState,
       valGini: false,
-    });
+    }));
   }
-   if (inputVals.slope > 0) {
-    setValidation({
-      ...validation,
+  if (inputVals.slope > 0) {
+    setValidation((prevState) => ({
+      ...prevState,
       valSlope: false,
-    });
+    }));
   }
- },[
+}, [
+  inputVals.profile_name,
   inputVals.Segmentation_Measure,
   inputVals.Caluclation_level,
   inputVals.Periodicity,
   inputVals.Calculation_Horizon,
+  inputVals.grouping_Attributes,
   inputVals.SegmentationMeasureXYZ,
-  inputVals.x,
+  inputVals.X,
   inputVals.Gini,
   inputVals.slope
-])
+]);
  
   const getSegMeasure = async () => {
     const res = await getSegMeasureApi();
@@ -518,7 +544,7 @@ useEffect(() => {
               size="small"
               label="Input your previous Weeks/Months/Year as a number"
               value={inputVals.Calculation_Horizon}
-              onChange={handleChange}
+              onChange={handleNumbersChange}
               error={validation.calHoriz}
               helperText={
                 validation.calHoriz && "Please select calculation horizon"
@@ -663,12 +689,12 @@ useEffect(() => {
                 Cv Threshold
               </Typography>
               <CssTextField
-                name="x"
+                name="X"
                 fullWidth
                 size="small"
                 type="number"
-                value={inputVals.x}
-                onChange={handleChange}
+                value={inputVals.X}
+                onChange={handleNumbersChange}
                 error={validation.valX}
                 helperText={validation.valX && "Please fill this field"}
                 // label=""
@@ -690,7 +716,7 @@ useEffect(() => {
                 size="small"
                 type="number"
                 value={inputVals.Gini}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 error={validation.valGini}
                 helperText={validation.valGini && "Please fill this field"}
                 // label=""
@@ -713,7 +739,7 @@ useEffect(() => {
                 size="small"
                 type="number"
                 value={inputVals.slope}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 error={validation.valSlope}
                 helperText={validation.valSlope && "Please fill this field"}
                 // label=""
