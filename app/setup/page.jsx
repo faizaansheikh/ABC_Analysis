@@ -77,7 +77,7 @@ function Setup() {
     B: 0,
     C: 0
   });
- 
+
   const [validation, setValidation] = useState({
     pname: false,
     pNameLength: false,
@@ -137,27 +137,27 @@ function Setup() {
         SegmentationMeasureXYZ: ''
       })
     } else {
-      
+
       setAbcGroupTrue(true);
       setInputVals({
         ...inputVals,
         type: "BOTH",
       });
-     
+
     }
   };
   const handleChange = (e) => {
     setInputVals({
       ...inputVals,
       [e.target.name]: e.target.value,
-    });    
+    });
   };
-  const handleNumbersChange = (e)=>{
-    const{name,value} = e.target
+  const handleNumbersChange = (e) => {
+    const { name, value } = e.target
     setInputVals({
       ...inputVals,
       [name]: parseFloat(value),
-    }); 
+    });
   }
   const handleGrouping = (e, values) => {
     setInputVals({
@@ -165,7 +165,7 @@ function Setup() {
       grouping_Attributes: values,
     });
   };
-  const toastError = ()=>{
+  const toastError = () => {
     toast('Please fill all fields', {
       type: 'error',
       position: "top-right",
@@ -178,7 +178,8 @@ function Setup() {
       theme: "light",
     })
   }
-  const handleSave = async() => {
+  const handleSave = async () => {
+    console.log(totalValue);
     if (inputVals.profile_name === "") {
       setValidation({
         ...validation,
@@ -224,8 +225,8 @@ function Setup() {
         segMethd: true,
       });
       toastError()
-    }else if (totalValue > 100) {
-      toast('Input must be less than 100', {
+    } else if (totalValue > 100 || totalValue < 100) {
+      toast('All inputs add upto 100', {
         type: 'error',
         position: "top-right",
         autoClose: 5000,
@@ -264,12 +265,12 @@ function Setup() {
       console.log(inputVals);
       // const res = await postSegmentaion(inputVals)
       // console.log(res)
-      toast.success('Values save successfully',{
+      toast.success('Values save successfully', {
         autoClose: 3000,
         theme: "dark",
 
       })
-      
+
       // setInputVals({
       //   profile_name: "",
       //   Segmentation_Measure: "",
@@ -291,82 +292,82 @@ function Setup() {
 
 
 
-useEffect(() => {
-  if (inputVals.profile_name !== "") {
-    setValidation((prevState) => ({
-      ...prevState,
-      pname: false,
-    }));
-  }
-  if (inputVals.Segmentation_Measure) {
-    setValidation((prevState) => ({
-      ...prevState,
-      segMeas: false,
-    }));
-  }
-  if (inputVals.Caluclation_level) {
-    setValidation((prevState) => ({
-      ...prevState,
-      calLevel: false,
-    }));
-  }
-  if (inputVals.Periodicity && inputVals.Periodicity !== "") {
-    setValidation((prevState) => ({
-      ...prevState,
-      period: false,
-    }));
-  }
-  if (inputVals.Calculation_Horizon) {
-    setValidation((prevState) => ({
-      ...prevState,
-      calHoriz: false,
-    }));
-  }
-  if (
-    inputVals.grouping_Attributes.length > 0
-  ) {
-    setValidation((prevState) => ({
-      ...prevState,
-      groupAtt: false,
-    }));
-  }
-  if (inputVals.SegmentationMeasureXYZ) {
-    setValidation((prevState) => ({
-      ...prevState,
-      segMesureXyz: false,
-    }));
-  }
-  if (inputVals.X > 0) {
-    setValidation((prevState) => ({
-      ...prevState,
-      valX: false,
-    }));
-  }
-  if (inputVals.Gini > 0) {
-    setValidation((prevState) => ({
-      ...prevState,
-      valGini: false,
-    }));
-  }
-  if (inputVals.slope > 0) {
-    setValidation((prevState) => ({
-      ...prevState,
-      valSlope: false,
-    }));
-  }
-}, [
-  inputVals.profile_name,
-  inputVals.Segmentation_Measure,
-  inputVals.Caluclation_level,
-  inputVals.Periodicity,
-  inputVals.Calculation_Horizon,
-  inputVals.grouping_Attributes,
-  inputVals.SegmentationMeasureXYZ,
-  inputVals.X,
-  inputVals.Gini,
-  inputVals.slope
-]);
- 
+  useEffect(() => {
+    if (inputVals.profile_name !== "") {
+      setValidation((prevState) => ({
+        ...prevState,
+        pname: false,
+      }));
+    }
+    if (inputVals.Segmentation_Measure) {
+      setValidation((prevState) => ({
+        ...prevState,
+        segMeas: false,
+      }));
+    }
+    if (inputVals.Caluclation_level) {
+      setValidation((prevState) => ({
+        ...prevState,
+        calLevel: false,
+      }));
+    }
+    if (inputVals.Periodicity && inputVals.Periodicity !== "") {
+      setValidation((prevState) => ({
+        ...prevState,
+        period: false,
+      }));
+    }
+    if (inputVals.Calculation_Horizon) {
+      setValidation((prevState) => ({
+        ...prevState,
+        calHoriz: false,
+      }));
+    }
+    if (
+      inputVals.grouping_Attributes.length > 0
+    ) {
+      setValidation((prevState) => ({
+        ...prevState,
+        groupAtt: false,
+      }));
+    }
+    if (inputVals.SegmentationMeasureXYZ) {
+      setValidation((prevState) => ({
+        ...prevState,
+        segMesureXyz: false,
+      }));
+    }
+    if (inputVals.X > 0) {
+      setValidation((prevState) => ({
+        ...prevState,
+        valX: false,
+      }));
+    }
+    if (inputVals.Gini > 0) {
+      setValidation((prevState) => ({
+        ...prevState,
+        valGini: false,
+      }));
+    }
+    if (inputVals.slope > 0) {
+      setValidation((prevState) => ({
+        ...prevState,
+        valSlope: false,
+      }));
+    }
+  }, [
+    inputVals.profile_name,
+    inputVals.Segmentation_Measure,
+    inputVals.Caluclation_level,
+    inputVals.Periodicity,
+    inputVals.Calculation_Horizon,
+    inputVals.grouping_Attributes,
+    inputVals.SegmentationMeasureXYZ,
+    inputVals.X,
+    inputVals.Gini,
+    inputVals.slope
+  ]);
+
   const getSegMeasure = async () => {
     const res = await getSegMeasureApi();
     setSegMeasure(res.data.values);
@@ -697,7 +698,7 @@ useEffect(() => {
                 onChange={handleNumbersChange}
                 error={validation.valX}
                 helperText={validation.valX && "Please fill this field"}
-                // label=""
+              // label=""
               />
             </Box>
           </Grid>
@@ -719,7 +720,7 @@ useEffect(() => {
                 onChange={handleNumbersChange}
                 error={validation.valGini}
                 helperText={validation.valGini && "Please fill this field"}
-                // label=""
+              // label=""
               />
             </Box>
           </Grid>
@@ -742,7 +743,7 @@ useEffect(() => {
                 onChange={handleNumbersChange}
                 error={validation.valSlope}
                 helperText={validation.valSlope && "Please fill this field"}
-                // label=""
+              // label=""
               />
             </Box>
           </Grid>
@@ -770,5 +771,6 @@ useEffect(() => {
     </>
   );
 }
+
 
 export default Setup;

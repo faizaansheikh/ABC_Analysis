@@ -74,8 +74,8 @@ export default function ClippedDrawer() {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: "border-box",
-            bgcolor: "#398585",
-            color: "white",
+            bgcolor: "#398585 !important",
+            color: "white !important",
           },
         }}
       >
