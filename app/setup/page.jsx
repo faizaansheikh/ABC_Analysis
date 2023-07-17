@@ -242,19 +242,19 @@ function Setup() {
         segMesureXyz: true,
       });
       toastError()
-    } else if (inputVals.X == 0) {
+    } else if (!inputVals.X) {
       setValidation({
         ...validation,
         valX: true,
       });
       toastError()
-    } else if (inputVals.Gini == 0) {
+    } else if (!inputVals.Gini) {
       setValidation({
         ...validation,
         valGini: true,
       });
       toastError()
-    } else if (inputVals.slope == 0) {
+    } else if (!inputVals.slope) {
       setValidation({
         ...validation,
         valSlope: true,
