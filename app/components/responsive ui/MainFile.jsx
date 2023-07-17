@@ -7,12 +7,14 @@ import Sidebar from './Sidebar'
 import { useState } from 'react';
 // import Table from '../'
 const MainFile = () => {
-  const isMobile = useMediaQuery("(min-width:600px)");
+  // const isMobile = useMediaQuery("(min-width:600px)");
   
+  const isMobile = useMediaQuery("(max-width:500px)")
 
   return <>
-  
-  {isMobile ? <Sidebar /> : <ResponsiveSideBar />} 
+  {/* <Sidebar/> */}
+  {isMobile ? <ResponsiveSideBar/> : <Sidebar/>}
+  {/* {isMobile ? <Sidebar /> : <ResponsiveSideBar />}  */}
  
   </>
 

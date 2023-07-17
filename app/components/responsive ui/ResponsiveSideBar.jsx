@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     justifyContent: "flex-end",
-    padding: "10px 20px 0px 0px",
+    padding: "5px 15px 5px 0px",
     color: "white",
   },
 }));
@@ -38,10 +38,21 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [menuData, setMenuData] = React.useState("result");
+  const [menuData, setMenuData] = React.useState("setup");
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const setupHandler = () => {
+    setMenuData("setup")
+    setMobileOpen(false)
+  }
+
+  const resultHandler = () => {
+    setMenuData("result")
+    setMobileOpen(false)
+  }
 
   const drawer = (
     <div>
@@ -84,7 +95,7 @@ function ResponsiveDrawer(props) {
 
                 <Button
                   sx={{ color: "white" }}
-                  onClick={() => setMenuData("setup")}
+                  onClick={setupHandler}
                 >
                   Segmentation Setups
                 </Button>
@@ -101,7 +112,7 @@ function ResponsiveDrawer(props) {
                 <GridOnIcon sx={{ fontSize: "18px", color: "white" }} />
                 <Button
                   sx={{ color: "white" }}
-                  onClick={() => setMenuData("result")}
+                  onClick={resultHandler}
                 >
                   Segmentation Results
                 </Button>
@@ -141,12 +152,12 @@ function ResponsiveDrawer(props) {
           <Image
             src="/logo.png"
             // alt="Picture of the author"
-            style={{paddingRight:'10px'}}
+            style={{ paddingRight: '10px' }}
             width={68}
             height={40}
             quality={100}
           >
-            </Image>
+          </Image>
           <Typography
             variant="h6"
             sx={{ fontSize: "15px" }}
@@ -176,7 +187,7 @@ function ResponsiveDrawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              bgcolor: "#398585",
+              bgcolor: "#398585 !important",
             },
           }}
         >
@@ -189,6 +200,7 @@ function ResponsiveDrawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              backgroundColor: "#398585 !important"
             },
           }}
           open

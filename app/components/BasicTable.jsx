@@ -37,10 +37,10 @@ const CssTextField = styled(TextField)({
 
 function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   const handleTableValue = (e) => {
-    const{name,value} = e.target
+    const { name, value } = e.target
     // let name = e.target.name;
     // let value = e.target.value
-    
+
     const newValue = {
       ...inputVals,
       [name]: parseFloat(value)
