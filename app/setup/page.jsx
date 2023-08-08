@@ -70,9 +70,9 @@ function Setup() {
     Type: "BOTH",
     Segmentation_method: "Pareto by percentage",
     SegmentationMeasureXYZ: "",
-    X: 0,
-    Gini: 0,
-    slope: 0,
+    X: 0.6,
+    Gini: 0.9,
+    slope: 0.56,
     A: 0,
     B: 0,
     C: 0
@@ -112,16 +112,15 @@ function Setup() {
         ...inputVals,
         Use_grouping: '1',
       });
-    } else {
+    } else{
       setGroupTrue(false);
       setInputVals({
         ...inputVals,
         Use_grouping: '0',
-      });
-      setInputVals({
-        ...inputVals,
         grouping_Attributes: []
-      })
+      });
+      
+      // console.log('wroking');
     }
   };
   const handleAbcGroup = (e) => {
@@ -130,18 +129,16 @@ function Setup() {
       setAbcGroupTrue(false);
       setInputVals({
         ...inputVals,
-        type: "ABC",
-      });
-      setInputVals({
-        ...inputVals,
+        Type: "ABC",
         SegmentationMeasureXYZ: ''
-      })
+      });
+     
     } else {
 
       setAbcGroupTrue(true);
       setInputVals({
         ...inputVals,
-        type: "BOTH",
+        Type: "BOTH",
       });
 
     }

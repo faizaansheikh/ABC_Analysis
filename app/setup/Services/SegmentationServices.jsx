@@ -2,6 +2,11 @@
 import axios from "axios";
 const BASE_URL = `http://192.168.1.10:2654`;
 
+const BASE_URL_2 = 'http://192.168.1.10:2560';
+
+
+// /sumgraph
+
 export const getSegMeasureApi = async () => {
   try {
     return await axios.get(`${BASE_URL}/dropdown/segmentation_measure`);
@@ -55,3 +60,44 @@ export const postSegmentaion = async (payload) => {
     return error.message
   }
 }
+
+export const getSummary = async () => {
+  try {
+    return await axios.get(`${BASE_URL_2}/sumgraph`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getProfile = async (payload) => {
+  try {
+    return await axios.get(`${BASE_URL_2}/filters?mode=${payload.mode}`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+// export const getBoxes = async (payload) => {
+//   try {
+//     return await axios.get(`${BASE_URL_2}/filters?mode=${payload.mode}`);
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
+
+
+export const getTable = async (payload) => {
+  try {
+    return await axios.get(`${BASE_URL_2}/params?profile=${payload.profile}`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const resTable = async (payload) => {
+  try {
+    return await axios.post(`${BASE_URL_2}/tablegen`,payload);
+  } catch (error) {
+    return error.message;
+  }
+};

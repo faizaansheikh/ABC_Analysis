@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Card,
@@ -11,9 +11,37 @@ import {
 } from "@mui/material";
 import React from "react";
 import dynamic from "next/dynamic";
-const Plot = dynamic(() => import('react-plotly.js'))
+const Plot = dynamic(() => import("react-plotly.js"));
 
 const TimeSeriesGraph = () => {
+  var trace1 = {
+    x: [1, 2, 3],
+    y: [40, 50, 60],
+    name: "yaxis data",
+    type: "scatter",
+  };
+
+  var trace2 = {
+    x: [2, 3, 4],
+    y: [4, 5, 6],
+    name: "yaxis2 data",
+    yaxis: 'y2',
+    type: "scatter",
+  };
+
+  var data = [trace1, trace2];
+
+  var layout = {
+    title: "Double Y Axis Example",
+    yaxis: { title: "yaxis title" },
+    yaxis2: {
+      title: "yaxis2 title",
+      titlefont: { color: "rgb(148, 103, 189)" },
+      tickfont: { color: "rgb(148, 103, 189)" },
+      overlaying: "y",
+      side: "right",
+    },
+  };
   return (
     <Card
       sx={{
@@ -36,120 +64,84 @@ const TimeSeriesGraph = () => {
       </FormControl>
       <Plot
         style={{ Width: "100%" }}
-        data={[
-          {
-            x: [
-              "2000-01",
-              "2000-02",
-              "2000-03",
-              "2000-04",
-              "2000-05",
-              "2000-06",
-              "2000-07",
-              "2000-08",
-              "2000-09",
-              "2000-10",
-              "2000-11",
-              "2000-12",
-              "2001-01",
-            ],
-            y: [1, 5, 6, 54, 12, 14, 45, 90],
-            marker: { color: "red" },
-            name: "Bonus Tristar",
-            type: "scatter",
-          },
-          {
-            x: [
-              "2000-01",
-              "2000-02",
-              "2000-03",
-              "2000-04",
-              "2000-05",
-              "2000-06",
-              "2000-07",
-              "2000-08",
-              "2000-09",
-              "2000-10",
-              "2000-11",
-              "2000-12",
-              "2001-01",
-            ],
-            y: [14, 22, 35, 47, 53, 61, 72, 85],
-            marker: { color: "orange" },
-            name: "Max Bar Regular",
-            type: "scatter",
-          },
-          {
-            x: [
-              "2000-01",
-              "2000-02",
-              "2000-03",
-              "2000-04",
-              "2000-05",
-              "2000-06",
-              "2000-07",
-              "2000-08",
-              "2000-09",
-              "2000-10",
-              "2000-11",
-              "2000-12",
-              "2001-01",
-            ],
-            y: [1, 2, 36, 45, 5, 64, 7, 45],
-            marker: { color: "blue" },
-            name: "Bonus Regular",
-            type: "scatter",
-          },
-          {
-            x: [
-              "2000-01",
-              "2000-02",
-              "2000-03",
-              "2000-04",
-              "2000-05",
-              "2000-06",
-              "2000-07",
-              "2000-08",
-              "2000-09",
-              "2000-10",
-              "2000-11",
-              "2000-12",
-              "2001-01",
-            ],
-            y: [1, 29, 36, 43, 5, 46, 67, 18],
-            marker: { color: "Purple" },
-            name: "Great Regular Flovour",
-            type: "scatter",
-          },
-          {
-            x: [
-              "2000-01",
-              "2000-02",
-              "2000-03",
-              "2000-04",
-              "2000-05",
-              "2000-06",
-              "2000-07",
-              "2000-08",
-              "2000-09",
-              "2000-10",
-              "2000-11",
-              "2000-12",
-              "2001-01",
-            ],
-            y: [1, 25, 37, 44, 65, 46, 37, 81],
-            marker: { color: "green" },
-            name: "Brite Maximum power",
-            type: "scatter",
-          },
-        ]}
-        layout={
-          {
-            // width: '100%',
-            // height: 600,
-            // title: "hello",
-          }
-        }
+        // data={[
+
+        //   {
+        //     x: [
+        //       "2000-01",
+        //       "2000-02",
+        //       "2000-03",
+        //       "2000-04",
+        //       "2000-05",
+        //       "2000-06",
+        //       "2000-07",
+        //       "2000-08",
+        //       "2000-09",
+        //       "2000-10",
+        //       "2000-11",
+        //       "2000-12",
+        //       "2001-01",
+        //     ],
+        //     y: [1, 2, 36, 45, 5, 64, 7, 45],
+        //     yaxis2: {
+        //       title: 'yaxis2 title',
+        //       titlefont: {color: '#ff7f0e'},
+        //       tickfont: {color: '#ff7f0e'},
+        //       anchor: 'free',
+        //       overlaying: 'y',
+        //       side: 'left',
+        //       position: 0.15
+        //     },
+        //     side: 'left',
+        //     marker: { color: "blue" },
+        //     name: "Bonus Regular",
+        //     type: "scatter",
+        //   },
+        //   {
+        //     x: [
+        //       "2000-01",
+        //       "2000-02",
+        //       "2000-03",
+        //       "2000-04",
+        //       "2000-05",
+        //       "2000-06",
+        //       "2000-07",
+        //       "2000-08",
+        //       "2000-09",
+        //       "2000-10",
+        //       "2000-11",
+        //       "2000-12",
+        //       "2001-01",
+        //     ],
+        //     y: [1, 29, 36, 43, 5, 46, 67, 18],
+        //     marker: { color: "Purple" },
+        //     name: "Great Regular Flovour",
+        //     type: "scatter",
+        //   },
+        //   {
+        //     x: [
+        //       "2000-01",
+        //       "2000-02",
+        //       "2000-03",
+        //       "2000-04",
+        //       "2000-05",
+        //       "2000-06",
+        //       "2000-07",
+        //       "2000-08",
+        //       "2000-09",
+        //       "2000-10",
+        //       "2000-11",
+        //       "2000-12",
+        //       "2001-01",
+        //     ],
+        //     y: [1, 25, 37, 44, 65, 46, 37, 81],
+        //     marker: { color: "green" },
+        //     name: "Brite Maximum power",
+        //     type: "scatter",
+        //   },
+        // ]}
+        data={data}
+        layout={layout}
         config={{ responsive: true }}
       />
     </Card>

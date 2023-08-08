@@ -19,7 +19,7 @@ import Results from '../../results/page'
 const drawerWidth = 255;
 
 export default function ClippedDrawer() {
-  const [menuData, setMenuData] = React.useState("setup");
+  const [menuData, setMenuData] = React.useState("result");
   return (
     <Box sx={{ display: "flex", bgcolor: "#398585 !imporant" }}>
       <CssBaseline />
