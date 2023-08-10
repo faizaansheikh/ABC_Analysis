@@ -35,10 +35,9 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const ProfileSection = () => {
+const ProfileSection = ({ profileData, setProfileData }) => {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(false);
-  const [profileData, setProfileData] = useState("");
 
   const viewDialogHandler = () => {
     setOpen(true);
@@ -46,13 +45,11 @@ const ProfileSection = () => {
 
   const fetchProfile = async () => {
     const res = await getProfile({ mode: "profiles" });
-    // console.log(res);
     setProfile(res?.data.map((e) => ({ label: e, value: e })));
   };
   useEffect(() => {
     fetchProfile();
   }, []);
-  // console.log(profile);
   return (
     <>
       <Card sx={{ boxShadow: "1px 1px 8px #80808085", padding: "0px 30px" }}>
@@ -71,7 +68,6 @@ const ProfileSection = () => {
             <CssTextField value={profileData} {...params} />
           )}
         />
-        {/* {profileData} */}
         <Box
           sx={{
             margin: "20px 0px",
@@ -87,7 +83,14 @@ const ProfileSection = () => {
           </ColorButton>
         </Box>
       </Card>
-      {open ? <ViewDialog profileData={profileData} setOpen={setOpen} open={open} /> : null}
+      {open ? (
+        <ViewDialog
+        
+          profileData={profileData}
+          setOpen={setOpen}
+          open={open}
+        />
+      ) : null}
     </>
   );
 };

@@ -124,20 +124,17 @@ const dataT1 = [
   },
 ];
 
-export default function BasicTable() {
-  const [dataT, setDataT] = useState({ columns: [], rows: [] });
+export default function BasicTable({ profileData,tableRes,setDataT, dataT }) {
+  // const [dataT, setDataT] = useState({ columns: [], rows: [] });
 
-  const getDataT = async () => {
-    const res = await resTable({ profile: "Abc Brand Wise_3_Plant" });
-    // console.log(res?.data?.columns);
-    setDataT({ columns: res?.data?.columns, rows: res?.data?.data });
-    // setDataT({ rows: res?.data?.data });
-  };
-  // console.log(dataT.columns);
-  useEffect(() => {
-    getDataT({ profile: "Abc Brand Wise_3_Plant" });
-  }, []);
-  // console.log(dataT.rows);
+  // const getDataT = async (query) => {
+  //   // const res = await resTable(query);
+  //   setDataT({ columns: tableRes?.data?.columns, rows: tableRes?.data?.data });
+  // };
+  // useEffect(() => {
+  //   // filtersApi()
+  //   getDataT({ profile: profileData });
+  // }, [profileData]);
 
   return (
     <div className="App">
@@ -193,7 +190,6 @@ export default function BasicTable() {
                         {row[keys]}
                       </TableCell>
                     ))}
-                  
                   </TableRow>
                 ))}
               </TableBody>

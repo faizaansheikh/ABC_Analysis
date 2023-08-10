@@ -10,9 +10,10 @@ import { getSummary } from "../setup/Services/SegmentationServices";
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
 });
+
 import "./summary.css";
 
-const SummaryCard = () => {
+const SummaryCard = ({ profileData}) => {
   const [open, setOpen] = useState(false);
   const [summaryData, setSummaryData] = useState([]);
 
@@ -21,25 +22,28 @@ const SummaryCard = () => {
   };
 
   const fetchSummary = async () => {
-    const res = await getSummary();
-    console.log( JSON.parse(res?.data?.data));
-    setSummaryData(JSON.parse(res?.data?.data));
+    const summaryRes = await getSummary();
+   
+    
+    let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data)
+     setSummaryData(parseSummary);
   };
 
   useEffect(() => {
     fetchSummary();
-  }, []);
+  }, [profileData]);
 
-  var colorscaleValue = [
+  let colorscaleValue = [
     [0, "#b1deb7"],
     [1, "#0a5413"],
   ];
 
-  var yValues = ["A", "B", "C"];
+  let yValues = ["A", "B", "C"];
 
-  var xValues = ["Z", "Y", "X"];
+  let xValues = ["Z", "Y", "X"];
 
-  var zValues = [...summaryData];
+  let zValues = summaryData;
+ 
 
   return (
     <>
@@ -68,9 +72,10 @@ const SummaryCard = () => {
           onClick={summaryDialogHandler}
           config={{ responsive: true }}
         />
+       
         {/* </Suspense> */}
       </Card>
-      {open ? <SummaryDialog setOpen={setOpen} open={open} /> : null}
+      {open ? <SummaryDialog profileData={profileData} setOpen={setOpen} open={open} /> : null}
     </>
   );
 };

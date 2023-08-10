@@ -61,20 +61,19 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function ViewDialog({ setOpen, open,profileData }) {
-  const[abcData,setAbcData] = React.useState({abc:[],xyz:[]})
+export default function ViewDialog({ setOpen, open, profileData }) {
+  const [abcData, setAbcData] = React.useState({ abc: [], xyz: [] });
   const handleClose = () => {
     setOpen(false);
   };
 
   const fetchTable = async (query) => {
     const res = await getTable(query);
-    setAbcData({abc:res.data.abcp,xyz:res.data.xyzp});
-    
+    setAbcData({ abc: res.data.abcp, xyz: res.data.xyzp });
   };
-console.log(abcData.xyz);
+  console.log(abcData.xyz);
   useEffect(() => {
-    fetchTable({profile: profileData});
+    fetchTable({ profile: profileData });
   }, []);
 
   return (
@@ -106,15 +105,14 @@ console.log(abcData.xyz);
                   <td className={style.theading}>Params</td>
                   <td className={style.theading}>Profile</td>
                 </tr>
-                {abcData.abc.map((elem)=>{
-                  return(
+                {abcData.abc.map((elem) => {
+                  return (
                     <tr>
-                  <td className={style.theading}>{elem.Params}</td>
-                  <td className={style.theading}>{elem.VALUES}</td>
-                </tr>
-                  )
+                      <td className={style.theading}>{elem.Params}</td>
+                      <td className={style.theading}>{elem.VALUES}</td>
+                    </tr>
+                  );
                 })}
-               
               </tbody>
             </table>
           </div>
@@ -124,16 +122,14 @@ console.log(abcData.xyz);
           <div>
             <table style={{ width: "468px" }}>
               <tbody>
-              {abcData.xyz.map((elem)=>{
-                  return(
+                {abcData.xyz.map((elem) => {
+                  return (
                     <tr>
-                  <td className={style.theading}>{elem.Params}</td>
-                  <td className={style.theading}>{elem.VALUES}</td>
-                </tr>
-                  )
+                      <td className={style.theading}>{elem.Params}</td>
+                      <td className={style.theading}>{elem.VALUES}</td>
+                    </tr>
+                  );
                 })}
-                
-                
               </tbody>
             </table>
             <p>

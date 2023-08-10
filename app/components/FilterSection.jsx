@@ -7,16 +7,6 @@ import { getBoxes, getProfile } from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
-];
-
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#A0AAB4",
@@ -51,18 +41,17 @@ let dataF = [
   { Plant: ["PK50", "PK51", "PK56"] },
   { XYZ: ["X", "Y", "Z"] },
 ];
-const FilterSection = () => {
-  const [filterNames, setFilterNames] = useState([]);
-  const [lookupApi, setLookupApi] = useState([]);
-  const getFilterBox = async () => {
-    const res = await getProfile({ mode: "all" });
-    setFilterNames(Object.keys(res.data));
-    setLookupApi(res.data);
-  };
-  // console.log(lookupApi);
-  useEffect(() => {
-    getFilterBox();
-  }, []);
+const FilterSection = ({filterNames,setFilterNames,lookupApi,setLookupApi}) => {
+ 
+  // const getFilterBox = async () => {
+  //   const res = await getProfile({ mode: "all" });
+  //   setFilterNames(Object.keys(res.data));
+  //   setLookupApi(res.data);
+  // };
+  // // console.log(lookupApi);
+  // useEffect(() => {
+  //   getFilterBox();
+  // }, []);
   return (
     <Grid
       container

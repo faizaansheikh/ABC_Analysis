@@ -9,29 +9,45 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
-const Plot = dynamic(() => import("react-plotly.js"));
+import { resGraph } from "../setup/Services/SegmentationServices";
+import { useEffect } from "react";
 
-const TimeSeriesGraph = () => {
-  var trace1 = {
-    x: [1, 2, 3],
-    y: [40, 50, 60],
-    name: "yaxis data",
-    type: "scatter",
+const Plot = dynamic(() => import("react-plotly.js"), {
+  ssr: false,
+});
+
+const TimeSeriesGraph = ({ profileData, timeSerious }) => {
+  // const [timeSerious, setTimeSerious] = useState({
+  //   x: [],
+  //   y: [],
+  //   name: "",
+  //   type: "",
+  //   yaxis: "",
+  // });
+
+  const { x, y, yaxis, name, type } = timeSerious;
+  console.log(x, y, name, yaxis, type);
+
+  let trace1 = {
+    x: x,
+    y: y,
+    name: name,
+    type: type,
   };
 
-  var trace2 = {
-    x: [2, 3, 4],
-    y: [4, 5, 6],
-    name: "yaxis2 data",
-    yaxis: 'y2',
-    type: "scatter",
+  let trace2 = {
+    x: x,
+    y: y,
+    name: name,
+    yaxis: yaxis,
+    type: type,
   };
 
-  var data = [trace1, trace2];
+  let data = [trace1, trace2];
 
-  var layout = {
+  let layout = {
     title: "Double Y Axis Example",
     yaxis: { title: "yaxis title" },
     yaxis2: {
@@ -42,6 +58,24 @@ const TimeSeriesGraph = () => {
       side: "right",
     },
   };
+
+  // const getGraph = async (query) => {
+  //   const res = await resGraph(query);
+  //   // console.log(res.data.data);
+  //   res?.data?.data.map((elem) => {
+  //     return setTimeSerious({
+  //       x: elem.x,
+  //       y: elem.y,
+  //       name: elem.name,
+  //       type: elem.type,
+  //       yaxis: elem.yaxis,
+  //     });
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   getGraph({ profile: profileData });
+  // }, [profileData]);
   return (
     <Card
       sx={{
@@ -140,7 +174,7 @@ const TimeSeriesGraph = () => {
         //     type: "scatter",
         //   },
         // ]}
-        data={data}
+        data={timeSerious}
         layout={layout}
         config={{ responsive: true }}
       />
