@@ -6,10 +6,10 @@ import { Card, Divider, Grid, Typography } from '@mui/material';
 import AttributeGraph from '../AttributeGraph';
 import IndexGraph from '../IndexGraph';
 
-const Graph = ({profileData, timeSerious}) => {
+const Graph = ({profileData, parseTimeseries}) => {
     return (
         <>
-            <TimeSeriesGraph profileData={profileData} timeSerious={timeSerious}/>
+            <TimeSeriesGraph profileData={profileData} parseTimeseries={parseTimeseries}/>
 
             <Grid container style={{ marginTop: '10px' }} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={12} sm={12} md={4}>

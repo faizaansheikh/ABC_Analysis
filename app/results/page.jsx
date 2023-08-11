@@ -13,6 +13,8 @@ import {
   getTable,
   resTable,
   resGraph,
+  timeSeriesGraph,
+  getGraphs,
 } from "../setup/Services/SegmentationServices";
 
 function Results() {
@@ -23,42 +25,41 @@ function Results() {
 
   const [showSummary, setShowSummary] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [timeSerious, setTimeSerious] = useState({
-    x: [],
-    y: [],
-    name: "",
-    type: "",
-    yaxis: "",
-  });
-  const getGraph = async (query) => {
-
-  };
+  const [timeSerious, setTimeSerious] = useState(false);
+  // let parseTimeseries = []
   const filtersApi = async () => {
     const tableRes = await resTable({ profile: profileData });
     const filterRes = await getProfile({ mode: "all" });
-    const graphData = await resGraph({ profile: profileData });
-    // console.log(res.data.data);
-    
-    // debugger
-    // console.log(tableRes?.data);
+    const timeseriesData = await timeSeriesGraph({ profile: profileData });
+    const attGraph = await getGraphs({ profile: profileData })
+    // console.log(JSON.parse(attGraph));
     let parseData = JSON.parse(tableRes?.data)
-    console.log(parseData);
+    
     setDataT({ columns: parseData?.columns, rows: parseData?.data });
     setShowSummary(true);
-   
+    
     if (parseData?.columns) {
       setShowSummary(true);
       setShowFilters(true)
-     
+      
       let parseFilterData = JSON.parse(filterRes?.data)
       setFilterNames(Object.keys(parseFilterData));
       setLookupApi(parseFilterData);
-     
+      setTimeSerious(JSON.parse(timeseriesData?.data))
+    
     }else{
       setShowSummary(false);
       setShowFilters(false)
 
     }
+
+  
+   
+    //  return parseTimeseries
+    // console.log(parseTimeseries);
+    // let xVal = parseTimeseries?.data.map(elem => elem.x)
+    // console.log(xVal);
+    
   };
 
   useEffect(() => {
@@ -103,7 +104,7 @@ function Results() {
         />
       </Box>
 
-      <Graph profileData={profileData} timeSerious={timeSerious} />
+      <Graph profileData={profileData} parseTimeseries={timeSerious} />
     </>
   );
 }

@@ -92,7 +92,7 @@ export const resTable = async (payload) => {
   }
 };
 
-export const resGraph = async (payload) => {
+export const timeSeriesGraph = async (payload) => {
   try {
     return await axios.get(`${BASE_URL_2}/visgraph?profile=${payload.profile}`);
   } catch (error) {
@@ -108,9 +108,9 @@ export const getSummaryModal = async () => {
   }
 };
 
-export const getCards = async () => {
+export const getGraphs = async (payload) => {
   try {
-    return await axios.get(`${BASE_URL_2}/calcscards`);
+    return await axios.get(`${BASE_URL_2}/calcs?profile=${payload.profile}`);
   } catch (error) {
     return error.message;
   }

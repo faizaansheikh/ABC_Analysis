@@ -18,7 +18,11 @@ const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
 });
 
-const TimeSeriesGraph = ({ profileData, timeSerious }) => {
+const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
+  if(parseTimeseries){
+    console.log(parseTimeseries?.yaxis_names.y1);
+  }
+ 
   // const [timeSerious, setTimeSerious] = useState({
   //   x: [],
   //   y: [],
@@ -27,25 +31,34 @@ const TimeSeriesGraph = ({ profileData, timeSerious }) => {
   //   yaxis: "",
   // });
 
-  const { x, y, yaxis, name, type } = timeSerious;
-  console.log(x, y, name, yaxis, type);
+  // const { x, y, yaxis, name, type } = timeSerious;
+  // console.log(x, y, name, yaxis, type);
+//  let traces =  parseTimeseries?.map((vals)=>{
+//     return(
+//       let trace = {
+//         x: x,
+//         y: y,
+//         name: name,
+//         type: type,
+//       };
+//     )
+//   })
+  // let trace1 = {
+  //   x: x,
+  //   y: y,
+  //   name: name,
+  //   type: type,
+  // };
 
-  let trace1 = {
-    x: x,
-    y: y,
-    name: name,
-    type: type,
-  };
+  // let trace2 = {
+  //   x: x,
+  //   y: y,
+  //   name: name,
+  //   yaxis: yaxis,
+  //   type: type,
+  // };
 
-  let trace2 = {
-    x: x,
-    y: y,
-    name: name,
-    yaxis: yaxis,
-    type: type,
-  };
-
-  let data = [trace1, trace2];
+  // let data = [trace1, trace2];
 
   let layout = {
     title: "Double Y Axis Example",
@@ -92,12 +105,21 @@ const TimeSeriesGraph = ({ profileData, timeSerious }) => {
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
         >
-          <FormControlLabel value="COGS" control={<Radio />} label="COGS" />
-          <FormControlLabel value="Demand" control={<Radio />} label="Demand" />
+          <FormControlLabel value="COGS" control={<Radio />} label={parseTimeseries && parseTimeseries?.yaxis_names.y1}/>
+          <FormControlLabel value="Demand" control={<Radio />} label={parseTimeseries && parseTimeseries?.yaxis_names.y2} />
         </RadioGroup>
       </FormControl>
       <Plot
         style={{ Width: "100%" }}
+        data = {parseTimeseries?.data}
+
+        // setTimeout(() => {
+        //   parseTimeseries?.data.map((vals)=>{
+        //     return(
+        //       vals
+        //     )
+        //   })
+        //  }, 3000)
         // data={[
 
         //   {
@@ -174,7 +196,7 @@ const TimeSeriesGraph = ({ profileData, timeSerious }) => {
         //     type: "scatter",
         //   },
         // ]}
-        data={timeSerious}
+        // data={timeSerious}
         layout={layout}
         config={{ responsive: true }}
       />
