@@ -124,7 +124,7 @@ const dataT1 = [
   },
 ];
 
-export default function BasicTable({ profileData,tableRes,setDataT, dataT }) {
+export default function BasicTable({ profileData,tableRes,setDataT, dataT,loader }) {
   // const [dataT, setDataT] = useState({ columns: [], rows: [] });
 
   // const getDataT = async (query) => {

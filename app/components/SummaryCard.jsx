@@ -13,25 +13,12 @@ const Plot = dynamic(() => import("react-plotly.js"), {
 
 import "./summary.css";
 
-const SummaryCard = ({ profileData}) => {
+const SummaryCard = ({ profileData, summaryData }) => {
   const [open, setOpen] = useState(false);
-  const [summaryData, setSummaryData] = useState([]);
 
   const summaryDialogHandler = () => {
     setOpen(true);
   };
-
-  const fetchSummary = async () => {
-    const summaryRes = await getSummary();
-   
-    
-    let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data)
-     setSummaryData(parseSummary);
-  };
-
-  useEffect(() => {
-    fetchSummary();
-  }, [profileData]);
 
   let colorscaleValue = [
     [0, "#b1deb7"],
@@ -43,7 +30,6 @@ const SummaryCard = ({ profileData}) => {
   let xValues = ["Z", "Y", "X"];
 
   let zValues = summaryData;
- 
 
   return (
     <>
@@ -72,10 +58,16 @@ const SummaryCard = ({ profileData}) => {
           onClick={summaryDialogHandler}
           config={{ responsive: true }}
         />
-       
+
         {/* </Suspense> */}
       </Card>
-      {open ? <SummaryDialog profileData={profileData} setOpen={setOpen} open={open} /> : null}
+      {open ? (
+        <SummaryDialog
+          profileData={profileData}
+          setOpen={setOpen}
+          open={open}
+        />
+      ) : null}
     </>
   );
 };

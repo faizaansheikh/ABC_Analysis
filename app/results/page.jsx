@@ -25,17 +25,21 @@ function Results() {
 
   const [showSummary, setShowSummary] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [summaryData, setSummaryData] = useState([]);
   const [timeSerious, setTimeSerious] = useState(false);
+  const [loader, setLoader] = useState(false);
   // let parseTimeseries = []
   const filtersApi = async () => {
     const tableRes = await resTable({ profile: profileData });
     const filterRes = await getProfile({ mode: "all" });
+    const summaryRes = await getSummary();
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
     const attGraph = await getGraphs({ profile: profileData })
     // console.log(JSON.parse(attGraph));
     let parseData = JSON.parse(tableRes?.data)
     
     setDataT({ columns: parseData?.columns, rows: parseData?.data });
+
     setShowSummary(true);
     
     if (parseData?.columns) {
@@ -45,29 +49,28 @@ function Results() {
       let parseFilterData = JSON.parse(filterRes?.data)
       setFilterNames(Object.keys(parseFilterData));
       setLookupApi(parseFilterData);
+
+      let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data)
+      setSummaryData(parseSummary);
+
       setTimeSerious(JSON.parse(timeseriesData?.data))
     
     }else{
+      // setLoader
       setShowSummary(false);
       setShowFilters(false)
 
     }
 
-  
-   
-    //  return parseTimeseries
-    // console.log(parseTimeseries);
-    // let xVal = parseTimeseries?.data.map(elem => elem.x)
-    // console.log(xVal);
     
   };
+const loadRes = ()=>{
+  if(profileData.length){
+    filtersApi();
+  }
 
-  useEffect(() => {
-    if(profileData.length){
+}
 
-      filtersApi();
-    }
-  }, [profileData]);
 
   return (
     <>
@@ -76,10 +79,11 @@ function Results() {
           <ProfileSection
             setProfileData={setProfileData}
             profileData={profileData}
+            loadRes={loadRes}
           />
         </Grid>
         <Grid textAlign='center' item xs={12} sm={12} md={12} lg={6.5}>
-          {showSummary ? <SummaryCard   profileData={profileData}/> : ''}
+          {showSummary ? <SummaryCard  summaryData={summaryData}   profileData={profileData}/> : ''}
         </Grid>
       </Grid>
     {showFilters ? <FilterSection filterNames={filterNames} lookupApi={lookupApi} /> : ''}
@@ -97,6 +101,7 @@ function Results() {
           {dataT.columns ?  'Results' : 'No results to show'}
          
         </Typography>
+        
         <ResultsTable
           profileData={profileData}
           setDataT={setDataT}

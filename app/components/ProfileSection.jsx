@@ -35,7 +35,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const ProfileSection = ({ profileData, setProfileData }) => {
+const ProfileSection = ({ profileData, setProfileData,loadRes }) => {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(false);
 
@@ -76,7 +76,7 @@ const ProfileSection = ({ profileData, setProfileData }) => {
             flexWrap: "wrap",
           }}
         >
-          <ColorButton variant="contained">Load Results</ColorButton>
+          <ColorButton variant="contained" onClick={loadRes}>Load Results</ColorButton>
           <ColorButton variant="contained">Refresh</ColorButton>
           <ColorButton variant="contained" onClick={viewDialogHandler}>
             View Params
