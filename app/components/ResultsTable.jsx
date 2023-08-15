@@ -137,10 +137,10 @@ export default function BasicTable({ profileData,tableRes,setDataT, dataT,loader
   // }, [profileData]);
 
   return (
-    <div className="App">
-      <Box sx={{ overflow: "auto" }}>
-        <Box sx={{ width: "100%", display: "table", tableLayout: "fixed" }}>
-          <TableContainer sx={{ height: "500px" }} component={Paper}>
+    // <div className="App">
+    //   <Box sx={{ overflow: "auto" }}>
+    //     <Box sx={{ width: "100%", display: "table", tableLayout: "fixed" }}>
+    //       <TableContainer sx={{ height: "500px" }} component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead
                 sx={{
@@ -194,24 +194,11 @@ export default function BasicTable({ profileData,tableRes,setDataT, dataT,loader
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
+    //       </TableContainer>
 
-          {/* <DataGrid
-            rows={dataT.rows}
-            columns={dataT.columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
-            // checkboxSelection
-            // disableRowSelectionOnClick
-          /> */}
-        </Box>
-      </Box>
-    </div>
+        
+    //     </Box>
+    //   </Box>
+    // </div>
   );
 }

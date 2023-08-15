@@ -108,13 +108,13 @@ export const getSummaryModal = async () => {
   }
 };
 
-export const getGraphs = async (payload) => {
-  try {
-    return await axios.get(`${BASE_URL_2}/calcs?profile=${payload.profile}`);
-  } catch (error) {
-    return error.message;
-  }
-};
+// export const getGraphs = async (payload) => {
+//   try {
+//     return await axios.get(`${BASE_URL_2}/calcs?profile=${payload.profile}`);
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
 
 export const getSentence = async () => {
   try {
@@ -134,10 +134,10 @@ export const getGiniIndex = async (payload) => {
   }
 };
 
-export const getAttributeGraph = async (payload) => {
+export const getOtherGraphs = async (payload) => {
   try {
-    return await axios.get(
-      `${BASE_URL_2}/calcs?profile=${payload.profile}`
+    return await axios.post(
+      `${BASE_URL_2}/calcs`,{...payload}
     );
   } catch (error) {
     return error.message;
