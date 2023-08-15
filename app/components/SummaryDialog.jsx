@@ -103,7 +103,7 @@ export default function SummaryDialog({ setOpen, open,profileData }) {
         <div style={{ overflow: "auto", height: "250px" }}>
           <DialogContent dividers>
             <table style={{ width: "500px" }}>
-              <thead>
+              <thead>   
                 <tr>
                   <th className={style.heading}>ABC</th>
                   <th className={style.heading}>XYZ</th>

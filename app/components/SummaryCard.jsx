@@ -37,7 +37,6 @@ const SummaryCard = ({ profileData, summaryData }) => {
         <p style={{ textAlign: "center", fontSize: "25px", margin: "7px 0px" }}>
           Summary
         </p>
-        {/* <Suspense fallback="loading..."> */}
         <Plot
           style={{ width: "100%" }}
           className="js-plotly-plot plotly main-svg"

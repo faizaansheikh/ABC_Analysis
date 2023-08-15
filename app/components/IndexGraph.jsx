@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Divider, Typography, Box } from "@mui/material";
+import { Card, Divider, Typography } from "@mui/material";
 import React from "react";
 import dynamic from "next/dynamic";
 import { getGiniIndex } from "../setup/Services/SegmentationServices";

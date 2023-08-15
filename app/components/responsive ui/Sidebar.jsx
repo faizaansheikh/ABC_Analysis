@@ -42,7 +42,7 @@ export default function ClippedDrawer() {
           {/* <img src={logo}  style={{paddingRight:'5px',width:'60px'}}  alt="" /> */}
           <Image
             src="/logo.png"
-            // alt="Picture of the author"
+            alt="Picture of the author"
             style={{paddingRight:'10px'}}
             width={68}
             height={40}
@@ -91,13 +91,14 @@ export default function ClippedDrawer() {
               }}
             >
               <Box
+              className="sideBtn"
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   p: "10px",
                 }}
-              >
+                >
                 {/* <InboxIcon /> */}
                 <SettingsIcon sx={{ fontSize: "20px" }} />
                 <Button

@@ -69,9 +69,9 @@ export default function ViewDialog({ setOpen, open, profileData }) {
 
   const fetchTable = async (query) => {
     const res = await getTable(query);
-    setAbcData({ abc: res.data.abcp, xyz: res.data.xyzp });
+    setAbcData({ abc: res?.data.abcp, xyz: res?.data.xyzp });
   };
-  console.log(abcData.xyz);
+  //console.log(abcData.xyz);
   useEffect(() => {
     fetchTable({ profile: profileData });
   }, []);
@@ -105,9 +105,9 @@ export default function ViewDialog({ setOpen, open, profileData }) {
                   <td className={style.theading}>Params</td>
                   <td className={style.theading}>Profile</td>
                 </tr>
-                {abcData.abc.map((elem) => {
+                {abcData.abc.map((elem, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td className={style.theading}>{elem.Params}</td>
                       <td className={style.theading}>{elem.VALUES}</td>
                     </tr>
@@ -122,9 +122,9 @@ export default function ViewDialog({ setOpen, open, profileData }) {
           <div>
             <table style={{ width: "468px" }}>
               <tbody>
-                {abcData.xyz.map((elem) => {
+                {abcData.xyz.map((elem, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td className={style.theading}>{elem.Params}</td>
                       <td className={style.theading}>{elem.VALUES}</td>
                     </tr>

@@ -112,14 +112,14 @@ function Setup() {
         ...inputVals,
         Use_grouping: '1',
       });
-    } else{
+    } else {
       setGroupTrue(false);
       setInputVals({
         ...inputVals,
         Use_grouping: '0',
         grouping_Attributes: []
       });
-      
+
       // console.log('wroking');
     }
   };
@@ -132,15 +132,13 @@ function Setup() {
         Type: "ABC",
         SegmentationMeasureXYZ: ''
       });
-     
-    } else {
 
+    } else {
       setAbcGroupTrue(true);
       setInputVals({
         ...inputVals,
         Type: "BOTH",
       });
-
     }
   };
   const handleChange = (e) => {
@@ -260,8 +258,8 @@ function Setup() {
       toastError()
     } else {
       console.log(inputVals);
-      // const res = await postSegmentaion(inputVals)
-      // console.log(res)
+      const res = await postSegmentaion(inputVals)
+      console.log(res)
       toast.success('Values save successfully', {
         autoClose: 3000,
         theme: "dark",
@@ -429,6 +427,7 @@ function Setup() {
                 textAlign: "center",
                 p: "15px",
                 width: { xs: "100%", lg: "auto" },
+                borderTop: '2px solid #398585'
               }}
             >
               ABC Setup
@@ -457,7 +456,7 @@ function Setup() {
             // mr: { xs: "0px", md: "none", lg: "none" },
           }}
         >
-          <FormControl fullWidth sx={{ m: 1 }}>
+          <FormControl fullWidth sx={{ m: 1 }} >
             <Typography sx={{ mt: "20px", mb: "20px" }}>
               Profile Name
             </Typography>
@@ -480,6 +479,7 @@ function Setup() {
               name="Segmentation_Measure"
               fullWidth
               size="small"
+              labelId="Select a segmentation measure"
               label="Select a segmentation measure"
               select
               value={inputVals.Segmentation_Measure}
@@ -487,8 +487,8 @@ function Setup() {
               error={validation.segMeas}
               helperText={validation.segMeas && "Please select a value"}
             >
-              {segMeasure.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
+              {segMeasure.map((elem, index) => {
+                return <MenuItem value={elem} key={index}>{elem}</MenuItem>;
               })}
             </CssTextField>
 
@@ -499,6 +499,7 @@ function Setup() {
               name="Caluclation_level"
               fullWidth
               size="small"
+              id="Select your base level for calculations"
               label="Select your base level for calculations"
               select
               value={inputVals.Caluclation_level}
@@ -508,8 +509,8 @@ function Setup() {
                 validation.calLevel && "Please select caluclation level"
               }
             >
-              {primaryCalculation.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
+              {primaryCalculation.map((elem, index) => {
+                return <MenuItem value={elem} key={index}>{elem}</MenuItem>;
               })}
             </CssTextField>
 
@@ -520,6 +521,7 @@ function Setup() {
               name="Periodicity"
               fullWidth
               size="small"
+              id="Period to base your calculations on"
               label="Period to base your calculations on"
               select
               value={inputVals.Periodicity}
@@ -527,8 +529,8 @@ function Setup() {
               error={validation.period}
               helperText={validation.period && "Please select Periodicity"}
             >
-              {periodicity.map((elem) => {
-                return <MenuItem value={elem}>{elem}</MenuItem>;
+              {periodicity.map((elem, index) => {
+                return <MenuItem value={elem} key={index}>{elem}</MenuItem>;
               })}
             </CssTextField>
 
@@ -539,6 +541,7 @@ function Setup() {
               name="Calculation_Horizon"
               type="number"
               fullWidth
+              id="Input your previous Weeks/Months/Year as a number"
               size="small"
               label="Input your previous Weeks/Months/Year as a number"
               value={inputVals.Calculation_Horizon}
@@ -573,7 +576,7 @@ function Setup() {
               name="Segmentation_method"
               fullWidth
               size="small"
-              id="combo-box-demo"
+              id="Segmentation_method"
               options={secondaryCalculation}
               value={inputVals.grouping_Attributes}
               // sx={{ width: 300 }}
@@ -598,7 +601,7 @@ function Setup() {
               name="Segmentation_method"
               fullWidth
               size="small"
-              id="combo-box-demo"
+              id="combo-box-demo-2"
               options={segMethod}
               // sx={{ width: 300 }}
               onSelect={handleChange}
@@ -654,6 +657,7 @@ function Setup() {
             fullWidth
             // sx={{width:{xs:'280px',md:'fullwidth'}}}
             size="small"
+            id="Select a measure for XYZ"
             label="Select a measure for XYZ"
             select
             value={inputVals.SegmentationMeasureXYZ}
@@ -663,8 +667,8 @@ function Setup() {
               validation.segMesureXyz && "Please select xyz segmentation method"
             }
           >
-            {xyzMethod.map((elem) => {
-              return <MenuItem value={elem}>{elem}</MenuItem>;
+            {xyzMethod.map((elem, index) => {
+              return <MenuItem value={elem} key={index}>{elem}</MenuItem>;
             })}
           </CssTextField>
         </Box>
