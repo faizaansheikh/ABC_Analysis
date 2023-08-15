@@ -53,7 +53,6 @@ const FilterSection = () => {
                         padding: "7px 20px 20px",
                         backgroundColor: "#71807a",
                         color: "white",
-                        // width:'400px'
                     }}
                 >
                     <p style={{ textAlign: "center", fontSize: "20px", margin: "0px" }}>
@@ -81,7 +80,6 @@ const FilterSection = () => {
                         padding: "7px 20px 20px",
                         backgroundColor: "#71807a",
                         color: "white",
-                        // width:'400px'
                     }}
                 >
                     <p style={{ textAlign: "center", fontSize: "20px", margin: "0px" }}>
@@ -109,7 +107,6 @@ const FilterSection = () => {
                         padding: "7px 20px 20px",
                         backgroundColor: "#71807a",
                         color: "white",
-                        // width:'400px'
                     }}
                 >
                     <p style={{ textAlign: "center", fontSize: "20px", margin: "0px" }}>

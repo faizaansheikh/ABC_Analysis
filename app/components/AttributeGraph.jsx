@@ -84,13 +84,6 @@ const AttributeGraph = () => {
                         type: "scatter",
                     },
                 ]}
-                layout={
-                    {
-                        // width: '100%',
-                        // height: 600,
-                        // title: "hello",
-                    }
-                }
                 config={{ responsive: true }}
             />
         </Card>

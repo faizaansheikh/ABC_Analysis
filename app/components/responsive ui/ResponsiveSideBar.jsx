@@ -8,9 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from "@mui/material/List";
-// import logo from "../Dashboard/logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import GridOnIcon from "@mui/icons-material/GridOn";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -25,7 +23,7 @@ import Image from "next/image";
 import ReorderIcon from '@mui/icons-material/Reorder';
 const drawerWidth = 270;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     justifyContent: "flex-end",
@@ -64,13 +62,11 @@ function ResponsiveDrawer(props) {
           display='end'
           onClick={handleDrawerToggle}
           className={classes.container}
-        // sx={{ display:'flex',justifyContent:'end',alignItems:'end' }}
         >
           <CloseIcon onClick={() => setMobileOpen(false)} />
         </IconButton>
       </div>
 
-      {/* <Toolbar /> */}
       <Divider />
       <List>
         <Box sx={{ overflow: "auto", bgcolor: "#398585" }}>
@@ -151,7 +147,7 @@ function ResponsiveDrawer(props) {
           </IconButton>
           <Image
             src="/logo.png"
-            // alt="Picture of the author"
+            alt="Picture of the author"
             style={{ paddingRight: '10px' }}
             width={68}
             height={40}

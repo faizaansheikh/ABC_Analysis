@@ -1,3 +1,5 @@
+'use client'
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,7 +9,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TextField } from "@mui/material";
 import styled from "@emotion/styled";
-// import { useState } from "react";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-input": {
@@ -25,21 +26,9 @@ const CssTextField = styled(TextField)({
   },
 });
 
-// const useStyles = makeStyles({
-//   table: {
-//     //   minWidth: 350,
-//     "& .MuiTableCell-root": {
-//       border: "1px solid black",
-//     },
-//   },
-// });
-
-
 function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   const handleTableValue = (e) => {
     const { name, value } = e.target
-    // let name = e.target.name;
-    // let value = e.target.value
 
     const newValue = {
       ...inputVals,
@@ -65,11 +54,9 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
     createData("B", <CssTextField size="small" fullWidth type="number" name="B" onChange={handleTableValue} value={inputVals.B} />),
     createData("C", <CssTextField size="small" fullWidth type="number" name="C" onChange={handleTableValue} value={inputVals.C} />),
   ];
-  // const classes = useStyles();
   return (
     <TableContainer component={Paper} sx={{ mt: "50px", width: "100%" }} >
       <Table
-        // className={classes.table}
         sx={{ width: "100%" }}
         aria-label="simple table"
       >
@@ -87,7 +74,6 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
           {rows.map((row, index) => (
             <TableRow
               key={index}
-            //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="center" component="th" scope="row" sx={{ padding: '0px', borderRight: '1px solid #00000042' }}>
                 {row.name}

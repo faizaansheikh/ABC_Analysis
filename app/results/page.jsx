@@ -9,7 +9,6 @@ import FilterSection from "../components/FilterSection";
 import Graph from "../components/Graph/Graph";
 
 function Results() {
-  // const SummaryCard = lazy(() => import("../components/SummaryCard"));
   return (
     <>
       <Grid container spacing={3}>
@@ -17,7 +16,7 @@ function Results() {
           <ProfileSection />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6.5}>
-        <SummaryCard />
+          <SummaryCard />
         </Grid>
       </Grid>
 

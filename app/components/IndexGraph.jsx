@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, Divider, Typography, Box } from "@mui/material";
+import { Card, Divider, Typography } from "@mui/material";
 import React from "react";
 import dynamic from "next/dynamic";
 const Plot = dynamic(() => import('react-plotly.js'));
@@ -58,9 +58,6 @@ const IndexGraph = () => {
                         xaxis: {
                             title: 'Time Step'
                         }
-                        // width: '100%',
-                        // height: 600,
-                        // title: "hello",
                     }
                 }
                 config={{ responsive: true }}
