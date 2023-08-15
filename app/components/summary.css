@@ -1,6 +1,5 @@
-.js-plotly-plot .plotly .main-svg {
+ .js-plotly-plot .plotly .main-svg  {
     top: -70px !important;
     /* left: -20px; */
     background: none !important;
   }
-  

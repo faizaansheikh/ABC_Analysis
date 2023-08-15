@@ -63,6 +63,7 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries,formattedArr }) => {
   let layout = {
     // title: "Double Y Axis Example",
     // width:'auto',
+    height: 600,
     font: {
     
       size: 12, 
@@ -75,6 +76,7 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries,formattedArr }) => {
       overlaying: "y",
       side: "right",
     },
+    
   };
 
   // const getGraph = async (query) => {
@@ -103,10 +105,10 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries,formattedArr }) => {
       sx={{
         boxShadow: "1px 1px 8px #80808085",
         marginTop: "50px",
-        height: "435px",
+        height: "auto",
       }}
     >
-      <Typography sx={{ padding: 2 }}>TimeSeries of Selected data</Typography>
+      <Typography sx={{ padding: 2,fontSize:'25px' }}>Time Series Analysis</Typography>
       <Divider />
       {/* <FormControl sx={{ ml: "20px" }}>
         <RadioGroup
@@ -207,7 +209,7 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries,formattedArr }) => {
         // ]}
         // data={timeSerious}
         layout={layout}
-        config={{ responsive: true }}
+        config={{ responsive: false }}
       />
     </Card>
   );

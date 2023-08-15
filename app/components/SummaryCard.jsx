@@ -40,7 +40,7 @@ const SummaryCard = ({ profileData, summaryData,loader }) => {
       
         <Plot
           style={{ width: "100%" }}
-          className="js-plotly-plot plotly main-svg"
+          // className="js-plotly-plot plotly main-svg"
           data={[
             {
               x: xValues,

@@ -36,17 +36,17 @@ function Results() {
   const [showFilters, setShowFilters] = useState(false);
   const [summaryData, setSummaryData] = useState([]);
   const [timeSerious, setTimeSerious] = useState(false);
+  const [attgraph, setAttgraph] = useState(false);
+  const [giniGraph, setGniGraph] = useState(false);
   const [loader, setLoader] = useState(false);
-  const [filterGraph,setFilterGraph] = useState({
-    profile: "ABC Brand-Grammage_Wise1_Plant",
-      arr: {
-        Brand: "Bonus Regular",
-        Plant: "PK50",
-        Grammage: "110-70 GM"
-      }
-  })
-
- 
+  const [cardsVal, setCardsVal] = useState(false);
+  const [filterGraph, setFilterGraph] = useState({
+    profile: "Abc Brand-Grammage Wise_1",
+    arr: {
+      Brand: "Bonus Regular",
+      Grammage: "110-70 GM",
+    },
+  });
   
   // let parseTimeseries = []
   const filtersApi = async () => {
@@ -56,10 +56,9 @@ function Results() {
     const summaryRes = await getSummary();
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
     const otherGraphs = await getOtherGraphs(filterGraph);
-    const parseOtherGraphs = JSON.parse(otherGraphs.data)
-    console.log(parseOtherGraphs);
-  
-    console.log(JSON.parse(parseOtherGraphs.data));
+
+
+    // console.log(JSON.parse(parseOtherGraphs.data));
     setLoader(false);
     // console.log(JSON.parse(attGraph));
     let parseData = JSON.parse(tableRes?.data);
@@ -81,28 +80,30 @@ function Results() {
 
       setTimeSerious(JSON.parse(timeseriesData?.data));
 
-     
+      let parseOtherGraphs = JSON.parse(otherGraphs?.data);
+      setCardsVal(parseOtherGraphs);
+      setAttgraph(parseOtherGraphs?.data)
+      setGniGraph(parseOtherGraphs?.giniData)
+      
     } else {
       setShowSummary(false);
       setShowFilters(false);
     }
-
-    
   };
   // console.log(timeSerious);
-  let formattedArr = []
-  if(timeSerious.data){
-     formattedArr = timeSerious?.data.map(item => {
-      let formattedX = item.x.map(xValue => {
+  let formattedArr = [];
+  if (timeSerious.data) {
+    formattedArr = timeSerious?.data.map((item) => {
+      let formattedX = item.x.map((xValue) => {
         const year = xValue.slice(0, 4);
         const month = xValue.slice(4);
-        const formattedMonth = (month.length === 1 ? '0' + month : month);
-        return year + '-' + formattedMonth;
+        const formattedMonth = month.length === 1 ? "0" + month : month;
+        return formattedMonth + "-" + year;
       });
-    
+
       return { ...item, x: formattedX };
     });
-    console.log(formattedArr);
+    // console.log(formattedArr);
   }
   const loadRes = () => {
     if (profileData.length) {
@@ -122,6 +123,7 @@ function Results() {
         </Grid>
         <Grid textAlign="center" item xs={12} sm={12} md={12} lg={6.5}>
           <Card
+            // className="summary-card"
             sx={{
               boxShadow: "1px 1px 8px #80808085",
               height: "300px",
@@ -133,7 +135,7 @@ function Results() {
               style={{
                 textAlign: "center",
                 fontSize: "25px",
-                margin:  "7px 0px",
+                margin: "7px 0px",
               }}
             >
               Summary
@@ -234,7 +236,15 @@ function Results() {
         )}
       </Box>
 
-      <Graph profileData={profileData} parseTimeseries={timeSerious} formattedArr={formattedArr}/>
+      <Graph
+        profileData={profileData}
+        parseTimeseries={timeSerious}
+        formattedArr={formattedArr}
+        attgraph={attgraph}
+        giniGraph={giniGraph}
+        cardsVal={cardsVal}
+      />
+      
     </>
   );
 }
