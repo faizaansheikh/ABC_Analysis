@@ -1,19 +1,23 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
-import dynamic from 'next/dynamic';
-const Plot = dynamic(() => import('react-plotly.js'));
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { getAttributeGraph } from "../setup/Services/SegmentationServices";
+
+const Plot = dynamic(() => import("react-plotly.js"), {
+  ssr: false,
+});
 
 import {
-    Typography,
-    FormControl,
-    Card,
-    Divider,
-    Autocomplete,
-    TextField,
-    Select,
-    MenuItem,
-    Box,
+  Typography,
+  FormControl,
+  Card,
+  Divider,
+  Autocomplete,
+  TextField,
+  Select,
+  MenuItem,
+  Box,
 } from "@mui/material";
 const AttributeGraph = () => {
     const [drop, setDrop] = useState('')
@@ -84,6 +88,13 @@ const AttributeGraph = () => {
                         type: "scatter",
                     },
                 ]}
+                layout={
+                    {
+                        // width: '100%',
+                        // height: 600,
+                        // title: "hello",
+                    }
+                }
                 config={{ responsive: true }}
             />
         </Card>

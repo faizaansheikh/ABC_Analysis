@@ -70,9 +70,9 @@ function Setup() {
     Type: "BOTH",
     Segmentation_method: "Pareto by percentage",
     SegmentationMeasureXYZ: "",
-    X: 0,
-    Gini: 0,
-    slope: 0,
+    X: 0.6,
+    Gini: 0.9,
+    slope: 0.56,
     A: 0,
     B: 0,
     C: 0
@@ -112,13 +112,18 @@ function Setup() {
         ...inputVals,
         Use_grouping: '1',
       });
-    } else {
+    } else{
       setGroupTrue(false);
       setInputVals({
         ...inputVals,
         Use_grouping: '0',
         grouping_Attributes: []
       });
+<<<<<<< HEAD
+=======
+      
+      // console.log('wroking');
+>>>>>>> c4d9faf3aa0f0ab09037c2a2304da7bf2fb5487b
     }
   };
   const handleAbcGroup = (e) => {
@@ -130,6 +135,10 @@ function Setup() {
         Type: "ABC",
         SegmentationMeasureXYZ: ''
       });
+<<<<<<< HEAD
+=======
+     
+>>>>>>> c4d9faf3aa0f0ab09037c2a2304da7bf2fb5487b
     } else {
       setAbcGroupTrue(true);
       setInputVals({
@@ -235,19 +244,19 @@ function Setup() {
         segMesureXyz: true,
       });
       toastError()
-    } else if (inputVals.X == 0) {
+    } else if (!inputVals.X) {
       setValidation({
         ...validation,
         valX: true,
       });
       toastError()
-    } else if (inputVals.Gini == 0) {
+    } else if (!inputVals.Gini) {
       setValidation({
         ...validation,
         valGini: true,
       });
       toastError()
-    } else if (inputVals.slope == 0) {
+    } else if (!inputVals.slope) {
       setValidation({
         ...validation,
         valSlope: true,
