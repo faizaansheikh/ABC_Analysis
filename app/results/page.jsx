@@ -1,12 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  Grid,
+  Paper,
+  TableContainer,
+  Typography,
+} from "@mui/material";
 import ResultsTable from "../components/ResultsTable";
 import SummaryCard from "../components/SummaryCard";
 import ProfileSection from "../components/ProfileSection";
 import FilterSection from "../components/FilterSection";
 import Graph from "../components/Graph/Graph";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   getSummary,
   getProfile,
@@ -15,6 +23,7 @@ import {
   resGraph,
   timeSeriesGraph,
   getGraphs,
+  getOtherGraphs,
 } from "../setup/Services/SegmentationServices";
 
 function Results() {
@@ -28,49 +37,78 @@ function Results() {
   const [summaryData, setSummaryData] = useState([]);
   const [timeSerious, setTimeSerious] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [filterGraph,setFilterGraph] = useState({
+    profile: "ABC Brand-Grammage_Wise1_Plant",
+      arr: {
+        Brand: "Bonus Regular",
+        Plant: "PK50",
+        Grammage: "110-70 GM"
+      }
+  })
+
+ 
+  
   // let parseTimeseries = []
   const filtersApi = async () => {
+    setLoader(true);
     const tableRes = await resTable({ profile: profileData });
     const filterRes = await getProfile({ mode: "all" });
     const summaryRes = await getSummary();
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
-    const attGraph = await getGraphs({ profile: profileData })
+    const otherGraphs = await getOtherGraphs(filterGraph);
+    const parseOtherGraphs = JSON.parse(otherGraphs.data)
+    console.log(parseOtherGraphs);
+  
+    console.log(JSON.parse(parseOtherGraphs.data));
+    setLoader(false);
     // console.log(JSON.parse(attGraph));
-    let parseData = JSON.parse(tableRes?.data)
-    
+    let parseData = JSON.parse(tableRes?.data);
+
     setDataT({ columns: parseData?.columns, rows: parseData?.data });
 
     setShowSummary(true);
-    
+
     if (parseData?.columns) {
       setShowSummary(true);
-      setShowFilters(true)
-      
-      let parseFilterData = JSON.parse(filterRes?.data)
+      setShowFilters(true);
+
+      let parseFilterData = JSON.parse(filterRes?.data);
       setFilterNames(Object.keys(parseFilterData));
       setLookupApi(parseFilterData);
 
-      let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data)
+      let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
       setSummaryData(parseSummary);
 
-      setTimeSerious(JSON.parse(timeseriesData?.data))
-    
-    }else{
-      // setLoader
-      setShowSummary(false);
-      setShowFilters(false)
+      setTimeSerious(JSON.parse(timeseriesData?.data));
 
+     
+    } else {
+      setShowSummary(false);
+      setShowFilters(false);
     }
 
     
   };
-const loadRes = ()=>{
-  if(profileData.length){
-    filtersApi();
+  // console.log(timeSerious);
+  let formattedArr = []
+  if(timeSerious.data){
+     formattedArr = timeSerious?.data.map(item => {
+      let formattedX = item.x.map(xValue => {
+        const year = xValue.slice(0, 4);
+        const month = xValue.slice(4);
+        const formattedMonth = (month.length === 1 ? '0' + month : month);
+        return year + '-' + formattedMonth;
+      });
+    
+      return { ...item, x: formattedX };
+    });
+    console.log(formattedArr);
   }
-
-}
-
+  const loadRes = () => {
+    if (profileData.length) {
+      filtersApi();
+    }
+  };
 
   return (
     <>
@@ -82,13 +120,78 @@ const loadRes = ()=>{
             loadRes={loadRes}
           />
         </Grid>
-        <Grid textAlign='center' item xs={12} sm={12} md={12} lg={6.5}>
-          {showSummary ? <SummaryCard  summaryData={summaryData}   profileData={profileData}/> : ''}
+        <Grid textAlign="center" item xs={12} sm={12} md={12} lg={6.5}>
+          <Card
+            sx={{
+              boxShadow: "1px 1px 8px #80808085",
+              height: "300px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "25px",
+                margin:  "7px 0px",
+              }}
+            >
+              Summary
+            </p>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {loader ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CircularProgress />
+                  <Typography sx={{ mt: "10px" }}>Loading</Typography>
+                </Box>
+              ) : showSummary ? (
+                <SummaryCard
+                  summaryData={summaryData}
+                  profileData={profileData}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+          </Card>
         </Grid>
       </Grid>
-    {showFilters ? <FilterSection filterNames={filterNames} lookupApi={lookupApi} /> : ''}
-      
-
+      {/* {loader ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <CircularProgress />
+          <Typography sx={{ mt: "10px" }}>Loading</Typography>
+        </Box>
+      ) : showFilters ? (
+        <FilterSection filterNames={filterNames} lookupApi={lookupApi} />
+      ) : (
+        ""
+      )} */}
+      {showFilters ? (
+        <FilterSection filterNames={filterNames} lookupApi={lookupApi} />
+      ) : (
+        ""
+      )}
       <Box sx={{ mt: "30px", boxShadow: "1px 1px 8px #80808085", p: "20px" }}>
         <Typography
           sx={{
@@ -98,18 +201,40 @@ const loadRes = ()=>{
             fontSize: "20px",
           }}
         >
-          {dataT.columns ?  'Results' : 'No results to show'}
-         
+          {dataT.columns ? "Results" : "No results to show"}
         </Typography>
-        
-        <ResultsTable
-          profileData={profileData}
-          setDataT={setDataT}
-          dataT={dataT}
-        />
+        {loader ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <CircularProgress />
+            <Typography sx={{ mt: "10px" }}>Loading</Typography>
+          </Box>
+        ) : (
+          <div className="App">
+            <Box sx={{ overflow: "auto" }}>
+              <Box
+                sx={{ width: "100%", display: "table", tableLayout: "fixed" }}
+              >
+                <TableContainer sx={{ height: "500px" }} component={Paper}>
+                  <ResultsTable
+                    profileData={profileData}
+                    setDataT={setDataT}
+                    dataT={dataT}
+                  />
+                </TableContainer>
+              </Box>
+            </Box>
+          </div>
+        )}
       </Box>
 
-      <Graph profileData={profileData} parseTimeseries={timeSerious} />
+      <Graph profileData={profileData} parseTimeseries={timeSerious} formattedArr={formattedArr}/>
     </>
   );
 }

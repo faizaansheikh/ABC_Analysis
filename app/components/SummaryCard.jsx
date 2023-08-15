@@ -13,7 +13,7 @@ const Plot = dynamic(() => import("react-plotly.js"), {
 
 import "./summary.css";
 
-const SummaryCard = ({ profileData, summaryData }) => {
+const SummaryCard = ({ profileData, summaryData,loader }) => {
   const [open, setOpen] = useState(false);
 
   const summaryDialogHandler = () => {
@@ -33,11 +33,11 @@ const SummaryCard = ({ profileData, summaryData }) => {
 
   return (
     <>
-      <Card sx={{ boxShadow: "1px 1px 8px #80808085", height: "300px" }}>
+      {/* <Card sx={{ boxShadow: "1px 1px 8px #80808085", height: "300px" }}>
         <p style={{ textAlign: "center", fontSize: "25px", margin: "7px 0px" }}>
           Summary
-        </p>
-        {/* <Suspense fallback="loading..."> */}
+        </p> */}
+      
         <Plot
           style={{ width: "100%" }}
           className="js-plotly-plot plotly main-svg"
@@ -60,7 +60,7 @@ const SummaryCard = ({ profileData, summaryData }) => {
         />
 
         {/* </Suspense> */}
-      </Card>
+      {/* </Card> */}
       {open ? (
         <SummaryDialog
           profileData={profileData}

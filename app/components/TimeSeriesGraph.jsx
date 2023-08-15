@@ -18,10 +18,10 @@ const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
 });
 
-const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
-  if(parseTimeseries){
-    console.log(parseTimeseries?.yaxis_names.y1);
-  }
+const TimeSeriesGraph = ({ profileData, parseTimeseries,formattedArr }) => {
+  // if(parseTimeseries){
+  //   console.log(parseTimeseries?.yaxis_names.y1);
+  // }
  
   // const [timeSerious, setTimeSerious] = useState({
   //   x: [],
@@ -61,10 +61,15 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
   // let data = [trace1, trace2];
 
   let layout = {
-    title: "Double Y Axis Example",
-    yaxis: { title: "yaxis title" },
+    // title: "Double Y Axis Example",
+    // width:'auto',
+    font: {
+    
+      size: 12, 
+    },
+    yaxis: { title: parseTimeseries?.yaxis_names?.y2 },
     yaxis2: {
-      title: "yaxis2 title",
+      title: parseTimeseries?.yaxis_names?.y1,
       titlefont: { color: "rgb(148, 103, 189)" },
       tickfont: { color: "rgb(148, 103, 189)" },
       overlaying: "y",
@@ -89,6 +94,10 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
   // useEffect(() => {
   //   getGraph({ profile: profileData });
   // }, [profileData]);
+  if(formattedArr){
+    formattedArr.map((elem => elem.mode = 'lines+markers'))
+  }
+
   return (
     <Card
       sx={{
@@ -99,7 +108,7 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
     >
       <Typography sx={{ padding: 2 }}>TimeSeries of Selected data</Typography>
       <Divider />
-      <FormControl sx={{ ml: "20px" }}>
+      {/* <FormControl sx={{ ml: "20px" }}>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
@@ -108,10 +117,10 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
           <FormControlLabel value="COGS" control={<Radio />} label={parseTimeseries && parseTimeseries?.yaxis_names.y1}/>
           <FormControlLabel value="Demand" control={<Radio />} label={parseTimeseries && parseTimeseries?.yaxis_names.y2} />
         </RadioGroup>
-      </FormControl>
+      </FormControl> */}
       <Plot
-        style={{ Width: "100%" }}
-        data = {parseTimeseries?.data}
+        style={{ width: "100%" }}
+        data = {formattedArr}
 
         // setTimeout(() => {
         //   parseTimeseries?.data.map((vals)=>{
@@ -124,19 +133,19 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
 
         //   {
         //     x: [
-        //       "2000-01",
-        //       "2000-02",
-        //       "2000-03",
-        //       "2000-04",
-        //       "2000-05",
-        //       "2000-06",
-        //       "2000-07",
-        //       "2000-08",
-        //       "2000-09",
-        //       "2000-10",
-        //       "2000-11",
-        //       "2000-12",
-        //       "2001-01",
+        //       "200001",
+        //       "200002",
+        //       "200003",
+        //       "200004",
+        //       "200005",
+        //       "200006",
+        //       "200007",
+        //       "200008",
+        //       "200009",
+        //       "200010",
+        //       "200011",
+        //       "200012",
+        //       "200101",
         //     ],
         //     y: [1, 2, 36, 45, 5, 64, 7, 45],
         //     yaxis2: {
@@ -155,19 +164,19 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries }) => {
         //   },
         //   {
         //     x: [
-        //       "2000-01",
-        //       "2000-02",
-        //       "2000-03",
-        //       "2000-04",
-        //       "2000-05",
-        //       "2000-06",
-        //       "2000-07",
-        //       "2000-08",
-        //       "2000-09",
-        //       "2000-10",
-        //       "2000-11",
-        //       "2000-12",
-        //       "2001-01",
+        //       "200001",
+        //       "200002",
+        //       "200003",
+        //       "200004",
+        //       "200005",
+        //       "200006",
+        //       "200007",
+        //       "200008",
+        //       "200009",
+        //       "200010",
+        //       "200011",
+        //       "200012",
+        //       "200101",
         //     ],
         //     y: [1, 29, 36, 43, 5, 46, 67, 18],
         //     marker: { color: "Purple" },
