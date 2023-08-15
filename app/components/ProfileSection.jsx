@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import ViewDialog from "./ViewDialog";
 import { getProfile } from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -35,17 +36,21 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const ProfileSection = ({ profileData, setProfileData,loadRes }) => {
+const ProfileSection = ({ profileData, setProfileData, loadRes }) => {
   const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState(false);
+  const [profile, setProfile] = useState([]);
 
   const viewDialogHandler = () => {
     setOpen(true);
   };
 
+  const refreshButton = () => {
+    setProfileData('')
+  }
+
   const fetchProfile = async () => {
     const res = await getProfile({ mode: "profiles" });
-    setProfile(res?.data.map((e) => ({ label: e, value: e })));
+    setProfile(res?.data.map((e) => e));
   };
   useEffect(() => {
     fetchProfile();
@@ -56,6 +61,7 @@ const ProfileSection = ({ profileData, setProfileData,loadRes }) => {
         <p style={{ textAlign: "center", fontSize: "25px", margin: "7px 0px" }}>
           Profile Selection
         </p>
+
         <Autocomplete
           fullWidth
           size="small"
@@ -63,8 +69,8 @@ const ProfileSection = ({ profileData, setProfileData,loadRes }) => {
           id="combo-box-demo"
           options={profile}
           value={profileData} // Set the selected value
-          onChange={(event, newValue) => setProfileData(newValue.label)} // Update profileData on change
-          renderInput={(params) => (
+          onChange={(event, newValue) => setProfileData(newValue)} // Update profileData on change
+          renderInput={(params, option) => (
             <CssTextField value={profileData} {...params} />
           )}
         />
@@ -77,15 +83,15 @@ const ProfileSection = ({ profileData, setProfileData,loadRes }) => {
           }}
         >
           <ColorButton variant="contained" onClick={loadRes}>Load Results</ColorButton>
-          <ColorButton variant="contained">Refresh</ColorButton>
-          <ColorButton variant="contained" onClick={viewDialogHandler}>
+          <ColorButton variant="contained" onClick={refreshButton}>Refresh</ColorButton>
+          <ColorButton variant="contained" onClick={viewDialogHandler} disabled={profileData?.length === 0}>
             View Params
           </ColorButton>
         </Box>
       </Card>
       {open ? (
         <ViewDialog
-        
+
           profileData={profileData}
           setOpen={setOpen}
           open={open}

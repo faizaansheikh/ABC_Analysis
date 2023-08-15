@@ -41,8 +41,8 @@ let dataF = [
   { Plant: ["PK50", "PK51", "PK56"] },
   { XYZ: ["X", "Y", "Z"] },
 ];
-const FilterSection = ({filterNames,setFilterNames,lookupApi,setLookupApi}) => {
- 
+const FilterSection = ({ filterNames, setFilterNames, lookupApi, setLookupApi }) => {
+
   // const getFilterBox = async () => {
   //   const res = await getProfile({ mode: "all" });
   //   setFilterNames(Object.keys(res.data));
@@ -63,9 +63,9 @@ const FilterSection = ({filterNames,setFilterNames,lookupApi,setLookupApi}) => {
         justifyContent: "center",
       }}
     >
-      {filterNames.map((elem) => {
+      {filterNames.map((elem, index) => {
         return (
-          <Grid item xs={12} sm={8} md={4} lg={3.5}>
+          <Grid item xs={12} sm={8} md={4} lg={3.5} key={index}>
             <Card
               sx={{
                 boxShadow: "1px 1px 8px #80808085",
@@ -86,6 +86,7 @@ const FilterSection = ({filterNames,setFilterNames,lookupApi,setLookupApi}) => {
                   borderRadius: "5px",
                   marginTop: "5px",
                 }}
+                multiple
                 fullWidth
                 size="small"
                 disablePortal

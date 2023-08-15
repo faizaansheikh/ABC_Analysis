@@ -112,18 +112,15 @@ function Setup() {
         ...inputVals,
         Use_grouping: '1',
       });
-    } else{
+    } else {
       setGroupTrue(false);
       setInputVals({
         ...inputVals,
         Use_grouping: '0',
         grouping_Attributes: []
       });
-<<<<<<< HEAD
-=======
-      
+
       // console.log('wroking');
->>>>>>> c4d9faf3aa0f0ab09037c2a2304da7bf2fb5487b
     }
   };
   const handleAbcGroup = (e) => {
@@ -135,10 +132,7 @@ function Setup() {
         Type: "ABC",
         SegmentationMeasureXYZ: ''
       });
-<<<<<<< HEAD
-=======
-     
->>>>>>> c4d9faf3aa0f0ab09037c2a2304da7bf2fb5487b
+
     } else {
       setAbcGroupTrue(true);
       setInputVals({
@@ -673,7 +667,7 @@ function Setup() {
               validation.segMesureXyz && "Please select xyz segmentation method"
             }
           >
-            {xyzMethod.map((elem ,index) => {
+            {xyzMethod.map((elem, index) => {
               return <MenuItem value={elem} key={index}>{elem}</MenuItem>;
             })}
           </CssTextField>

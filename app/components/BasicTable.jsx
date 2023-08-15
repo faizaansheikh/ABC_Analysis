@@ -121,13 +121,14 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
         <TableBody>
           {rows.map((row, index) => (
             <TableRow
-              key={index}
-              //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            key={index}
+            //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell
                 align="center"
                 component="th"
                 scope="row"
+                key={index}
                 sx={{ padding: "0px", borderRight: "1px solid #00000042" }}
               >
                 {row.name}

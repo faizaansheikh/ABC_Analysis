@@ -37,15 +37,15 @@ function Results() {
     const attGraph = await getGraphs({ profile: profileData })
     // console.log(JSON.parse(attGraph));
     let parseData = JSON.parse(tableRes?.data)
-    
+
     setDataT({ columns: parseData?.columns, rows: parseData?.data });
 
     setShowSummary(true);
-    
+
     if (parseData?.columns) {
       setShowSummary(true);
       setShowFilters(true)
-      
+
       let parseFilterData = JSON.parse(filterRes?.data)
       setFilterNames(Object.keys(parseFilterData));
       setLookupApi(parseFilterData);
@@ -54,28 +54,28 @@ function Results() {
       setSummaryData(parseSummary);
 
       setTimeSerious(JSON.parse(timeseriesData?.data))
-    
-    }else{
+
+    } else {
       // setLoader
       setShowSummary(false);
       setShowFilters(false)
 
     }
 
-    
-  };
-const loadRes = ()=>{
-  if(profileData.length){
-    filtersApi();
-  }
 
-}
+  };
+  const loadRes = () => {
+    if (profileData.length) {
+      filtersApi();
+    }
+
+  }
 
 
   return (
     <>
       <Grid container spacing={3}>
-        <Grid item sx={6} sm={12} md={12} lg={5.5}>
+        <Grid item xs={6} sm={12} md={12} lg={5.5}>
           <ProfileSection
             setProfileData={setProfileData}
             profileData={profileData}
@@ -83,11 +83,11 @@ const loadRes = ()=>{
           />
         </Grid>
         <Grid textAlign='center' item xs={12} sm={12} md={12} lg={6.5}>
-          {showSummary ? <SummaryCard  summaryData={summaryData}   profileData={profileData}/> : ''}
+          {showSummary ? <SummaryCard summaryData={summaryData} profileData={profileData} /> : ''}
         </Grid>
       </Grid>
-    {showFilters ? <FilterSection filterNames={filterNames} lookupApi={lookupApi} /> : ''}
-      
+      {showFilters ? <FilterSection filterNames={filterNames} lookupApi={lookupApi} /> : ''}
+
 
       <Box sx={{ mt: "30px", boxShadow: "1px 1px 8px #80808085", p: "20px" }}>
         <Typography
@@ -98,10 +98,10 @@ const loadRes = ()=>{
             fontSize: "20px",
           }}
         >
-          {dataT.columns ?  'Results' : 'No results to show'}
-         
+          {dataT.columns ? 'Results' : 'No results to show'}
+
         </Typography>
-        
+
         <ResultsTable
           profileData={profileData}
           setDataT={setDataT}

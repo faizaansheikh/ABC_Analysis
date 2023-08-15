@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { resTable } from "../setup/Services/SegmentationServices";
 import { useState } from "react";
 import { Suspense } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+ //import { DataGrid } from "@mui/x-data-grid"
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
 // }
@@ -135,7 +135,6 @@ export default function BasicTable({ profileData,tableRes,setDataT, dataT,loader
   //   // filtersApi()
   //   getDataT({ profile: profileData });
   // }, [profileData]);
-
   return (
     <div className="App">
       <Box sx={{ overflow: "auto" }}>
@@ -170,14 +169,14 @@ export default function BasicTable({ profileData,tableRes,setDataT, dataT,loader
               <TableBody>
                 {dataT?.rows?.map((row, index) => (
                   <TableRow
-                    // key={row.name}
+                     key={index}
                     sx={{
                       "&:last-child td, &:last-child th": {
                         border: "1px solid",
                       },
                     }}
                   >
-                    {dataT?.columns?.map((keys) => (
+                    {dataT?.columns?.map((keys, index) => (
                       <TableCell
                         key={index}
                         sx={{
