@@ -19,13 +19,14 @@ import Results from '../../results/page'
 const drawerWidth = 255;
 
 export default function ClippedDrawer() {
-  const [menuData, setMenuData] = React.useState("setup");
+  const [menuData, setMenuData] = React.useState("result");
   return (
     <Box sx={{ display: "flex", bgcolor: "#398585 !imporant" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{
+        // 0A5F59 398585
+        sx={{ 
           zIndex: (theme) => theme.zIndex.drawer + 1,
           bgcolor: "#398585",
           display: "flex",

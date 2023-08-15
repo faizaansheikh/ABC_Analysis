@@ -2,6 +2,10 @@
 import axios from "axios";
 const BASE_URL = `http://192.168.1.10:2654`;
 
+const BASE_URL_2 = "http://192.168.1.10:2654";
+
+// /sumgraph
+
 export const getSegMeasureApi = async () => {
   try {
     return await axios.get(`${BASE_URL}/dropdown/segmentation_measure`);
@@ -50,8 +54,103 @@ export const getSegMeasureXYZ = async () => {
 
 export const postSegmentaion = async (payload) => {
   try {
-    return await axios.post(`${BASE_URL}/segmentation_setup`, { ...payload })
+    return await axios.post(`${BASE_URL}/segmentation_setup`, { ...payload });
   } catch (error) {
-    return error.message
+    return error.message;
   }
-}
+};
+
+export const getSummary = async () => {
+  try {
+    return await axios.get(`${BASE_URL_2}/sumgraph`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getProfile = async (payload) => {
+  try {
+    return await axios.get(`${BASE_URL_2}/filters?mode=${payload.mode}`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getTable = async (payload) => {
+  try {
+    return await axios.get(`${BASE_URL_2}/params?profile=${payload.profile}`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const resTable = async (payload) => {
+  try {
+    return await axios.post(`${BASE_URL_2}/tablegen`, { ...payload });
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const timeSeriesGraph = async (payload) => {
+  try {
+    return await axios.get(`${BASE_URL_2}/visgraph?profile=${payload.profile}`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getSummaryModal = async () => {
+  try {
+    return await axios.get(`${BASE_URL_2}/modaldata`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getGraphs = async (payload) => {
+  try {
+    return await axios.get(`${BASE_URL_2}/calcs?profile=${payload.profile}`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getSentence = async () => {
+  try {
+    return await axios.get(`${BASE_URL_2}/sentence`);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getGiniIndex = async (payload) => {
+  try {
+    return await axios.get(
+      `${BASE_URL_2}/gini index?profile=${payload.profile}`
+    );
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getAttributeGraph = async (payload) => {
+  try {
+    return await axios.get(
+      `${BASE_URL_2}/calcs?profile=${payload.profile}`
+    );
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export const getModalData = async (payload) => {
+  try {
+    return await axios.get(
+      `${BASE_URL_2}/modaldata?profile=ABC_Brand_1`
+    );
+  } catch (error) {
+    return error.message;
+  }
+};
+ 

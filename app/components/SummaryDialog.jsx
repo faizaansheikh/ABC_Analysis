@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import * as React from "react";
 import PropTypes from "prop-types";
@@ -11,6 +11,8 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import style from "./SummaryDialog.module.css";
+import { getModalData, getSummaryModal } from "../setup/Services/SegmentationServices";
+import { useEffect } from "react";
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -58,11 +60,26 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function SummaryDialog({ setOpen, open }) {
+export default function SummaryDialog({ setOpen, open,profileData }) {
   const handleClose = () => {
     setOpen(false);
   };
 
+  const fetchSummaryModal = async () => {
+    const res = await getSummaryModal();
+    console.log(res);
+  };
+
+  useEffect(() => {
+    fetchSummaryModal();
+  }, []);
+  const fetchData = async()=>{
+    const res = await getModalData()
+    console.log(res);
+  }
+  useEffect(()=>{
+    fetchData()
+  },[])
   return (
     <>
       <BootstrapDialog
@@ -85,7 +102,7 @@ export default function SummaryDialog({ setOpen, open }) {
         </div>
         <div style={{ overflow: "auto", height: "250px" }}>
           <DialogContent dividers>
-            <table style={{ width: '500px' }}>
+            <table style={{ width: "500px" }}>
               <thead>
                 <tr>
                   <th className={style.heading}>ABC</th>

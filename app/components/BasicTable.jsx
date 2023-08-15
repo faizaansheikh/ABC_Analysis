@@ -11,15 +11,15 @@ import styled from "@emotion/styled";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-input": {
-    textAlign: 'center',
+    textAlign: "center",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      border: 'none',
+      border: "none",
     },
     "&.Mui-focused fieldset": {
-      backgroundColor: '#3985850f',
-      textAlign: 'right !important',
+      backgroundColor: "#3985850f",
+      textAlign: "right !important",
       borderColor: "#398585",
     },
   },
@@ -34,40 +34,69 @@ const CssTextField = styled(TextField)({
 //   },
 // });
 
-
 function BasicTable({ inputVals, setInputVals, setTotalValue }) {
   const handleTableValue = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     // let name = e.target.name;
     // let value = e.target.value
 
     const newValue = {
       ...inputVals,
-      [name]: parseFloat(value)
-    }
-    setInputVals(newValue)
+      [name]: parseFloat(value),
+    };
+    setInputVals(newValue);
 
-    calTotal(newValue)
-  }
+    calTotal(newValue);
+  };
 
   const calTotal = (newValue) => {
     const { A, B, C } = newValue;
-    const newTotal = A + B + C
-    setTotalValue(newTotal)
-  }
+    const newTotal = A + B + C;
+    setTotalValue(newTotal);
+  };
 
   function createData(name, text) {
     return { name, text };
   }
 
   const rows = [
-    createData("A", <CssTextField size="small" fullWidth type="number" name="A" onChange={handleTableValue} value={parseInt(inputVals.A)} />),
-    createData("B", <CssTextField size="small" fullWidth type="number" name="B" onChange={handleTableValue} value={inputVals.B} />),
-    createData("C", <CssTextField size="small" fullWidth type="number" name="C" onChange={handleTableValue} value={inputVals.C} />),
+    createData(
+      "A",
+      <CssTextField
+        size="small"
+        fullWidth
+        type="number"
+        name="A"
+        onChange={handleTableValue}
+        value={parseInt(inputVals.A)}
+      />
+    ),
+    createData(
+      "B",
+      <CssTextField
+        size="small"
+        fullWidth
+        type="number"
+        name="B"
+        onChange={handleTableValue}
+        value={inputVals.B}
+      />
+    ),
+    createData(
+      "C",
+      <CssTextField
+        size="small"
+        fullWidth
+        type="number"
+        name="C"
+        onChange={handleTableValue}
+        value={inputVals.C}
+      />
+    ),
   ];
   // const classes = useStyles();
   return (
-    <TableContainer component={Paper} sx={{ mt: "50px", width: "100%" }} >
+    <TableContainer component={Paper} sx={{ mt: "50px", width: "100%" }}>
       <Table
         // className={classes.table}
         sx={{ width: "100%" }}
@@ -75,7 +104,14 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
       >
         <TableHead sx={{ bgcolor: "#398585" }}>
           <TableRow>
-            <TableCell sx={{ color: "white", fontSize: "16px", borderRight: '1px solid #0000001f !important' }} align="center">
+            <TableCell
+              sx={{
+                color: "white",
+                fontSize: "16px",
+                borderRight: "1px solid #0000001f !important",
+              }}
+              align="center"
+            >
               Group
             </TableCell>
             <TableCell sx={{ color: "white", fontSize: "16px" }} align="center">
@@ -87,18 +123,24 @@ function BasicTable({ inputVals, setInputVals, setTotalValue }) {
           {rows.map((row, index) => (
             <TableRow
               key={index}
-            //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              //   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center" component="th" scope="row" sx={{ padding: '0px', borderRight: '1px solid #00000042' }}>
+              <TableCell
+                align="center"
+                component="th"
+                scope="row"
+                sx={{ padding: "0px", borderRight: "1px solid #00000042" }}
+              >
                 {row.name}
               </TableCell>
-              <TableCell align="center" key={index} sx={{ padding: '0px' }}>{row.text}</TableCell>
+              <TableCell align="center" key={index} sx={{ padding: "0px" }}>
+                {row.text}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-
 }
 export default BasicTable;

@@ -1,37 +1,35 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@mui/material";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import SummaryDialog from "./SummaryDialog";
 
-const Plot = dynamic(() => import('react-plotly.js'), {
-  ssr: false
-})
+import { getSummary } from "../setup/Services/SegmentationServices";
+
+const Plot = dynamic(() => import("react-plotly.js"), {
+  ssr: false,
+});
+
 import "./summary.css";
 
-const SummaryCard = () => {
-
+const SummaryCard = ({ profileData, summaryData }) => {
   const [open, setOpen] = useState(false);
 
   const summaryDialogHandler = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
-  var colorscaleValue = [
+  let colorscaleValue = [
     [0, "#b1deb7"],
     [1, "#0a5413"],
   ];
 
-  var yValues = ['A', 'B', 'C'];
+  let yValues = ["A", "B", "C"];
 
-  var xValues = ['Z', 'Y', 'X'];
+  let xValues = ["Z", "Y", "X"];
 
-  var zValues = [
-    [1, 20, 30],
-    [20, 1, 60],
-    [30, 60, 1],
-  ]
+  let zValues = summaryData;
 
   return (
     <>
@@ -55,19 +53,23 @@ const SummaryCard = () => {
           ]}
           layout={{
             height: 350,
-            annotations: [
-            ],
+            annotations: [],
           }}
           onClick={summaryDialogHandler}
           config={{ responsive: true }}
         />
-        {/* </Suspense> */}
 
+        {/* </Suspense> */}
       </Card>
-      {open ? <SummaryDialog setOpen={setOpen} open={open} /> : null}
+      {open ? (
+        <SummaryDialog
+          profileData={profileData}
+          setOpen={setOpen}
+          open={open}
+        />
+      ) : null}
     </>
   );
 };
 
 export default SummaryCard;
-
