@@ -146,8 +146,8 @@ export const getOtherGraphs = async (payload) => {
 
 export const getModalData = async (payload) => {
   try {
-    return await axios.get(
-      `${BASE_URL_2}/modaldata?profile=ABC_Brand_1`
+    return await axios.post(
+      `${BASE_URL_2}/modaldata`,{...payload}
     );
   } catch (error) {
     return error.message;

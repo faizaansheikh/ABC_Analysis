@@ -17,7 +17,7 @@ const Graph = ({
   cardsVal,
 }) => {
   const [showGini, setShowGini] = useState(false);
-  console.log(cardsVal);
+  // console.log(cardsVal);
   const {
     GiniIndex,
     cv,

@@ -24,6 +24,7 @@ import {
   timeSeriesGraph,
   getGraphs,
   getOtherGraphs,
+  getModalData,
 } from "../setup/Services/SegmentationServices";
 
 function Results() {
@@ -40,6 +41,7 @@ function Results() {
   const [giniGraph, setGniGraph] = useState(false);
   const [loader, setLoader] = useState(false);
   const [cardsVal, setCardsVal] = useState(false);
+  const [modalVals, setModalVals] = useState(false);
   const [filterGraph, setFilterGraph] = useState({
     profile: "Abc Brand-Grammage Wise_1",
     arr: {
@@ -47,17 +49,24 @@ function Results() {
       Grammage: "110-70 GM",
     },
   });
-  
+  const [modalData, setModalData] = useState({
+    profile: "Abc Brand-Grammage Wise_1",
+    abc: "A",
+    xyz: "X"
+  })
+
+ 
   // let parseTimeseries = []
   const filtersApi = async () => {
     setLoader(true);
     const tableRes = await resTable({ profile: profileData });
     const filterRes = await getProfile({ mode: "all" });
     const summaryRes = await getSummary();
+    const getModal = await getModalData(modalData)
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
     const otherGraphs = await getOtherGraphs(filterGraph);
 
-
+   
     // console.log(JSON.parse(parseOtherGraphs.data));
     setLoader(false);
     // console.log(JSON.parse(attGraph));
@@ -77,7 +86,7 @@ function Results() {
 
       let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
       setSummaryData(parseSummary);
-
+      setModalVals(JSON.parse(getModal?.data));
       setTimeSerious(JSON.parse(timeseriesData?.data));
 
       let parseOtherGraphs = JSON.parse(otherGraphs?.data);
@@ -164,6 +173,7 @@ function Results() {
                 <SummaryCard
                   summaryData={summaryData}
                   profileData={profileData}
+                  modalVals={modalVals}
                 />
               ) : (
                 ""
@@ -243,6 +253,7 @@ function Results() {
         attgraph={attgraph}
         giniGraph={giniGraph}
         cardsVal={cardsVal}
+        
       />
       
     </>

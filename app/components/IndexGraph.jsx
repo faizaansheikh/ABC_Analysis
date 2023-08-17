@@ -24,7 +24,7 @@ const IndexGraph = ({giniGraph}) => {
   // useEffect(() => {
   //   fetchGiniIndex({profile: 'Abc Brand Wise_3_Plant'});
   // }, []);
-  console.log(giniGraph);
+  // console.log(giniGraph);
   return (
     <Card sx={{ boxShadow: "1px 1px 8px #80808085", marginTop: "30px" }}>
       <Typography sx={{ padding: 2, fontSize: "25px" }}>

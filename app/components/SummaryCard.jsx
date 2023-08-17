@@ -1,5 +1,4 @@
-"use client";
-
+"use-client";
 import React, { useEffect, useState } from "react";
 import { Card } from "@mui/material";
 import dynamic from "next/dynamic";
@@ -13,59 +12,87 @@ const Plot = dynamic(() => import("react-plotly.js"), {
 
 import "./summary.css";
 
-const SummaryCard = ({ profileData, summaryData,loader }) => {
+const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
   const [open, setOpen] = useState(false);
-
+  const [clickedPoint, setClickedPoint] = useState(null); // To store the clicked point data
+  const [pointVals, setPointVals] = useState({
+    x: null,
+    y: null,
+  });
   const summaryDialogHandler = () => {
     setOpen(true);
   };
 
+  const handlePlotClick = (event) => {
+    if (event && event.points && event.points[0]) {
+      const clickedPointData = event.points[0];
+      setClickedPoint(clickedPointData);
+      setPointVals({
+        x: clickedPointData.x,
+        y: clickedPointData.y,
+      });
+      summaryDialogHandler();
+    }
+  };
+    
+  // console.log(pointVals);
   let colorscaleValue = [
     [0, "#b1deb7"],
     [1, "#0a5413"],
   ];
 
-  let yValues = ["A", "B", "C"];
+  let yValues = ["C", "B", "A"];
 
-  let xValues = ["Z", "Y", "X"];
+  let xValues = ["X", "Y", "Z"];
 
-  let zValues = summaryData;
+   let zValues = summaryData;
+   let annotations = [];
+   for (let rowIndex = 0; rowIndex < yValues.length; rowIndex++) {
+     for (let colIndex = 0; colIndex < xValues.length; colIndex++) {
+      const value = summaryData[rowIndex][colIndex];
+      const colorStyle = value > 9 ? "color: white;" : "";
+       const annotation = {
+         x: xValues[colIndex],
+         y: yValues[rowIndex],
+         text: `<span style="${colorStyle}">${summaryData[rowIndex][colIndex]} Products </span>`,
+         xref: "x",
+         yref: "y",
+         showarrow: false,
+       };
+       annotations.push(annotation);
+     }
+   }
+ 
 
   return (
     <>
-      {/* <Card sx={{ boxShadow: "1px 1px 8px #80808085", height: "300px" }}>
-        <p style={{ textAlign: "center", fontSize: "25px", margin: "7px 0px" }}>
-          Summary
-        </p> */}
-      
-        <Plot
-          style={{ width: "100%" }}
-          // className="js-plotly-plot plotly main-svg"
-          data={[
-            {
-              x: xValues,
-              y: yValues,
-              z: zValues,
-              type: "heatmap",
-              showscale: false,
-              colorscale: colorscaleValue,
-            },
-          ]}
-          layout={{
-            height: 350,
-            annotations: [],
-          }}
-          onClick={summaryDialogHandler}
-          config={{ responsive: true }}
-        />
+      <Plot
+        style={{ width: "100%" }}
+        data={[
+          {
+            x: xValues,
+            y: yValues,
+            z: zValues,
+            type: "heatmap",
+            showscale: false,
+            colorscale: colorscaleValue,
+          },
+        ]}
+        layout={{
+          height: 350,
+          annotations: annotations,
+        }}
+        onClick={handlePlotClick} // Use the custom handler
+        config={{ responsive: true }}
+      />
 
-        {/* </Suspense> */}
-      {/* </Card> */}
-      {open ? (
+      {open && clickedPoint ? (
         <SummaryDialog
           profileData={profileData}
           setOpen={setOpen}
           open={open}
+          modalVals={modalVals}
+          pointVals={pointVals} 
         />
       ) : null}
     </>

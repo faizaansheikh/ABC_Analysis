@@ -11,7 +11,10 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import style from "./SummaryDialog.module.css";
-import { getModalData, getSummaryModal } from "../setup/Services/SegmentationServices";
+import {
+  getModalData,
+  getSummaryModal,
+} from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
 
 const ColorButton = styled(Button)(() => ({
@@ -35,7 +38,7 @@ function BootstrapDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2,position: "relative" }} {...other}>
+    <DialogTitle sx={{ m: 0, p: 2, position: "relative" }} {...other}>
       {children}
       {onClose ? (
         <IconButton
@@ -60,26 +63,16 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function SummaryDialog({ setOpen, open,profileData }) {
+export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
   const handleClose = () => {
     setOpen(false);
   };
 
-  const fetchSummaryModal = async () => {
-    const res = await getSummaryModal();
-    console.log(res);
-  };
-
-  useEffect(() => {
-    fetchSummaryModal();
-  }, []);
-  const fetchData = async()=>{
-    const res = await getModalData()
-    console.log(res);
-  }
-  useEffect(()=>{
-    fetchData()
-  },[])
+  let dataM = [
+    // { ABC: "A", XYZ: "X", Brand: "Max Bar Regular", Grammage: "190-285 GM" },
+    {'Not data found': ''}
+  ];
+  // console.log(Object.keys(dataM[0]));
   return (
     <>
       <BootstrapDialog
@@ -97,83 +90,32 @@ export default function SummaryDialog({ setOpen, open,profileData }) {
             id="customized-dialog-title"
             onClose={handleClose}
           >
-            Product in CY Category
+            Product in {pointVals.y + pointVals.x} Category
           </BootstrapDialogTitle>
         </div>
         <div style={{ overflow: "auto", height: "250px" }}>
-          <DialogContent dividers>
+          <DialogContent>
             <table style={{ width: "500px" }}>
               <thead>
                 <tr>
-                  <th className={style.heading}>ABC</th>
-                  <th className={style.heading}>XYZ</th>
-                  <th className={style.heading}>Brand</th>
-                  <th className={style.heading}>Grammage</th>
+                {Object.keys(modalVals[0] ? modalVals[0] : dataM[0]).map((elem,i)=>(
+
+                  <th key={i} className={style.heading}>{elem}</th>
+                ))}
+                 
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
-                <tr>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                  <td className={style.theading}>124</td>
-                </tr>
+              <tbody className={style.bodyT}>
+                {modalVals?.map((elem,i) => (
+                  <tr className={style.trData} key={i}>
+                    <td className={style.theading}>{elem.ABC}</td>
+                    <td className={style.theading}>{elem.XYZ}</td>
+                    <td className={style.theading}>{elem.Brand}</td>
+                    <td className={style.theading}>{elem.Grammage}</td>
+                    {/* {!elem && <td className={style.theading}>{elem.message}</td>} */}
+                    
+                  </tr>
+                ))}
               </tbody>
             </table>
           </DialogContent>
