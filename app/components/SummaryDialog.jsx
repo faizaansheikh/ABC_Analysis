@@ -64,6 +64,11 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
+  const [modalData, setModalData] = useState({
+    profile: "Abc Brand-Grammage Wise_1",
+    abc: "",
+    xyz: "",
+  });
   const handleClose = () => {
     setOpen(false);
   };
@@ -72,7 +77,19 @@ export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
     // { ABC: "A", XYZ: "X", Brand: "Max Bar Regular", Grammage: "190-285 GM" },
     {'Not data found': ''}
   ];
-  // console.log(Object.keys(dataM[0]));
+  setModalData((prevModalData) => ({
+    ...prevModalData,
+    // profile: "Abc Brand-Grammage Wise_1",
+    abc: pointVals?.x,
+    xyz: pointVals?.y,
+  }));
+  const getModalData = async()=>{
+    const getModal = await getModalData(modalData);
+  }
+  useEffect(() => {
+    getModalData()
+  }, [])
+  
   return (
     <>
       <BootstrapDialog

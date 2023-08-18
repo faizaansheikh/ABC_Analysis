@@ -57,40 +57,39 @@ function Results() {
       Grammage: "110-70 GM",
     },
   });
-  const [modalData, setModalData] = useState({
-    profile: "Abc Brand-Grammage Wise_1",
-    abc: "A",
-    xyz: "X",
-  });
+  
   const otherApis = async (isColumns) => {
     const filterRes = await getProfile({ mode: "all" });
-    const summaryRes = await getSummary();
-    const getModal = await getModalData(modalData);
+    // const summaryRes = await getSummary();
+    // const getModal = await getModalData(modalData);
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
     const otherGraphs = await getOtherGraphs(filterGraph);
     setLoader(false);
-    if (isColumns) {
-      setShowSummary(true);
-      setShowFilters(true);
 
-      let parseFilterData = JSON.parse(filterRes?.data);
+    let parseFilterData = JSON.parse(filterRes?.data);
       setFilterNames(Object.keys(parseFilterData));
       setLookupApi(parseFilterData);
-
-      let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
-      // console.log(summaryRes);
-      setSummaryData(parseSummary);
-      setModalVals(JSON.parse(getModal?.data));
+      
+        // let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
+        // // console.log(summaryRes);
+        // setSummaryData(parseSummary);
+    
+     
+      // setModalVals(JSON.parse(getModal?.data));
       setTimeSerious(JSON.parse(timeseriesData?.data));
 
       let parseOtherGraphs = JSON.parse(otherGraphs?.data);
       setCardsVal(parseOtherGraphs);
       setAttgraph(parseOtherGraphs?.data);
       setGniGraph(parseOtherGraphs?.giniData);
-    } else {
-      setShowSummary(false);
-      setShowFilters(false);
-    }
+      setShowSummary(true);
+      setShowFilters(true);
+    // if (!isColumns) {
+    //   setShowSummary(false);
+    //   setShowFilters(false);
+
+      
+    // } 
   };
 
   const loadApis = async () => {
@@ -99,27 +98,12 @@ function Results() {
     let parseData = JSON.parse(tableRes?.data);
     // console.log(parseData);
     setDataT({ columns: parseData?.columns, rows: parseData?.data });
-
+    const summaryRes = await getSummary();
+    let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
+    setSummaryData(parseSummary);
     otherApis(parseData?.columns);
   };
-  // console.log(filtVals);
- 
-  //  console.log(filtVals);
-  // const LoadTableFilts = async () => {
-  //   setLoader(true);
-  //   const getTableFilts = await tableFilters(filtVals);
-  //   let parseData = JSON.parse(getTableFilts?.data);
-  //   console.log(parseData);
-  //   setLoader(false);
   
-  // };
-  // console.log(filterVals);
-  // useEffect(() => {
-  //   if(){
-  //     LoadTableFilts()
-  //   }
-
-  // }, [filtVals])
 
   let formattedArr = [];
   if (timeSerious.data) {
@@ -140,7 +124,7 @@ function Results() {
       loadApis();
     }
   };
-
+// console.log(modalData);
   return (
     <>
       <Grid container spacing={3}>
@@ -195,6 +179,7 @@ function Results() {
                   summaryData={summaryData}
                   profileData={profileData}
                   modalVals={modalVals}
+                 
                 />
               ) : (
                 ""
@@ -224,7 +209,10 @@ function Results() {
         <FilterSection
           filterNames={filterNames}
           lookupApi={lookupApi}
-        
+          otherApis={otherApis}
+          setDataT={setDataT}
+          setLoader={setLoader}
+          loader={loader}
           // loadTableFilts={LoadTableFilts}
           // filtVals={filtVals} 
           // setfiltVals={setfiltVals}
@@ -238,7 +226,7 @@ function Results() {
             pr: "17px",
             pb: "17px",
             pl: "20px",
-            fontSize: "20px",
+            fontSize: "24px",
           }}
         >
           {dataT.columns ? "Results" : "No results to show"}
@@ -253,7 +241,7 @@ function Results() {
             }}
           >
             <CircularProgress />
-            <Typography sx={{ mt: "10px" }}>Loading</Typography>
+            {/* <Typography sx={{ mt: "10px" }}>Loading</Typography> */}
           </Box>
         ) : (
           <div className="App">

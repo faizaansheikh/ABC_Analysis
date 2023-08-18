@@ -40,22 +40,29 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
     [0, "#b1deb7"],
     [1, "#0a5413"],
   ];
-
+  
   let yValues = ["C", "B", "A"];
 
   let xValues = ["X", "Y", "Z"];
   // let zValues = [[0, 10, 4],[1, 6, 2],[1, 3, 6]];
-   let zValues = summaryData;
+  let reverseVals  = []
+  
+  for (let i = summaryData.length-1; i >= 0; i--) {
+    reverseVals.push(summaryData[i])
+    
+  }
+  // console.log(reverseVals);
+   let zValues = reverseVals;
   // console.log(summaryData);
   let annotations = [];
   for (let rowIndex = 0; rowIndex < yValues.length; rowIndex++) {
     for (let colIndex = 0; colIndex < xValues.length; colIndex++) {
-      const value = summaryData[rowIndex][colIndex];
+      const value = reverseVals[rowIndex][colIndex];
       const colorStyle = value > 9 ? "color: white;" : "";
       const annotation = {
         x: xValues[colIndex],
         y: yValues[rowIndex],
-        text: `<span style="${colorStyle}">${summaryData[rowIndex][colIndex]} Products </span>`,
+        text: `<span style="${colorStyle}">${reverseVals[rowIndex][colIndex]} Product(s) </span>`,
         xref: "x",
         yref: "y",
         showarrow: false,
@@ -93,6 +100,7 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
           open={open}
           modalVals={modalVals}
           pointVals={pointVals}
+         
         />
       ) : null}
     </>

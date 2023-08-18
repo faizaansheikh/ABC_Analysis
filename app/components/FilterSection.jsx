@@ -3,7 +3,11 @@
 import styled from "@emotion/styled";
 import { Autocomplete, Card, Grid, TextField } from "@mui/material";
 import React from "react";
-import { getBoxes, getProfile, tableFilters } from "../setup/Services/SegmentationServices";
+import {
+  getBoxes,
+  getProfile,
+  tableFilters,
+} from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -42,58 +46,36 @@ let dataF = [
   { XYZ: ["X", "Y", "Z"] },
 ];
 // loadTableFilts
-const FilterSection = ({ filterNames, setFilterNames, lookupApi, setLookupApi})  => {
-  const [load,setLoad] = useState(false)
+const FilterSection = ({
+  filterNames,
+  setFilterNames,
+  lookupApi,
+  setLookupApi,
+  otherApis,
+  setDataT,
+  setLoader,
+  loader,
+}) => {
+  const [load, setLoad] = useState(false);
   const [filtVals, setfiltVals] = useState({
     item: {
       profile: "Abc Brand-Grammage Wise_1",
     },
     filts: {},
   });
-  // const LoadTableFilts = async () => {
-  //   // setLoader(true);
-  //   const getTableFilts = await tableFilters(filtVals);
-  //   let parseData = JSON.parse(getTableFilts?.data);
-  //   console.log(parseData);
-  //   // setLoader(false);
-  
-  // };
-  // const handleFilterValue =  async(filterName, value) => {
-  //   if (value === null) {
-  //     // If value is null (deselected), remove the key from filts
-  //     const updatedFilts = { ...filtVals.filts };
-  //     delete updatedFilts[filterName];
-  //     setfiltVals(prevState => ({
-  //       ...prevState,
-  //       filts: updatedFilts,
-  //     }));
-  //   } else {
-  //     setfiltVals(prevState => ({
-  //       ...prevState,
-  //       filts: {
-  //         ...prevState.filts,
-  //         [filterName]: value,
-  //       },
-  //     }));
-  //     console.log(filtVals);
-  //   }
-    
-   
-  //    await LoadTableFilts();
-  // };
-
+  const [filtersModified, setFiltersModified] = useState(false);
 
   const handleFilterValue = async (filterName, value) => {
     if (value === null) {
       // If value is null (deselected), remove the key from filts
       const updatedFilts = { ...filtVals.filts };
       delete updatedFilts[filterName];
-      setfiltVals(prevState => ({
+      setfiltVals((prevState) => ({
         ...prevState,
         filts: updatedFilts,
       }));
     } else {
-      setfiltVals(prevState => ({
+      setfiltVals((prevState) => ({
         ...prevState,
         filts: {
           ...prevState.filts,
@@ -101,23 +83,26 @@ const FilterSection = ({ filterNames, setFilterNames, lookupApi, setLookupApi}) 
         },
       }));
     }
-  }
+    setFiltersModified(true);
+  };
 
-
-  useEffect(() => {
-    const LoadTableFilts = async () => {
-      // setLoader(true);
+  const LoadTableFilts = async () => {
+    if (filtersModified) {
+      setLoader(true);
       const getTableFilts = await tableFilters(filtVals);
       let parseData = JSON.parse(getTableFilts?.data);
-      console.log(parseData);
-      // setLoader(false);
-    };
+      setDataT({ columns: parseData?.columns, rows: parseData?.data });
+      otherApis();
+      setLoader(false);
+    }
+  };
 
-    LoadTableFilts(); 
-  }, [filtVals]); 
+  useEffect(() => {
+    LoadTableFilts();
+    
+    setFiltersModified(false);
+  }, [filtVals, filtersModified]);
 
- 
- 
   return (
     <Grid
       container
