@@ -50,6 +50,8 @@ const ProfileSection = ({ profileData, setProfileData,loadRes }) => {
   useEffect(() => {
     fetchProfile();
   }, []);
+  
+  
   return (
     <>
       <Card sx={{ boxShadow: "1px 1px 8px #80808085", padding: "0px 30px" }}>

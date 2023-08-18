@@ -34,7 +34,7 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
       summaryDialogHandler();
     }
   };
-    
+
   // console.log(pointVals);
   let colorscaleValue = [
     [0, "#b1deb7"],
@@ -44,25 +44,25 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
   let yValues = ["C", "B", "A"];
 
   let xValues = ["X", "Y", "Z"];
-
+  // let zValues = [[0, 10, 4],[1, 6, 2],[1, 3, 6]];
    let zValues = summaryData;
-   let annotations = [];
-   for (let rowIndex = 0; rowIndex < yValues.length; rowIndex++) {
-     for (let colIndex = 0; colIndex < xValues.length; colIndex++) {
+  // console.log(summaryData);
+  let annotations = [];
+  for (let rowIndex = 0; rowIndex < yValues.length; rowIndex++) {
+    for (let colIndex = 0; colIndex < xValues.length; colIndex++) {
       const value = summaryData[rowIndex][colIndex];
       const colorStyle = value > 9 ? "color: white;" : "";
-       const annotation = {
-         x: xValues[colIndex],
-         y: yValues[rowIndex],
-         text: `<span style="${colorStyle}">${summaryData[rowIndex][colIndex]} Products </span>`,
-         xref: "x",
-         yref: "y",
-         showarrow: false,
-       };
-       annotations.push(annotation);
-     }
-   }
- 
+      const annotation = {
+        x: xValues[colIndex],
+        y: yValues[rowIndex],
+        text: `<span style="${colorStyle}">${summaryData[rowIndex][colIndex]} Products </span>`,
+        xref: "x",
+        yref: "y",
+        showarrow: false,
+      };
+      annotations.push(annotation);
+    }
+  }
 
   return (
     <>
@@ -92,7 +92,7 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
           setOpen={setOpen}
           open={open}
           modalVals={modalVals}
-          pointVals={pointVals} 
+          pointVals={pointVals}
         />
       ) : null}
     </>

@@ -3,7 +3,7 @@
 import styled from "@emotion/styled";
 import { Autocomplete, Card, Grid, TextField } from "@mui/material";
 import React from "react";
-import { getBoxes, getProfile } from "../setup/Services/SegmentationServices";
+import { getBoxes, getProfile, tableFilters } from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -41,17 +41,83 @@ let dataF = [
   { Plant: ["PK50", "PK51", "PK56"] },
   { XYZ: ["X", "Y", "Z"] },
 ];
-const FilterSection = ({filterNames,setFilterNames,lookupApi,setLookupApi}) => {
- 
-  // const getFilterBox = async () => {
-  //   const res = await getProfile({ mode: "all" });
-  //   setFilterNames(Object.keys(res.data));
-  //   setLookupApi(res.data);
+// loadTableFilts
+const FilterSection = ({ filterNames, setFilterNames, lookupApi, setLookupApi})  => {
+  const [load,setLoad] = useState(false)
+  const [filtVals, setfiltVals] = useState({
+    item: {
+      profile: "Abc Brand-Grammage Wise_1",
+    },
+    filts: {},
+  });
+  // const LoadTableFilts = async () => {
+  //   // setLoader(true);
+  //   const getTableFilts = await tableFilters(filtVals);
+  //   let parseData = JSON.parse(getTableFilts?.data);
+  //   console.log(parseData);
+  //   // setLoader(false);
+  
   // };
-  // // console.log(lookupApi);
-  // useEffect(() => {
-  //   getFilterBox();
-  // }, []);
+  // const handleFilterValue =  async(filterName, value) => {
+  //   if (value === null) {
+  //     // If value is null (deselected), remove the key from filts
+  //     const updatedFilts = { ...filtVals.filts };
+  //     delete updatedFilts[filterName];
+  //     setfiltVals(prevState => ({
+  //       ...prevState,
+  //       filts: updatedFilts,
+  //     }));
+  //   } else {
+  //     setfiltVals(prevState => ({
+  //       ...prevState,
+  //       filts: {
+  //         ...prevState.filts,
+  //         [filterName]: value,
+  //       },
+  //     }));
+  //     console.log(filtVals);
+  //   }
+    
+   
+  //    await LoadTableFilts();
+  // };
+
+
+  const handleFilterValue = async (filterName, value) => {
+    if (value === null) {
+      // If value is null (deselected), remove the key from filts
+      const updatedFilts = { ...filtVals.filts };
+      delete updatedFilts[filterName];
+      setfiltVals(prevState => ({
+        ...prevState,
+        filts: updatedFilts,
+      }));
+    } else {
+      setfiltVals(prevState => ({
+        ...prevState,
+        filts: {
+          ...prevState.filts,
+          [filterName]: value,
+        },
+      }));
+    }
+  }
+
+
+  useEffect(() => {
+    const LoadTableFilts = async () => {
+      // setLoader(true);
+      const getTableFilts = await tableFilters(filtVals);
+      let parseData = JSON.parse(getTableFilts?.data);
+      console.log(parseData);
+      // setLoader(false);
+    };
+
+    LoadTableFilts(); 
+  }, [filtVals]); 
+
+ 
+ 
   return (
     <Grid
       container
@@ -91,6 +157,8 @@ const FilterSection = ({filterNames,setFilterNames,lookupApi,setLookupApi}) => {
                 disablePortal
                 id="combo-box-demo"
                 options={lookupApi[elem].map((opt) => opt)}
+                onChange={(event, value) => handleFilterValue(elem, value)}
+                value={filtVals.filts[elem] || null}
                 renderInput={(params) => <CssTextField {...params} />}
               />
             </Card>

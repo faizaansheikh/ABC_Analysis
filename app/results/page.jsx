@@ -25,6 +25,7 @@ import {
   getGraphs,
   getOtherGraphs,
   getModalData,
+  tableFilters,
 } from "../setup/Services/SegmentationServices";
 
 function Results() {
@@ -42,6 +43,13 @@ function Results() {
   const [loader, setLoader] = useState(false);
   const [cardsVal, setCardsVal] = useState(false);
   const [modalVals, setModalVals] = useState(false);
+  // const [filterVals, setFilterVals] = useState({});
+  // const [filtVals, setfiltVals] = useState({
+  //   item: {
+  //     profile: "Abc Brand-Grammage Wise_1",
+  //   },
+  //   filts: {},
+  // });
   const [filterGraph, setFilterGraph] = useState({
     profile: "Abc Brand-Grammage Wise_1",
     arr: {
@@ -52,31 +60,16 @@ function Results() {
   const [modalData, setModalData] = useState({
     profile: "Abc Brand-Grammage Wise_1",
     abc: "A",
-    xyz: "X"
-  })
-
- 
-  // let parseTimeseries = []
-  const filtersApi = async () => {
-    setLoader(true);
-    const tableRes = await resTable({ profile: profileData });
+    xyz: "X",
+  });
+  const otherApis = async (isColumns) => {
     const filterRes = await getProfile({ mode: "all" });
     const summaryRes = await getSummary();
-    const getModal = await getModalData(modalData)
+    const getModal = await getModalData(modalData);
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
     const otherGraphs = await getOtherGraphs(filterGraph);
-
-   
-    // console.log(JSON.parse(parseOtherGraphs.data));
     setLoader(false);
-    // console.log(JSON.parse(attGraph));
-    let parseData = JSON.parse(tableRes?.data);
-
-    setDataT({ columns: parseData?.columns, rows: parseData?.data });
-
-    setShowSummary(true);
-
-    if (parseData?.columns) {
+    if (isColumns) {
       setShowSummary(true);
       setShowFilters(true);
 
@@ -85,21 +78,49 @@ function Results() {
       setLookupApi(parseFilterData);
 
       let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
+      // console.log(summaryRes);
       setSummaryData(parseSummary);
       setModalVals(JSON.parse(getModal?.data));
       setTimeSerious(JSON.parse(timeseriesData?.data));
 
       let parseOtherGraphs = JSON.parse(otherGraphs?.data);
       setCardsVal(parseOtherGraphs);
-      setAttgraph(parseOtherGraphs?.data)
-      setGniGraph(parseOtherGraphs?.giniData)
-      
+      setAttgraph(parseOtherGraphs?.data);
+      setGniGraph(parseOtherGraphs?.giniData);
     } else {
       setShowSummary(false);
       setShowFilters(false);
     }
   };
-  // console.log(timeSerious);
+
+  const loadApis = async () => {
+    setLoader(true);
+    const tableRes = await resTable({ profile: profileData });
+    let parseData = JSON.parse(tableRes?.data);
+    // console.log(parseData);
+    setDataT({ columns: parseData?.columns, rows: parseData?.data });
+
+    otherApis(parseData?.columns);
+  };
+  // console.log(filtVals);
+ 
+  //  console.log(filtVals);
+  // const LoadTableFilts = async () => {
+  //   setLoader(true);
+  //   const getTableFilts = await tableFilters(filtVals);
+  //   let parseData = JSON.parse(getTableFilts?.data);
+  //   console.log(parseData);
+  //   setLoader(false);
+  
+  // };
+  // console.log(filterVals);
+  // useEffect(() => {
+  //   if(){
+  //     LoadTableFilts()
+  //   }
+
+  // }, [filtVals])
+
   let formattedArr = [];
   if (timeSerious.data) {
     formattedArr = timeSerious?.data.map((item) => {
@@ -116,7 +137,7 @@ function Results() {
   }
   const loadRes = () => {
     if (profileData.length) {
-      filtersApi();
+      loadApis();
     }
   };
 
@@ -200,7 +221,14 @@ function Results() {
         ""
       )} */}
       {showFilters ? (
-        <FilterSection filterNames={filterNames} lookupApi={lookupApi} />
+        <FilterSection
+          filterNames={filterNames}
+          lookupApi={lookupApi}
+        
+          // loadTableFilts={LoadTableFilts}
+          // filtVals={filtVals} 
+          // setfiltVals={setfiltVals}
+        />
       ) : (
         ""
       )}
@@ -253,9 +281,7 @@ function Results() {
         attgraph={attgraph}
         giniGraph={giniGraph}
         cardsVal={cardsVal}
-        
       />
-      
     </>
   );
 }

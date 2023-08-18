@@ -170,14 +170,14 @@ export default function BasicTable({ profileData,tableRes,setDataT, dataT,loader
               <TableBody>
                 {dataT?.rows?.map((row, index) => (
                   <TableRow
-                    // key={row.name}
+                   key={index}
                     sx={{
                       "&:last-child td, &:last-child th": {
                         border: "1px solid",
                       },
                     }}
                   >
-                    {dataT?.columns?.map((keys) => (
+                    {dataT?.columns?.map((keys,index) => (
                       <TableCell
                         key={index}
                         sx={{

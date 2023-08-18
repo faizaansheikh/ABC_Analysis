@@ -154,3 +154,11 @@ export const getModalData = async (payload) => {
   }
 };
  
+
+export const tableFilters = async (payload) => {
+  try {
+    return await axios.post(`${BASE_URL_2}/tablegen/filts`, { ...payload });
+  } catch (error) {
+    return error.message;
+  }
+};
