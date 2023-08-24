@@ -1,0 +1,23 @@
+.active,
+.menu1>a:hover {
+    background-color: #1d7070fc !important;
+}
+
+.collapsed {
+    width: 65px;
+}
+
+.main-content.collapsed {
+    margin-left: 65px;
+}
+
+.sidebar {
+    transition: width 0.3s;
+}
+
+.main-content {
+    transition: margin-left 0.3s ease-in;
+}
+.nav{
+    margin-top: 10px;
+}

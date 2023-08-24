@@ -6,6 +6,7 @@ import React from "react";
 import {
   getBoxes,
   getProfile,
+  getSummary,
   tableFilters,
 } from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
@@ -55,6 +56,9 @@ const FilterSection = ({
   setDataT,
   setLoader,
   loader,
+  setSummaryData,
+  dataT,
+  getSummaryFiltVals
 }) => {
   const [load, setLoad] = useState(false);
   const [filtVals, setfiltVals] = useState({
@@ -63,7 +67,9 @@ const FilterSection = ({
     },
     filts: {},
   });
+  getSummaryFiltVals(filtVals.filts)
   const [filtersModified, setFiltersModified] = useState(false);
+  const [runSummGraph, setRunSummGraph] = useState(false);
 
   const handleFilterValue = async (filterName, value) => {
     if (value === null) {
@@ -92,11 +98,12 @@ const FilterSection = ({
       const getTableFilts = await tableFilters(filtVals);
       let parseData = JSON.parse(getTableFilts?.data);
       setDataT({ columns: parseData?.columns, rows: parseData?.data });
+      
       otherApis();
-      setLoader(false);
+      // setLoader(false);
     }
   };
-
+ 
   useEffect(() => {
     LoadTableFilts();
     

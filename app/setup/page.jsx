@@ -422,7 +422,7 @@ function Setup() {
           justify="center"
           width="auto"
         >
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Box
               sx={{
                 bgcolor: "whitesmoke",
@@ -434,7 +434,7 @@ function Setup() {
               ABC Setup
             </Box>
           </Grid>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <Box
               sx={{
                 bgcolor: "whitesmoke",
@@ -445,11 +445,13 @@ function Setup() {
             >
               XYZ Setup
             </Box>
-          </Grid>
+          </Grid> */}
         </Grid>
 
         <Box
           sx={{
+            ml:{md:'8px'},
+            // mr: {xs:'10px'},
             width: { xs: "100%", lg: 460, xl: 600 },
             display: "flex",
             justifyContent: "center",
@@ -620,13 +622,14 @@ function Setup() {
           </FormControl>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%" ,  ml:{md:'8px'},}}>
           <BasicTable inputVals={inputVals} setInputVals={setInputVals} setTotalValue={setTotalValue} />
         </Box>
 
         <Box
           sx={{
             mt: "30px",
+            ml:{md:'8px'},
           }}
         >
           <Typography sx={{ mr: "20px", mt: "20px", mb: "20px" }}>
@@ -637,6 +640,7 @@ function Setup() {
 
         <Box
           sx={{
+            ml:{md:'8px'},
             width: { xs: "100%", lg: 460, xl: 600 },
             display: "flex",
             justifyContent: "center",
@@ -681,6 +685,7 @@ function Setup() {
             <Box
               sx={{
                 width: { xs: "100%", lg: "auto" },
+                ml:{md:'8px'},
               }}
             >
               <Typography sx={{ mt: "10px", mb: "10px" }}>
@@ -755,6 +760,8 @@ function Setup() {
               md: "start",
               lg: "start",
             },
+            ml:'10px',
+            mr:'10px'
           }}
         >
           <ColorButton

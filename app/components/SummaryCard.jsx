@@ -12,25 +12,43 @@ const Plot = dynamic(() => import("react-plotly.js"), {
 
 import "./summary.css";
 
-const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
+const SummaryCard = ({
+  profileData,
+  summaryData,
+  loader,
+  modalVals,
+  xAxis,
+  yAxis,
+}) => {
+  // console.log(summaryFilt);
   const [open, setOpen] = useState(false);
   const [clickedPoint, setClickedPoint] = useState(null); // To store the clicked point data
-  const [pointVals, setPointVals] = useState({
-    x: null,
-    y: null,
+  // const [pointVals, setPointVals] = useState({
+  //   x: null,
+  //   y: null,
+  // });
+
+  const [modalData, setModalData] = useState({
+    profile: "",
+    abc: "",
+    xyz: "",
   });
   const summaryDialogHandler = () => {
     setOpen(true);
   };
 
+ 
+
   const handlePlotClick = (event) => {
     if (event && event.points && event.points[0]) {
       const clickedPointData = event.points[0];
       setClickedPoint(clickedPointData);
-      setPointVals({
-        x: clickedPointData.x,
-        y: clickedPointData.y,
-      });
+      setModalData((prev) => ({
+        profile:profileData,
+
+        xyz: clickedPointData.x,
+        abc: clickedPointData.y,
+      }));
       summaryDialogHandler();
     }
   };
@@ -40,36 +58,55 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
     [0, "#b1deb7"],
     [1, "#0a5413"],
   ];
-  
-  let yValues = ["C", "B", "A"];
 
-  let xValues = ["X", "Y", "Z"];
-  // let zValues = [[0, 10, 4],[1, 6, 2],[1, 3, 6]];
-  let reverseVals  = []
-  
-  for (let i = summaryData.length-1; i >= 0; i--) {
-    reverseVals.push(summaryData[i])
-    
-  }
-  // console.log(reverseVals);
-   let zValues = reverseVals;
+  // let reverseValsY = [];
+
+  // console.log(xValues, yValues);
+  //  let zValues = reverseVals;
   // console.log(summaryData);
+  let reverseValsZ = [];
+  let yValues = xAxis;
+
+  let xValues = yAxis;
+
+  let zValues = summaryData;
+
+  // for (let i = summaryData?.length - 1; i >= 0; i--) {
+  //   reverseValsZ.push(summaryData[i]);
+  // }
   let annotations = [];
-  for (let rowIndex = 0; rowIndex < yValues.length; rowIndex++) {
-    for (let colIndex = 0; colIndex < xValues.length; colIndex++) {
-      const value = reverseVals[rowIndex][colIndex];
-      const colorStyle = value > 9 ? "color: white;" : "";
-      const annotation = {
-        x: xValues[colIndex],
-        y: yValues[rowIndex],
-        text: `<span style="${colorStyle}">${reverseVals[rowIndex][colIndex]} Product(s) </span>`,
-        xref: "x",
-        yref: "y",
-        showarrow: false,
-      };
-      annotations.push(annotation);
+
+  for (var i = 0; i < yValues.length; i++) {
+    if (yValues[i] !== null) {
+      for (var j = 0; j < xValues.length; j++) {
+        if (xValues[j] !== null) {
+          var currentValue = summaryData[i][j];
+          if (currentValue !== 0.0) {
+            var textColor = "white";
+            var result = {
+              xref: "x1",
+              yref: "y1",
+              x: xValues[j],
+              y: yValues[i],
+              text: `${summaryData[i][j]} Product(s)`,
+              font: {
+                family: "Arial",
+                size: 30,
+                color: "rgb(50, 171, 96)",
+              },
+              showarrow: false,
+              font: {
+                color: textColor,
+              },
+            };
+            annotations.push(result);
+          }
+        }
+      }
     }
   }
+
+  
 
   return (
     <>
@@ -88,6 +125,7 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
         layout={{
           height: 350,
           annotations: annotations,
+          autosize:true
         }}
         onClick={handlePlotClick} // Use the custom handler
         config={{ responsive: true }}
@@ -98,9 +136,8 @@ const SummaryCard = ({ profileData, summaryData, loader, modalVals }) => {
           profileData={profileData}
           setOpen={setOpen}
           open={open}
-          modalVals={modalVals}
-          pointVals={pointVals}
-         
+          modalData={modalData}
+          // pointVals={pointVals}
         />
       ) : null}
     </>

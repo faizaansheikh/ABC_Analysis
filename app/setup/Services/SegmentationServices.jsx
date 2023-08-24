@@ -162,3 +162,20 @@ export const tableFilters = async (payload) => {
     return error.message;
   }
 };
+
+// export const graphFilters = async (payload) => {
+//   try {
+//     return await axios.get(`${BASE_URL_2}/dropfilter`, { ...payload });
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
+
+export const graphFilters = async (payload) => {
+  try {
+    return await axios.post(`${BASE_URL_2}/dropfilter`,{...payload});
+  } catch (error) {
+    return error.message;
+  }
+};
+

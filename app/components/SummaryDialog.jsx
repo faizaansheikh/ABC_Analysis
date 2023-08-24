@@ -16,6 +16,7 @@ import {
   getSummaryModal,
 } from "../setup/Services/SegmentationServices";
 import { useEffect } from "react";
+import { useState } from "react";
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -63,12 +64,8 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
-  const [modalData, setModalData] = useState({
-    profile: "Abc Brand-Grammage Wise_1",
-    abc: "",
-    xyz: "",
-  });
+export default function SummaryDialog({ setOpen, open,modalData }) {
+  const [modalVals,setModalVals] = useState([])
   const handleClose = () => {
     setOpen(false);
   };
@@ -77,17 +74,18 @@ export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
     // { ABC: "A", XYZ: "X", Brand: "Max Bar Regular", Grammage: "190-285 GM" },
     {'Not data found': ''}
   ];
-  setModalData((prevModalData) => ({
-    ...prevModalData,
-    // profile: "Abc Brand-Grammage Wise_1",
-    abc: pointVals?.x,
-    xyz: pointVals?.y,
-  }));
-  const getModalData = async()=>{
-    const getModal = await getModalData(modalData);
+  // setModalData((prevModalData) => ({
+  //   ...prevModalData,
+  //   // profile: "Abc Brand-Grammage Wise_1",
+  //   abc: pointVals?.x,
+  //   xyz: pointVals?.y,
+  // }));
+  const getModal = async()=>{
+    const getModalVals = await getModalData(modalData);
+    setModalVals(JSON.parse(getModalVals?.data))
   }
   useEffect(() => {
-    getModalData()
+    getModal()
   }, [])
   
   return (
@@ -107,7 +105,7 @@ export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
             id="customized-dialog-title"
             onClose={handleClose}
           >
-            Product in {pointVals.y + pointVals.x} Category
+            Product in {modalData.abc + modalData.xyz} Category
           </BootstrapDialogTitle>
         </div>
         <div style={{ overflow: "auto", height: "250px" }}>
@@ -129,7 +127,7 @@ export default function SummaryDialog({ setOpen, open,modalVals,pointVals }) {
                     <td className={style.theading}>{elem.XYZ}</td>
                     <td className={style.theading}>{elem.Brand}</td>
                     <td className={style.theading}>{elem.Grammage}</td>
-                    {/* {!elem && <td className={style.theading}>{elem.message}</td>} */}
+                 
                     
                   </tr>
                 ))}

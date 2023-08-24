@@ -81,6 +81,7 @@ const IndexGraph = ({giniGraph}) => {
           },
           // width: '100%',
            height: 600,
+           autosize:true
           // title: "hello",
         }}
         config={{ responsive: false }}

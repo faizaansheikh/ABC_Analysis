@@ -15,6 +15,13 @@ const Graph = ({
   attgraph,
   giniGraph,
   cardsVal,
+  dropFilts,
+  setFilterGraph,
+  filterGraph,
+  getOthersGraph,
+  getDropFilters,
+  attLoader,
+  setAttLoader
 }) => {
   const [showGini, setShowGini] = useState(false);
   // console.log(cardsVal);
@@ -94,7 +101,7 @@ const Graph = ({
         </Typography>
       </Card>
 
-      <AttributeGraph attgraph={attgraph} />
+      <AttributeGraph dropFilts={dropFilts} attgraph={attgraph} setFilterGraph={setFilterGraph} filterGraph={filterGraph} getOthersGraph={getOthersGraph} getDropFilters={getDropFilters} attLoader={attLoader} setAttLoader={setAttLoader} profileData={profileData}/>
 
       <IndexGraph giniGraph={giniGraph} />
     </>

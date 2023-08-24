@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Card,
@@ -26,6 +26,7 @@ import {
   getOtherGraphs,
   getModalData,
   tableFilters,
+  graphFilters,
 } from "../setup/Services/SegmentationServices";
 
 function Results() {
@@ -33,8 +34,10 @@ function Results() {
   const [dataT, setDataT] = useState({ columns: [], rows: [] });
   const [filterNames, setFilterNames] = useState([]);
   const [lookupApi, setLookupApi] = useState([]);
-
+  const [xAxis, setABC] = useState(false);
+  const [yAxis, setXYZ] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  const [summaryFilt, setSummaryFilt] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [summaryData, setSummaryData] = useState([]);
   const [timeSerious, setTimeSerious] = useState(false);
@@ -43,66 +46,73 @@ function Results() {
   const [loader, setLoader] = useState(false);
   const [cardsVal, setCardsVal] = useState(false);
   const [modalVals, setModalVals] = useState(false);
-  // const [filterVals, setFilterVals] = useState({});
-  // const [filtVals, setfiltVals] = useState({
-  //   item: {
-  //     profile: "Abc Brand-Grammage Wise_1",
-  //   },
-  //   filts: {},
-  // });
+  const [dropFilts, setDropFilts] = useState(false);
+  const[attLoader,setAttLoader]= useState(false);
+  // const [isPageReloading, setIsPageReloading] = useState(true);
+
   const [filterGraph, setFilterGraph] = useState({
-    profile: "Abc Brand-Grammage Wise_1",
-    arr: {
-      Brand: "Bonus Regular",
-      Grammage: "110-70 GM",
-    },
+    profile: "",
+    arr: {},
   });
+  // console.log(filterGraph);
+  // const [dummy, setDummy] = useState({
+  //   profile: "Abc Brand-Grammage Wise_1",
+  //   arr: {
+  //     Brand: "Bonus Regular",
+  //     Grammage: "110-70 GM",
+  //   },
+  // });
+  const getOthersGraph = async () => {
+    // setAttLoader(true)
+    const otherGraphs = await getOtherGraphs(filterGraph);
+    let parseOtherGraphs = JSON.parse(otherGraphs?.data);
+    setCardsVal(parseOtherGraphs);
+    setGniGraph(parseOtherGraphs?.giniData);
+    setAttgraph(parseOtherGraphs?.data);
+    setAttLoader(false)
+  };
+  const getDropFilters = async () => {
+    const getDropFiltersResponse = await graphFilters({ profile: profileData });
+    let parseDropFilts = JSON.parse(getDropFiltersResponse?.data);
+    setDropFilts(parseDropFilts);
+  };
+
+
   
   const otherApis = async (isColumns) => {
     const filterRes = await getProfile({ mode: "all" });
-    // const summaryRes = await getSummary();
-    // const getModal = await getModalData(modalData);
+    const summaryRes = await getSummary();
+  
     const timeseriesData = await timeSeriesGraph({ profile: profileData });
-    const otherGraphs = await getOtherGraphs(filterGraph);
-    setLoader(false);
-
+    getDropFilters();
     let parseFilterData = JSON.parse(filterRes?.data);
-      setFilterNames(Object.keys(parseFilterData));
-      setLookupApi(parseFilterData);
-      
-        // let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
-        // // console.log(summaryRes);
-        // setSummaryData(parseSummary);
-    
-     
-      // setModalVals(JSON.parse(getModal?.data));
-      setTimeSerious(JSON.parse(timeseriesData?.data));
+    setFilterNames(Object.keys(parseFilterData));
+    setLookupApi(parseFilterData);
 
-      let parseOtherGraphs = JSON.parse(otherGraphs?.data);
-      setCardsVal(parseOtherGraphs);
-      setAttgraph(parseOtherGraphs?.data);
-      setGniGraph(parseOtherGraphs?.giniData);
-      setShowSummary(true);
-      setShowFilters(true);
-    // if (!isColumns) {
-    //   setShowSummary(false);
-    //   setShowFilters(false);
+    let parseSummary = JSON.parse(summaryRes?.data);
+    setSummaryData(JSON.parse(parseSummary?.data));
+    setABC(parseSummary?.ABC);
+    setXYZ(parseSummary?.XYZ);
+    setTimeSerious(JSON.parse(timeseriesData?.data));
 
-      
-    // } 
+    setShowSummary(true);
+    setShowFilters(true);
+    // console.log(dropFilts);
+
+    setLoader(false);
+    // setSummaryLoader(false)
   };
 
   const loadApis = async () => {
     setLoader(true);
+    // setSummaryLoader(true)
     const tableRes = await resTable({ profile: profileData });
     let parseData = JSON.parse(tableRes?.data);
-    // console.log(parseData);
     setDataT({ columns: parseData?.columns, rows: parseData?.data });
-    const summaryRes = await getSummary();
-    let parseSummary = JSON.parse(JSON.parse(summaryRes?.data).data);
-    setSummaryData(parseSummary);
     otherApis(parseData?.columns);
   };
+
+  
   
 
   let formattedArr = [];
@@ -124,7 +134,10 @@ function Results() {
       loadApis();
     }
   };
-// console.log(modalData);
+  // console.log(modalData);
+  const getSummaryFiltVals = (data) => {
+    setSummaryFilt(data);
+  };
   return (
     <>
       <Grid container spacing={3}>
@@ -172,14 +185,16 @@ function Results() {
                   }}
                 >
                   <CircularProgress />
-                  <Typography sx={{ mt: "10px" }}>Loading</Typography>
+                  {/* <Typography sx={{ mt: "10px" }}>Loading</Typography> */}
                 </Box>
               ) : showSummary ? (
                 <SummaryCard
                   summaryData={summaryData}
                   profileData={profileData}
                   modalVals={modalVals}
-                 
+                  summaryFilt={summaryFilt}
+                  xAxis={xAxis}
+                  yAxis={yAxis}
                 />
               ) : (
                 ""
@@ -211,10 +226,13 @@ function Results() {
           lookupApi={lookupApi}
           otherApis={otherApis}
           setDataT={setDataT}
+          dataT={dataT}
           setLoader={setLoader}
           loader={loader}
+          setSummaryData={setSummaryData}
+          getSummaryFiltVals={getSummaryFiltVals}
           // loadTableFilts={LoadTableFilts}
-          // filtVals={filtVals} 
+          // filtVals={filtVals}
           // setfiltVals={setfiltVals}
         />
       ) : (
@@ -269,6 +287,13 @@ function Results() {
         attgraph={attgraph}
         giniGraph={giniGraph}
         cardsVal={cardsVal}
+        dropFilts={dropFilts}
+        setFilterGraph={setFilterGraph}
+        filterGraph={filterGraph}
+        getOthersGraph={getOthersGraph}
+        getDropFilters={getDropFilters}
+        attLoader={attLoader}
+        setAttLoader={setAttLoader}
       />
     </>
   );

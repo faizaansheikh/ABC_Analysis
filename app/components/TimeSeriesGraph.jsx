@@ -76,7 +76,11 @@ const TimeSeriesGraph = ({ profileData, parseTimeseries,formattedArr }) => {
       overlaying: "y",
       side: "right",
     },
-    
+    autosize:true,
+    legend: {
+      x: 1.10, 
+      xanchor: 'bottom',
+    },
   };
 
   // const getGraph = async (query) => {
